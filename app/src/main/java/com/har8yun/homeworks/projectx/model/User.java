@@ -11,7 +11,7 @@ public class User {
     private String password;
     private Integer points;
     private String status;
-    private Sport sport;//sport12345
+    private Sport sport;//sport12345   oooooooo
 
 
     public Long getId() {
