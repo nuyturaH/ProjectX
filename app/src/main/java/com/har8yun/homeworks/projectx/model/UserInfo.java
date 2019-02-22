@@ -5,6 +5,7 @@ import java.util.Date;
 public class UserInfo {
     private String firstName;
     private String lastName;
+    private String avatar;
     private Date birthDate;
     private Integer gender;
     private Float weight;
@@ -24,6 +25,14 @@ public class UserInfo {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Date getBirthDate() {
