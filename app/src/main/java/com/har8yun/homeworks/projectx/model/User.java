@@ -12,7 +12,15 @@ public class User {
     private Integer points;
     private String status;
     private Sport sport;//sport12345
+    private boolean isLogged;
 
+    public boolean isLogged() {
+        return isLogged;
+    }
+
+    public void setLogged(boolean logged) {
+        isLogged = logged;
+    }
 
     public Long getId() {
         return id;
