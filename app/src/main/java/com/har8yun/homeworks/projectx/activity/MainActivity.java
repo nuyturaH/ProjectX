@@ -25,6 +25,22 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private LaunchFragment.OnLaunchFragmentActionListener mOnLaunchFragmentActionListener = new LaunchFragment.OnLaunchFragmentActionListener() {
+        @Override
+        public void onSignInButtonClicked() {
+            signInFragment = new SignInFragment();
+            signInFragment.setOnSignInFragmentActionListener(mOnSignInFragmentActionListener);
+            replaceFragment(signInFragment);
+        }
+
+        @Override
+        public void onSignUpButtonClicked() {
+            signUpFragment = new SignUpFragment();
+            //TODO set ActionListener for signUpFragment
+            replaceFragment(signUpFragment);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         launchFragment = new LaunchFragment();
+        launchFragment.setOnLaunchFragmentActionListener(mOnLaunchFragmentActionListener);
         addFragment(launchFragment);
     }
 

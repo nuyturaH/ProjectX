@@ -73,16 +73,18 @@ public class SignInFragment extends Fragment {
 
     }
 
+
     public void signInUser() {
-        for (int i = 0; i < userList.size(); i++)
-            if (username.getText().toString() != userList.get(i).getUsername() || password.getText().toString() != userList.get(i).getPassword()) {
+        for (int i = 0; i < userList.size(); i++) {
+            if (username.getText().toString() != userList.get(i).getUsername() || password.getText().toString().toCharArray().equals(userList.get(i).getPassword())) {
                 password.setError("Wrong Username or Password.");
                 validUser = false;
             } else {
                 validUser = true;
-                sharedPreferences.setLoggedIn(getContext(),true);
+                sharedPreferences.setLoggedIn(getContext(), true);
             }
 
+        }
     }
 
     public void setOnSignInFragmentActionListener(OnSignInFragmentActionListener onFragmentActionListener) {
