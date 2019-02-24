@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/colorPrimaryDark">
+
+    <item>
+        <shape android:shape="rectangle">
+
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+
+<item>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF"/>
+    <stroke android:width="10dp" android:color="@color/common_google_signin_btn_text_light_disabled" />
+    <corners android:radius="16dp"/>
+    <padding android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="0dp" />
+</shape>
+</item>
+
+</ripple>

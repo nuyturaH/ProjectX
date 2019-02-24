@@ -1,15 +1,37 @@
 <resources>
     <string name="app_name">ProjectX</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="description">Description</string>
-    <string name="username">username</string>
-    <string name="e_mail">E-Mail</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
     <string name="upload_image">Upload image</string>
     <string name="_12_12_1222">12/12/1222</string>
     <string name="password">Password</string>
-    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="register">Register</string>
+    <string name="create_account">Create Account</string>
+    <string name="logo">Logo</string>
+    <string name="suggest_to_login">Already have an account? Log in!</string>
+
+
+    <!--Error messages-->
+    <string name="username_content">Username can only contain letters and numbers (a–z, A–Z, 0–9)</string>
+    <string name="username_length_long">Username cannot be longer then 20 symbols</string>
+    <string name="username_length_short">Username cannot be shorter than 6 symbols</string>
+    <string name="username_enter">Please, enter your Username</string>
+    <string name="username_existence">This username has existed</string>
+
+    <string name="email_enter">Please, enter your Email</string>
+    <string name="email_wrong">There is not such Email</string>
+
+    <string name="password_enter">Please, enter your Password</string>
+    <string name="password_length">Your password cannot be shorter than 6 symbols</string>
+
+    <string name="confirm_password_enter">Please, confirm your Password</string>
+    <string name="confirm_password_matching">It\'s not match with your password</string>
+
+
 </resources>

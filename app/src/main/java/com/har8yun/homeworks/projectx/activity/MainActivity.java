@@ -30,14 +30,14 @@ public class MainActivity extends AppCompatActivity {
         public void onSignInButtonClicked() {
             signInFragment = new SignInFragment();
             signInFragment.setOnSignInFragmentActionListener(mOnSignInFragmentActionListener);
-            replaceFragment(signInFragment);
+            addFragment(signInFragment);
         }
 
         @Override
         public void onSignUpButtonClicked() {
             signUpFragment = new SignUpFragment();
             //TODO set ActionListener for signUpFragment
-            replaceFragment(signUpFragment);
+            addFragment(signUpFragment);
         }
     };
 
@@ -48,20 +48,32 @@ public class MainActivity extends AppCompatActivity {
 
         launchFragment = new LaunchFragment();
         launchFragment.setOnLaunchFragmentActionListener(mOnLaunchFragmentActionListener);
-        addFragment(launchFragment);
+        addFragment2(launchFragment);
     }
 
     private void addFragment(Fragment fragment) {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right,R.anim.enter_from_right, R.anim.exit_to_right);
+
         fragmentTransaction.add(R.id.layout_main, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
+    private void addFragment2(Fragment fragment) {
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.layout_main, fragment);
+        fragmentTransaction.commit();
+    }
+
+
+
     private void replaceFragment(Fragment fragment) {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         fragmentTransaction.replace(R.id.layout_main, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();

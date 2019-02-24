@@ -8,18 +8,25 @@
 
     <Button
         android:id="@+id/btn_sign_up_launch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="76dp"
+        android:background="@drawable/bg_gradient_layout"
         android:text="@string/sign_up"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_sign_in_launch"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_sign_in_launch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_gradient_layout"
         android:text="@string/sign_in"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_sign_up_launch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_sign_up_launch"
         app:layout_constraintTop_toTopOf="@+id/btn_sign_up_launch" />
@@ -36,8 +43,11 @@
         android:id="@+id/tv_description_launch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/description"
+        android:background="@color/colorPrimaryLight"
+        android:padding="12dp"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
         android:textAlignment="center"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_sign_up_launch"
         tools:layout_editor_absoluteX="93dp" />
