@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.fragment.LaunchFragment;
 import com.har8yun.homeworks.projectx.fragment.SignInFragment;
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private LaunchFragment launchFragment;
     private SignInFragment signInFragment;
     private SignUpFragment signUpFragment;
+    
 
     private SignInFragment.OnSignInFragmentActionListener mOnSignInFragmentActionListener = new SignInFragment.OnSignInFragmentActionListener() {
         @Override

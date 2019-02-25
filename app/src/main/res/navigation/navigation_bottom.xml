@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_bottom"
+    app:startDestination="@id/mapFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_topChartsFragment"
+            app:destination="@id/topChartsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/topChartsFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.TopChartsFragment"
+        android:label="fragment_top_charts"
+        tools:layout="@layout/fragment_top_charts" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
