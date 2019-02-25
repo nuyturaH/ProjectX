@@ -25,13 +25,17 @@
     <string name="username_existence">This username has existed</string>
 
     <string name="email_enter">Please, enter your Email</string>
-    <string name="email_wrong">There is not such Email</string>
+    <string name="email_wrong">There is not such Email </string>
 
     <string name="password_enter">Please, enter your Password</string>
     <string name="password_length">Your password cannot be shorter than 6 symbols</string>
 
     <string name="confirm_password_enter">Please, confirm your Password</string>
     <string name="confirm_password_matching">It\'s not match with your password</string>
+    <string name="suggest_to_sign_up">Don\'t have an account? Sign up!</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="app_logo">APP LOGO</string>
+    <string name="launch_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</string>
 
 
 </resources>

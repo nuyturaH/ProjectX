@@ -7,8 +7,23 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient_layout"
     android:padding="18dp"
-    tools:context=".fragment.SignInFragment">
+    android:clickable="true"
+    tools:context=".fragment.SignInFragment"
+    android:focusable="true">
 
+
+    <TextView
+        android:id="@+id/tv_appLogo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/faster_one"
+        android:text="@string/app_logo"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="80sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_suggestion_sign_up2"
@@ -17,38 +32,27 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:focusable="true"
-        android:text="Don't have an account? Sign up!"
+        android:text="@string/suggest_to_sign_up"
         android:textColor="@color/colorPrimaryText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
-    <ImageView
-        android:id="@+id/iv_logo_sign_up2"
-        android:layout_width="200dp"
-        android:layout_height="173dp"
-        android:contentDescription="@string/logo"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/bg_rounded_corners_layout"
         android:paddingStart="24dp"
-        android:paddingTop="16dp"
+        android:paddingTop="18dp"
         android:paddingEnd="24dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="18dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_logo_sign_up2">
+        app:layout_constraintTop_toBottomOf="@+id/tv_appLogo2">
 
         <TextView
             android:id="@+id/tv_suggestion_sign_up3"
@@ -58,7 +62,7 @@
             android:layout_marginBottom="3dp"
             android:clickable="true"
             android:focusable="true"
-            android:text="Forgot your password?"
+            android:text="@string/forgot_your_password"
             android:textColor="@color/common_google_signin_btn_text_light_default"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
+            android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textInputLayout">
@@ -111,7 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@drawable/bg_rounded_corners_layout"
+        android:background="@drawable/bg_rounded_corners_layout_btn"
         android:elevation="8dp"
         android:padding="16dp"
         android:text="@string/sign_in"
