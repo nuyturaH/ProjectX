@@ -107,7 +107,8 @@
                 android:hint="@string/username"
                 android:maxLength="20"
                 android:singleLine="true"
-                android:textColorHint="@color/colorPrimaryText" />
+                android:textColorHint="@color/colorPrimaryText"
+                android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>
     </android.support.constraint.ConstraintLayout>
 

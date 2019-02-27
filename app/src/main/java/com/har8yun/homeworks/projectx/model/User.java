@@ -7,7 +7,7 @@ public class User {
     private String username;
     private UserInfo userInfo;
     private String email;
-    private char[] password;
+    private String password;
     private Integer points;
     private String status;
     private Sport sport;//sport12345
@@ -40,13 +40,14 @@ public class User {
         this.email = email;
     }
 
-    public char[] getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(char[] password) {
+    public void setPassword(String password) {
         this.password = password;
     }
+
 
     public Integer getPoints() {
         return points;
@@ -72,4 +73,9 @@ public class User {
         this.sport = sport;
     }
 
+
+    @Override
+    public String toString() {
+        return this.username;
+    }
 }
