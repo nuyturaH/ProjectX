@@ -11,48 +11,53 @@ import android.widget.Button;
 
 import com.har8yun.homeworks.projectx.R;
 
+import androidx.navigation.Navigation;
+
 
 public class LaunchFragment extends Fragment {
-
-    private Button signInButton;
-    private Button signUpButton;
+    //views
+    private Button mSignInButton;
+    private Button mSignUpButton;
 
     LaunchFragment.OnLaunchFragmentActionListener mOnLaunchFragmentActionListener;
 
 
     public LaunchFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_launch, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        signInButton = view.findViewById(R.id.btn_sign_in_launch);
-        signUpButton = view.findViewById(R.id.btn_sign_up_launch);
+        mSignInButton = view.findViewById(R.id.btn_sign_in_launch);
+        mSignUpButton = view.findViewById(R.id.btn_sign_up_launch);
 
 
-        signInButton.setOnClickListener(new View.OnClickListener() {
+        mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnLaunchFragmentActionListener != null) {
-                    mOnLaunchFragmentActionListener.onSignInButtonClicked();
-                }
+                Navigation.findNavController(v).navigate(R.id.action_launchFragment_to_signInFragment);
+
+//                if (mOnLaunchFragmentActionListener != null) {
+//                    mOnLaunchFragmentActionListener.onSignInButtonClicked();
+//                }
             }
         });
-        signUpButton.setOnClickListener(new View.OnClickListener() {
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnLaunchFragmentActionListener != null) {
-                    mOnLaunchFragmentActionListener.onSignUpButtonClicked();
-                }
+                Navigation.findNavController(v).navigate(R.id.action_launchFragment_to_signUpFragment);
+
+//                if (mOnLaunchFragmentActionListener != null) {
+//                    mOnLaunchFragmentActionListener.onSignUpButtonClicked();
+//                    Navigation.findNavController(v).navigate(R.id.fragment_sign_up);
+//                }
             }
         });
 

@@ -4,5 +4,6 @@
   <color name="colorPrimaryLight" tools:ignore="MissingDefaultResource">#F05545</color>
   <color name="colorPrimaryDark">#7F0000</color>
   <color name="colorPrimaryText">#FFFFFF</color>
+  <color name="lightGrey">#E0E0E0</color>
 
 </resources>

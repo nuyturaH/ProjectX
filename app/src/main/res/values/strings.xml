@@ -36,6 +36,11 @@
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="app_logo">APP LOGO</string>
     <string name="launch_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</string>
+    <string name="my_profile">My profile</string>
+    <string name="map">Map</string>
+    <string name="settings">Settings</string>
+    <string name="top_charts">Top charts</string>
+    <string name="search">Search</string>
 
 
 </resources>
