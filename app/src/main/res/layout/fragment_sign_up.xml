@@ -7,7 +7,7 @@
     android:background="@drawable/bg_gradient_layout"
     android:padding="18dp"
     android:clickable="true"
-    tools:context=".fragment.SignUpFragment"
+    tools:context=".fragment.launch.SignUpFragment"
     android:focusable="true">
 
     <android.support.constraint.ConstraintLayout

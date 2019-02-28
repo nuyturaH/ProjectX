@@ -25,13 +25,6 @@ public class MainActivity extends AppCompatActivity {
         public void onLoginButtonClicked() {
             //replaceFragment(...);   fragment which is set after SignIn
         }
-
-        @Override
-        public void onSuggestionSignUpClicked() {
-            signUpFragment = new SignUpFragment();
-            //TODO set ActionListener for SignUpFragment
-            addFragment(signUpFragment);
-        }
     };
 
     private LaunchFragment.OnLaunchFragmentActionListener mOnLaunchFragmentActionListener = new LaunchFragment.OnLaunchFragmentActionListener() {

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_bottom"
+    app:startDestination="@id/map_fragment">
+
+    <fragment
+        android:id="@+id/my_profile_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MyProfileFragment"
+        android:label="My profile"
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_my_profile_fragment_to_fragment_launch"
+            app:destination="@id/fragment_launch" />
+    </fragment>
+    <fragment
+        android:id="@+id/map_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/top_charts_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.TopChartsFragment"
+        android:label="Top charts"
+        tools:layout="@layout/fragment_top_charts" />
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/fragment_launch"
+        android:name="com.har8yun.homeworks.projectx.fragment.launch.LaunchFragment"
+        android:label=" "
+        tools:layout="@layout/fragment_launch">
+        <action
+            android:id="@+id/action_launch_fragment_to_sign_in_fragment"
+            app:destination="@id/fragment_sign_in"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+        <action
+            android:id="@+id/action_launch_fragment_to_sign_up_fragment"
+            app:destination="@id/fragment_sign_up"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_sign_up"
+        android:name="com.har8yun.homeworks.projectx.fragment.launch.SignUpFragment"
+        android:label=" "
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_fragment_sign_up_to_fragment_sign_in"
+            app:destination="@id/fragment_sign_in"
+            app:popUpTo="@id/fragment_launch"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+        <action
+            android:id="@+id/action_fragment_sign_up_to_map_fragment"
+            app:destination="@id/map_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_sign_in"
+        android:name="com.har8yun.homeworks.projectx.fragment.launch.SignInFragment"
+        android:label=" "
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_fragment_sign_in_to_fragment_sign_up"
+            app:destination="@id/fragment_sign_up"
+            app:popUpTo="@id/fragment_launch"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+        <action
+            android:id="@+id/action_fragment_sign_in_to_map_fragment"
+            app:destination="@id/map_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
+</navigation>

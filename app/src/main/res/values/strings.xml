@@ -17,25 +17,33 @@
     <string name="suggest_to_login">Already have an account? Log in!</string>
 
 
-    <!--Error messages-->
     <string name="username_content">Username can only contain letters and numbers (a–z, A–Z, 0–9)</string>
     <string name="username_length_long">Username cannot be longer then 20 symbols</string>
     <string name="username_length_short">Username cannot be shorter than 6 symbols</string>
-    <string name="username_enter">Please, enter your Username</string>
+    <string name="username_enter">Please, enter your username</string>
     <string name="username_existence">This username has existed</string>
 
-    <string name="email_enter">Please, enter your Email</string>
-    <string name="email_wrong">There is not such Email </string>
+    <string name="email_enter">Please, enter your email</string>
+    <string name="email_wrong">There is not such email </string>
 
-    <string name="password_enter">Please, enter your Password</string>
+    <string name="password_enter">Please, enter your password</string>
     <string name="password_length">Your password cannot be shorter than 6 symbols</string>
+    <string name="password_wrong">Password is wrong</string>
 
-    <string name="confirm_password_enter">Please, confirm your Password</string>
+    <string name="username_availability">There is not account with such username</string>
+
+    <string name="confirm_password_enter">Please, confirm your password</string>
     <string name="confirm_password_matching">It\'s not match with your password</string>
     <string name="suggest_to_sign_up">Don\'t have an account? Sign up!</string>
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="app_logo">APP LOGO</string>
     <string name="launch_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</string>
+    <string name="my_profile">My profile</string>
+    <string name="map">Map</string>
+    <string name="settings">Settings</string>
+    <string name="top_charts">Top charts</string>
+    <string name="search">Search</string>
+    <string name="log_out">Log out</string>
 
 
 </resources>
