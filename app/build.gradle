@@ -33,6 +33,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.6'
     implementation 'android.arch.navigation:navigation-fragment:1.0.0-rc01'
     implementation 'android.arch.navigation:navigation-ui:1.0.0-beta02'
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0-rc02'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0-rc02'
 }
 
 apply plugin: 'com.google.gms.google-services'

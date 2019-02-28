@@ -15,6 +15,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
@@ -43,6 +48,9 @@ public class SignUpFragment extends Fragment {
     //collections
     private List<User> mUserList = new ArrayList<>(); //in future it will be users list of database
 
+    //Firebase
+    private FirebaseAuth mFirebaseAuth;
+
     //constructor
     public SignUpFragment() {
 
@@ -59,6 +67,8 @@ public class SignUpFragment extends Fragment {
         setPasswordError();
         setConfirmPasswordError();
         addUserToList();
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         onClickNavigate(mSuggestionSignUp, R.id.action_fragment_sign_up_to_fragment_sign_in);
 
@@ -88,9 +98,9 @@ public class SignUpFragment extends Fragment {
                         User mUser = new User();
                         mUser.setUsername(mUsernameView.getText().toString());
                         mUser.setEmail(mEmailView.getText().toString());
-                        mUser.setPassword(mUsernameView.getText().toString().toCharArray());
-                        mUser.setUsername(mUsernameView.getText().toString());
+                        mUser.setPassword(mPasswordView.getText().toString());
                         mUserList.add(mUser);
+                        registerUserToFirebase(mUser); //add user to firebase
                         openAccount(v);
                     }
 
@@ -199,6 +209,43 @@ public class SignUpFragment extends Fragment {
         mConfirmPasswordView = v.findViewById(R.id.etv_confirm_password_sign_up);
         mSignUpButton = v.findViewById(R.id.btn_register_sign_up);
         mSuggestionSignUp = v.findViewById(R.id.tv_suggestion_sign_up);
+    }
+
+    private void registerUserToFirebase(User user) {
+
+        final User mUser = user;
+
+        mFirebaseAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+                .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        //checking if success
+                        if (task.isSuccessful()) {
+                            //registered
+                            FirebaseDatabase.getInstance()
+                                    .getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(mUser)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+
+                                                //Toast.makeText(getContext(), "User Added To Firebase",Toast.LENGTH_SHORT).show();
+
+                                            } else {
+                                                //Toast.makeText(getContext(), "User Not Added To Firebase",Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                        } else {
+                            //not registered
+                        }
+                    }
+                });
+
     }
 
 }

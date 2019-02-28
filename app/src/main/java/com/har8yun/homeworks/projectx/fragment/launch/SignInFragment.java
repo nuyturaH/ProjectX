@@ -4,6 +4,7 @@ package com.har8yun.homeworks.projectx.fragment.launch;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
@@ -39,6 +46,10 @@ public class SignInFragment extends Fragment {
     //collections
     private List<User> mUserList = new ArrayList<>(); // get this list from database
 
+    //Firebase
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabase;
+
     //constructor
     public SignInFragment() {
     }
@@ -52,6 +63,10 @@ public class SignInFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+
+        getUsersFromDatabase();
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         initViews(view);
 
@@ -83,8 +98,8 @@ public class SignInFragment extends Fragment {
 
     private boolean isValidUser() {
         for (int i = 0; i < mUserList.size(); i++) {
-            if (mUsernameView.getText().toString().equals(mUserList.get(i).getUsername())) {
-                if (mPasswordView.getText().toString().toCharArray().equals(mUserList.get(i).getPassword())){
+            if (mUsernameView.getText().toString().equals(mUserList.get(i).getEmail())) {
+                if (mPasswordView.getText().toString().equals(mUserList.get(i).getPassword())){
                     return true;
                 }
                 mPasswordView.setError(getResources().getString(R.string.password_wrong));
@@ -100,6 +115,31 @@ public class SignInFragment extends Fragment {
         mPasswordView = view.findViewById(R.id.etv_password_sign_in);
         mSignInButton = view.findViewById(R.id.btn_login_sign_in);
         mSuggestionSignIn = view.findViewById(R.id.tv_suggestion_sign_in);
+    }
+
+    public void getUsersFromDatabase()
+    {
+        mDatabase = FirebaseDatabase.getInstance().getReference("Users");
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                mUserList.clear();
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
+                {
+                    User mUser = userSnapshot.getValue(User.class);
+                    mUserList.add(mUser);
+                    Log.d("SignIn",mUserList.get(0).toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 }
