@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.Main2Activity">
+    tools:context=".activity.MainActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar3"
+        android:id="@+id/toolbar_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@null"
         android:elevation="4dp"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +26,13 @@
         app:navGraph="@navigation/main_graph" />
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
+        android:id="@+id/bottom_navigation_view_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="16dp"
-
         android:background="?android:attr/windowBackground"
+
+        android:visibility="visible"
+        app:elevation="16dp"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
