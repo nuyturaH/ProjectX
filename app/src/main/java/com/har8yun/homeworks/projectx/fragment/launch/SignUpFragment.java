@@ -1,6 +1,5 @@
 package com.har8yun.homeworks.projectx.fragment.launch;
 
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,11 +29,13 @@ import java.util.List;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import static com.har8yun.homeworks.projectx.fragment.launch.SignInFragment.DATABASE_PATH_NAME;
 import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
 
 
 public class SignUpFragment extends Fragment {
 
+    //shared preferences
     private SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
 
     //views
@@ -46,7 +47,7 @@ public class SignUpFragment extends Fragment {
     private TextView mSuggestionSignUp;
 
     //collections
-    private List<User> mUserList = new ArrayList<>(); //in future it will be users list of database
+    private List<User> mUserList = new ArrayList<>();
 
     //Firebase
     private FirebaseAuth mFirebaseAuth;
@@ -224,7 +225,7 @@ public class SignUpFragment extends Fragment {
                         if (task.isSuccessful()) {
                             //registered
                             FirebaseDatabase.getInstance()
-                                    .getReference("Users")
+                                    .getReference(DATABASE_PATH_NAME)
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(mUser)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -245,7 +246,6 @@ public class SignUpFragment extends Fragment {
                         }
                     }
                 });
-
     }
 
 }

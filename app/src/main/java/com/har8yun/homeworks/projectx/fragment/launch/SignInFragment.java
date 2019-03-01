@@ -1,6 +1,5 @@
 package com.har8yun.homeworks.projectx.fragment.launch;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -35,6 +34,7 @@ import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNaviga
 
 public class SignInFragment extends Fragment {
 
+    //shared preferences
     private SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
 
     //views
@@ -44,11 +44,12 @@ public class SignInFragment extends Fragment {
     private TextView mSuggestionSignIn;
 
     //collections
-    private List<User> mUserList = new ArrayList<>(); // get this list from database
+    private List<User> mUserList = new ArrayList<>();
 
     //Firebase
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
+    public static final String DATABASE_PATH_NAME = "Users";
 
     //constructor
     public SignInFragment() {
@@ -65,7 +66,6 @@ public class SignInFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
         getUsersFromDatabase();
-
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         initViews(view);
@@ -117,29 +117,23 @@ public class SignInFragment extends Fragment {
         mSuggestionSignIn = view.findViewById(R.id.tv_suggestion_sign_in);
     }
 
-    public void getUsersFromDatabase()
-    {
-        mDatabase = FirebaseDatabase.getInstance().getReference("Users");
-
+    public void getUsersFromDatabase() {
+        mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_NAME);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 mUserList.clear();
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
-                {
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User mUser = userSnapshot.getValue(User.class);
                     mUserList.add(mUser);
-                    Log.d("SignIn",mUserList.get(0).toString());
+                    Log.d("SignIn", mUserList.get(0).toString());
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
     }
 
 }

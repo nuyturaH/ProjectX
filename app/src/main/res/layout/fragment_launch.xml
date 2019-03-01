@@ -4,31 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="18dp"
     tools:context=".fragment.launch.LaunchFragment">
 
     <Button
         android:id="@+id/btn_sign_up_launch"
-        android:layout_width="0dp"
-        android:layout_height="74dp"
-        android:background="@drawable/bg_gradient_layout_button"
+        style="@style/btn_launch_style"
         android:text="@string/sign_up"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="32sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_sign_in_launch"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_sign_in_launch"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_gradient_layout_button"
+        style="@style/btn_launch_style"
         android:text="@string/sign_in"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="32sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btn_sign_up_launch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_sign_up_launch"
@@ -37,8 +26,8 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mv_launch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/tv_description_launch"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,12 +35,12 @@
         android:id="@+id/tv_appLogo3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
+        android:layout_marginTop="@dimen/logo_margin_top"
         android:fontFamily="@font/faster_one"
         android:text="@string/app_logo"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryLight"
-        android:textSize="80sp"
+        android:textSize="@dimen/test_logo_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -61,12 +50,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
-        android:elevation="3dp"
-        android:padding="12dp"
+        android:elevation="@dimen/description_elevation"
+        android:padding="@dimen/description_padding"
         android:text="@string/launch_description"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_sign_up_launch"
-        tools:layout_editor_absoluteX="93dp" />
+        android:textSize="@dimen/description_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_up_launch" />
 </android.support.constraint.ConstraintLayout>

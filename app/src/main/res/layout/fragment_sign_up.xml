@@ -14,7 +14,6 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:background="@drawable/bg_rounded_corners_layout"
         android:elevation="8dp"
         android:paddingStart="22dp"
@@ -22,6 +21,7 @@
         android:paddingEnd="22dp"
         android:paddingBottom="18dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_appLogo">
 
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_person_outline_grey"
-                android:drawablePadding="6dp"
+                android:drawablePadding="8dp"
                 android:foregroundTint="@color/colorPrimary"
                 android:hint="@string/username"
                 android:maxLength="20"
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_mail_outline_grey"
-                android:drawablePadding="6dp"
+                android:drawablePadding="8dp"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:maxLength="256" />
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_lock_outline_grey"
-                android:drawablePadding="6dp"
+                android:drawablePadding="8dp"
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:maxLength="256" />
@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_lock_outline_grey"
-                android:drawablePadding="6dp"
+                android:drawablePadding="8dp"
                 android:hint="@string/confirm_password"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
@@ -144,7 +144,7 @@
         android:text="@string/app_logo"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="80sp"
+        android:textSize="@dimen/test_logo_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

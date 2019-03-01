@@ -16,19 +16,18 @@ import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNaviga
 
 
 public class LaunchFragment extends Fragment {
+
     //views
     private Button mSignInButton;
     private Button mSignUpButton;
     private BottomNavigationView mBottomNavigationView;
     private Toolbar mToolbar;
 
-
-
     //constructor
     public LaunchFragment() {
     }
 
-    //**************************************LIFECYCLE METHODS ********************************************
+    //************************************* LIFECYCLE METHODS **************************************
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_launch, container, false);
@@ -42,7 +41,7 @@ public class LaunchFragment extends Fragment {
         return view;
     }
 
-    //************************************** METHODS ********************************************
+    //**************************************** METHODS *********************************************
     private void changeDesignStyle() {
         mBottomNavigationView.setVisibility(View.INVISIBLE);
         mToolbar.setBackground(null);

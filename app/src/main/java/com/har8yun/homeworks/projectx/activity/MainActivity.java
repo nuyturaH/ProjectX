@@ -20,7 +20,10 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
+    //navigation
     private NavController mNavController;
+
+    //shared preferences
     private SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
 
     //views

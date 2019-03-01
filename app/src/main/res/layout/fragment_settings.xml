@@ -7,7 +7,6 @@
     android:background="@color/lightGrey"
     tools:context=".fragment.bottomNavigation.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <TextView
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         android:elevation="4dp"
         android:text="@string/settings"
         android:textAlignment="center"
-        android:textSize="36sp"
+        android:textSize="@dimen/test_title_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

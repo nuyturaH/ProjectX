@@ -1,6 +1,4 @@
 <resources>
-
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -9,7 +7,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
 
-
         <item name="colorControlNormal">#c5c5c5</item>
         <item name="colorControlActivated">#616161</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
@@ -17,12 +14,19 @@
 
 
     <style name="btn_style" parent="TextAppearance.AppCompat">
-
         <item name="android:clickable">true</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@drawable/bg_rounded_corners_layout</item>
- 
+    </style>
 
+    <style name="btn_launch_style" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/launch_button_layout_height</item>
+        <item name="android:background">@drawable/bg_gradient_layout_button</item>
+        <item name="android:text">@string/button</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

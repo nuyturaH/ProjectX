@@ -20,7 +20,7 @@
         android:text="@string/app_logo"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="80sp"
+        android:textSize="@dimen/test_logo_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
