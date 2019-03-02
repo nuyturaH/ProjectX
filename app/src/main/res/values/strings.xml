@@ -44,7 +44,9 @@
     <string name="search">Search</string>
     <string name="log_out">Log out</string>
     <string name="button">Button</string>
-
+    <string name="chats">Chats</string>
+    <string name="top_10">Top-10</string>
+    <string name="me">Me</string>
 
 
 </resources>

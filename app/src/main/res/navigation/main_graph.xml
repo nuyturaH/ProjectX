@@ -79,4 +79,9 @@
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right" />
     </fragment>
+    <fragment
+        android:id="@+id/chats_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.ChatsFragment"
+        android:label="Chats"
+        tools:layout="@layout/fragment_chats" />
 </navigation>

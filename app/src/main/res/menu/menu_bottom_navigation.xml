@@ -6,7 +6,11 @@
     <item
         android:id="@+id/my_profile_fragment"
         android:icon="@drawable/ic_account_circle_white"
-        android:title="@string/my_profile" />
+        android:title="@string/me" />
+    <item
+        android:id="@+id/chats_fragment"
+        android:icon="@drawable/ic_chat_white"
+        android:title="@string/chats" />
     <item
         android:id="@+id/map_fragment"
         android:icon="@drawable/ic_map_white"
@@ -14,7 +18,7 @@
     <item
         android:id="@+id/top_charts_fragment"
         android:icon="@drawable/ic_trophy_white"
-        android:title="@string/top_charts"
+        android:title="@string/top_10"
         />
     <item
         android:id="@+id/settings_fragment"

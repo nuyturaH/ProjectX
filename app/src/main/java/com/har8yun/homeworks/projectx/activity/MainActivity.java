@@ -1,6 +1,8 @@
 package com.har8yun.homeworks.projectx.activity;
 
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     //views
     private BottomNavigationView mBottomNavigationView;
     private Toolbar mToolbar;
+    private Toolbar mToolbar1;
+    private Toolbar mToolbar2;
     private Fragment mNavHostFragment;
 
     //**************************************LIFECYCLE METHODS ********************************************
@@ -45,41 +50,50 @@ public class MainActivity extends AppCompatActivity {
             NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.fragment_launch,null,navOptions);
         }
 
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_map, menu);
-        return true;
-    }
+
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_map, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         NavigationUI.onNavDestinationSelected(item, mNavController);
-        NavigationUI.setupActionBarWithNavController(this, mNavController);
+        //NavigationUI.setupActionBarWithNavController(this, mNavController);
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavHostFragment.findNavController(mNavHostFragment).navigateUp();
-        return super.onSupportNavigateUp();
-    }
+//    @Override
+//    public boolean onSupportNavigateUp() {
+//        NavHostFragment.findNavController(mNavHostFragment).navigateUp();
+//        return super.onSupportNavigateUp();
+//    }
 
     //************************************** METHODS ********************************************
     private void setNavigationComponent() {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        setSupportActionBar(mToolbar);
-        NavigationUI.setupActionBarWithNavController(this, mNavController);
+//        setSupportActionBar(mToolbar2);
+//        setSupportActionBar(mToolbar);
+//        setSupportActionBar(mToolbar);
+//        NavigationUI.setupActionBarWithNavController(this, mNavController);
         NavigationUI.setupWithNavController(mBottomNavigationView, mNavController);
+//        NavigationUI.setupWithNavController(mToolbar1, mNavController);
+//        NavigationUI.setupWithNavController(mToolbar2, mNavController);
     }
 
     private void initViews() {
         mToolbar = findViewById(R.id.toolbar_main);
+        mToolbar1 = findViewById(R.id.toolbar);
+        //mToolbar2 = findViewById(R.id.toolbar2);
         mBottomNavigationView = findViewById(R.id.bottom_navigation_view_main);
         mNavHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
     }
+
+
 
 }

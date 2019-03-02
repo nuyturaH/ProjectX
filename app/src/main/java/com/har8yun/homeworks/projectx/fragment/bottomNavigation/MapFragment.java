@@ -11,12 +11,20 @@ import android.view.ViewGroup;
 
 import com.har8yun.homeworks.projectx.R;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
+
 
 public class MapFragment extends Fragment {
 
     //views
     private BottomNavigationView mBottomNavigationView;
     private Toolbar mToolbar;
+    private Toolbar mToolbarMap;
+
+    //navigation
+    private NavController mNavController;
 
     //constructor
     public MapFragment() {
@@ -30,7 +38,11 @@ public class MapFragment extends Fragment {
 
         initViews(view);
 
-        changeDesignStyle();
+        //changeDesignStyle();
+
+        mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+
+        NavigationUI.setupWithNavController(mToolbarMap, mNavController);
 
         return view;
     }
@@ -44,6 +56,7 @@ public class MapFragment extends Fragment {
     private void initViews(View v) {
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
         mToolbar = getActivity().findViewById(R.id.toolbar_main);
+        mToolbarMap = v.findViewById(R.id.toolbar_map);
     }
 
 

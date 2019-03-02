@@ -33,7 +33,7 @@ public class LaunchFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_launch, container, false);
 
         initViews(view);
-        changeDesignStyle();
+        //changeDesignStyle();
 
         onClickNavigate(mSignInButton, R.id.action_launch_fragment_to_sign_in_fragment);
         onClickNavigate(mSignUpButton, R.id.action_launch_fragment_to_sign_up_fragment);
