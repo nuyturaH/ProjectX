@@ -20,7 +20,6 @@ public class MapFragment extends Fragment {
 
     //views
     private BottomNavigationView mBottomNavigationView;
-    private Toolbar mToolbar;
     private Toolbar mToolbarMap;
 
     //navigation
@@ -37,25 +36,25 @@ public class MapFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         initViews(view);
-
-        //changeDesignStyle();
-
-        mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-
-        NavigationUI.setupWithNavController(mToolbarMap, mNavController);
+        hideBotNavBar();
+        setNavigationComponent();
 
         return view;
     }
 
+
     //************************************** METHODS ********************************************
-    private void changeDesignStyle() {
+    private void setNavigationComponent() {
+        mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(mToolbarMap, mNavController);
+    }
+
+    private void hideBotNavBar() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
-        mToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
     }
 
     private void initViews(View v) {
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
-        mToolbar = getActivity().findViewById(R.id.toolbar_main);
         mToolbarMap = v.findViewById(R.id.toolbar_map);
     }
 

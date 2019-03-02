@@ -92,7 +92,7 @@ public class SignInFragment extends Fragment {
     //************************************** METHODS ********************************************
     private void openAccount(View v) {
         sharedPreferences.setLoggedIn(getActivity(), true);
-        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.fragment_launch, true).build();
+        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.menu_item_log_out, true).build();
         Navigation.findNavController(v).navigate(R.id.action_fragment_sign_in_to_map_fragment,null,navOptions);
     }
 

@@ -8,6 +8,16 @@
     tools:context=".fragment.bottomNavigation.TopChartsFragment">
 
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_top_charts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

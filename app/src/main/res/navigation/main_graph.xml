@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_my_profile" >
         <action
             android:id="@+id/action_my_profile_fragment_to_fragment_launch"
-            app:destination="@id/fragment_launch" />
+            app:destination="@id/menu_item_log_out" />
     </fragment>
     <fragment
         android:id="@+id/map_fragment"
@@ -30,7 +30,7 @@
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/fragment_launch"
+        android:id="@+id/menu_item_log_out"
         android:name="com.har8yun.homeworks.projectx.fragment.launch.LaunchFragment"
         android:label=" "
         tools:layout="@layout/fragment_launch">
@@ -53,7 +53,7 @@
         <action
             android:id="@+id/action_fragment_sign_up_to_fragment_sign_in"
             app:destination="@id/fragment_sign_in"
-            app:popUpTo="@id/fragment_launch"
+            app:popUpTo="@id/menu_item_log_out"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right" />
         <action
@@ -70,7 +70,7 @@
         <action
             android:id="@+id/action_fragment_sign_in_to_fragment_sign_up"
             app:destination="@id/fragment_sign_up"
-            app:popUpTo="@id/fragment_launch"
+            app:popUpTo="@id/menu_item_log_out"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right" />
         <action

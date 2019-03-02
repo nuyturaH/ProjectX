@@ -26,56 +26,46 @@ public class SettingsFragment extends Fragment {
     //navigation
     private NavController mNavController;
 
-
+    //views
     private Toolbar mToolbarSettings;
 
+    //constructor
     public SettingsFragment() {
     }
 
 
+    //************************************ LIFECYCLE METHODS ****************************************
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        setHasOptionsMenu(true);
-        mToolbarSettings = view.findViewById(R.id.toolbar_settings);
-        mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-//        AppCompatActivity activity = (AppCompatActivity) getActivity();
-//        activity.setSupportActionBar(mToolbarSettings);
+        initViews(view);
+        setSettingsToolbar();
 
-        NavigationUI.setupWithNavController(mToolbarSettings, mNavController);
+        setNavigationComponent();
 
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_settings, menu);
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Log.e("hhhh","home");
-                mNavController.popBackStack();
-                return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+    //************************************** METHODS ********************************************
+    private void initViews(View view) {
+        mToolbarSettings = view.findViewById(R.id.toolbar_settings);
     }
 
+    private void setNavigationComponent() {
+        mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(mToolbarSettings, mNavController);
+    }
 
-
-
-
-
-
+    private void setSettingsToolbar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbarSettings);
+        setHasOptionsMenu(true);
+    }
 }

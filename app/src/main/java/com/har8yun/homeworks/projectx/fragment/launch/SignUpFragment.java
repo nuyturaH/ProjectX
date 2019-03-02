@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -198,7 +197,7 @@ public class SignUpFragment extends Fragment {
 
     private void openAccount(View v) {
         sharedPreferences.setLoggedIn(getActivity(), true);
-        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.fragment_launch, true).build();
+        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.menu_item_log_out, true).build();
         Navigation.findNavController(v).navigate(R.id.action_fragment_sign_up_to_map_fragment,null,navOptions);
     }
 
