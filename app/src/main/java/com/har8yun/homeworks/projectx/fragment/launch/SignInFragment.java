@@ -112,17 +112,6 @@ public class SignInFragment extends Fragment {
 
     private boolean isValidUser() {
 
-//        for (int i = 0; i < mUserList.size(); i++) {
-//            if (mUsernameView.getText().toString().equals(mUserList.get(i).getEmail())) {
-//                if (mPasswordView.getText().toString().equals(mUserList.get(i).getPassword())){
-//                    return true;
-//                }
-//                mPasswordView.setError(getResources().getString(R.string.password_wrong));
-//                return false;
-//            }
-//        }
-//        mUsernameView.setError(getResources().getString(R.string.username_availability));
-//        return false;
         mFirebaseAuth.signInWithEmailAndPassword(mUsernameView.getText().toString(),mPasswordView.getText().toString())
                 .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
