@@ -3,10 +3,12 @@ package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,9 +39,10 @@ public class MyProfileFragment extends Fragment {
     private NavController mNavController;
 
     //views
-    private Button mLogOutButton;
     private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private FloatingActionButton mEditButton;
+    private TextView mFullnameView;
 
 
     //constructor
@@ -52,18 +56,24 @@ public class MyProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
         initViews(view);
+
+
         setMyProfileToolbar();
         setNavigationComponent();
 
-        //View listeners
-        mLogOutButton.setOnClickListener(new View.OnClickListener() {
+
+
+        mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.map_fragment, true).build();
-                Navigation.findNavController(v).navigate(R.id.action_my_profile_fragment_to_fragment_launch,null, navOptions);
-                sharedPreferences.setLoggedIn(getActivity(),false);
+                Bundle bundle = new Bundle();
+
+//                Log.e("hhhh","toolbar title "+ mToolbar.getTitle());
+                bundle.putString("username", mFullnameView.getText().toString());
+                Navigation.findNavController(v).navigate(R.id.action_my_profile_fragment_to_my_profile_edit_fragment,bundle);
             }
         });
+
         return view;
     }
 
@@ -99,9 +109,15 @@ public class MyProfileFragment extends Fragment {
     }
 
     private void initViews(View view) {
-        mLogOutButton = view.findViewById(R.id.btn_log_out_my_profile);
-        mToolbar = view.findViewById(R.id.toolbar);
-        mCollapsingToolbarLayout = view.findViewById(R.id.aaa);
+        mToolbar = view.findViewById(R.id.toolbar_my_profile);
+        mCollapsingToolbarLayout = view.findViewById(R.id.ctl_my_profile);
+        mEditButton = view.findViewById(R.id.fab_edit_my_profile);
+        mFullnameView = view.findViewById(R.id.tv_full_name_my_profile);
+
+        if (getArguments() != null){
+            mFullnameView.setText(getArguments().getString("username2"));
+        }
+
     }
 
     private void logOut() {
@@ -112,7 +128,6 @@ public class MyProfileFragment extends Fragment {
 
         FirebaseAuth.getInstance().signOut();
         Toast.makeText(getContext(),"Signed Out",Toast.LENGTH_SHORT).show();
-
     }
 
 }

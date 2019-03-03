@@ -13,7 +13,10 @@ import com.har8yun.homeworks.projectx.R;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import static com.google.android.gms.common.util.CollectionUtils.setOf;
 
 
 public class MapFragment extends Fragment {
@@ -36,8 +39,11 @@ public class MapFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         initViews(view);
-        hideBotNavBar();
+        showBotNavBar();
         setNavigationComponent();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.map_fragment, R.id.settings_fragment)).build();
+
+
 
         return view;
     }
@@ -49,7 +55,7 @@ public class MapFragment extends Fragment {
         NavigationUI.setupWithNavController(mToolbarMap, mNavController);
     }
 
-    private void hideBotNavBar() {
+    private void showBotNavBar() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
     }
 

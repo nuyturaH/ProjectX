@@ -13,7 +13,10 @@ import com.har8yun.homeworks.projectx.R;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import static com.google.android.gms.common.util.CollectionUtils.setOf;
 
 
 public class TopChartsFragment extends Fragment {
@@ -54,7 +57,8 @@ public class TopChartsFragment extends Fragment {
 
     private void setNavigationComponent() {
         mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(mToolbarTopCharts, mNavController);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.top_charts_fragment)).build();
+        NavigationUI.setupWithNavController(mToolbarTopCharts, mNavController, appBarConfiguration);
     }
 
 }

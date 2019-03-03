@@ -8,11 +8,18 @@
     <fragment
         android:id="@+id/my_profile_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MyProfileFragment"
-        android:label="My profile"
-        tools:layout="@layout/fragment_my_profile" >
+        android:label="nickname"
+        tools:layout="@layout/fragment_my_profile">
         <action
             android:id="@+id/action_my_profile_fragment_to_fragment_launch"
             app:destination="@id/menu_item_log_out" />
+        <action
+            android:id="@+id/action_my_profile_fragment_to_my_profile_edit_fragment"
+            app:destination="@id/my_profile_edit_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+        <argument android:name="argUsername"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/map_fragment"
@@ -84,4 +91,16 @@
         android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.ChatsFragment"
         android:label="Chats"
         tools:layout="@layout/fragment_chats" />
+    <fragment
+        android:id="@+id/my_profile_edit_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.MyProfileEditFragment"
+        android:label="Edit"
+        tools:layout="@layout/fragment_my_profile_edit" >
+        <action
+            android:id="@+id/action_my_profile_edit_fragment_to_my_profile_fragment"
+            app:destination="@id/my_profile_fragment" />
+        <argument
+            android:name="argUsernameEdited"
+            app:argType="string" />
+    </fragment>
 </navigation>

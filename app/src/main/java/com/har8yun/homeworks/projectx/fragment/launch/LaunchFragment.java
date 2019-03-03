@@ -41,7 +41,7 @@ public class LaunchFragment extends Fragment {
 
     //**************************************** METHODS *********************************************
     private void changeDesignStyle() {
-        mBottomNavigationView.setVisibility(View.INVISIBLE);
+        mBottomNavigationView.setVisibility(View.GONE);
     }
 
     private void initViews(View v) {

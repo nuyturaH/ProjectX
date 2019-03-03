@@ -10,7 +10,10 @@
         <item name="colorControlNormal">#c5c5c5</item>
         <item name="colorControlActivated">#616161</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
+
+
     </style>
+
 
 
     <style name="btn_style" parent="TextAppearance.AppCompat">
@@ -28,5 +31,11 @@
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="collapsing_toolbar_expanded" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+
 
 </resources>

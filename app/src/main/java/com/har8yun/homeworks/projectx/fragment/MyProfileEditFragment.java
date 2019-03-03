@@ -59,6 +59,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
+
 
 public class MyProfileEditFragment extends Fragment {
 
@@ -116,7 +119,8 @@ public class MyProfileEditFragment extends Fragment {
         userInfo.setGender(0);
         user.setUserInfo(userInfo);
         user.setEmail("test@gmail.com");
-        user.setUsername("TEST111");
+        //user.setUsername("TEST111");
+        user.setUsername(getArguments().getString("username"));
 
         mUser = user;
 
@@ -155,6 +159,8 @@ public class MyProfileEditFragment extends Fragment {
                 showPictureDialog();
             }
         });
+
+
 
         return view;
 
@@ -326,6 +332,13 @@ public class MyProfileEditFragment extends Fragment {
                     if (!mConfirmPasswordView.getText().toString().equals(mPasswordView.getText().toString())) {
                         mConfirmPasswordView.setError(getResources().getString(R.string.confirm_password_matching));
                     } else {
+
+                        //giving changed fields to MyProfileFragment
+                        Bundle bundle = new Bundle();
+                        bundle.putString("username2",mUsernameView.getText().toString());
+                        Navigation.findNavController(v).navigate(R.id.action_my_profile_edit_fragment_to_my_profile_fragment,bundle);
+                        //==========================================
+
 
                         mUser.setUsername(mUsernameView.getText().toString());
 

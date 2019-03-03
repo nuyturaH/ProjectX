@@ -18,7 +18,10 @@ import com.har8yun.homeworks.projectx.R;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import static com.google.android.gms.common.util.CollectionUtils.setOf;
 
 
 public class SettingsFragment extends Fragment {
@@ -60,7 +63,8 @@ public class SettingsFragment extends Fragment {
 
     private void setNavigationComponent() {
         mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(mToolbarSettings, mNavController);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.settings_fragment)).build();
+        NavigationUI.setupWithNavController(mToolbarSettings, mNavController, appBarConfiguration);
     }
 
     private void setSettingsToolbar() {

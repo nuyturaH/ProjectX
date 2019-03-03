@@ -14,7 +14,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import static com.google.android.gms.common.util.CollectionUtils.setOf;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         setNavigationComponent();
+
+
 
         if (!sharedPreferences.getLoggedStatus(this)){
             NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.map_fragment, true).build();
