@@ -1,5 +1,7 @@
 package com.har8yun.homeworks.projectx.fragment.launch;
 
+
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +49,9 @@ public class SignUpFragment extends Fragment {
     private Button mSignUpButton;
     private TextView mSuggestionSignUp;
 
+    //Dialog
+    ProgressDialog mProgressDialog;
+
     //collections
     private List<User> mUserList = new ArrayList<>();
 
@@ -60,6 +67,8 @@ public class SignUpFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+
+        mProgressDialog = new ProgressDialog(this.getActivity());
 
         initViews(view);
         setUsernameErrors();
@@ -98,8 +107,11 @@ public class SignUpFragment extends Fragment {
                         User mUser = new User();
                         mUser.setUsername(mUsernameView.getText().toString());
                         mUser.setEmail(mEmailView.getText().toString());
-                        mUser.setPassword(mPasswordView.getText().toString());
                         mUserList.add(mUser);
+
+                        mProgressDialog.setMessage("Creating account ...");
+                        mProgressDialog.show();
+
                         registerUserToFirebase(mUser); //add user to firebase
                         openAccount(v);
                     }
@@ -215,11 +227,12 @@ public class SignUpFragment extends Fragment {
 
         final User mUser = user;
 
-        mFirebaseAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+        mFirebaseAuth.createUserWithEmailAndPassword(user.getEmail(),mPasswordView.getText().toString())
                 .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
+                        mProgressDialog.dismiss();
                         //checking if success
                         if (task.isSuccessful()) {
                             //registered
@@ -241,6 +254,8 @@ public class SignUpFragment extends Fragment {
                                     });
 
                         } else {
+                            String s = task.getException().getMessage();
+                            Toast.makeText(getActivity(), ""+s, Toast.LENGTH_SHORT).show();
                             //not registered
                         }
                     }

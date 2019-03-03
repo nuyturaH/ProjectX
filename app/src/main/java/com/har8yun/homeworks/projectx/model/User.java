@@ -7,7 +7,7 @@ public class User {
     private String username;
     private UserInfo userInfo;
     private String email;
-    private String password;
+    //private String password;
     private Integer points;
     private String status;
     private Sport sport;//sport12345
@@ -40,13 +40,13 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
 
 
     public Integer getPoints() {

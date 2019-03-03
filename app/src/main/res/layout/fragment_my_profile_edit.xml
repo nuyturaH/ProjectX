@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.MyProfileEditFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/iv_avatar_my_profile_edit"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_username_my_profile_edit"
+        android:layout_width="202dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/iv_avatar_my_profile_edit"
+        app:layout_constraintTop_toTopOf="@id/iv_avatar_my_profile_edit">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etv_username_my_profile_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_person_outline_grey"
+            android:drawablePadding="6dp"
+            android:foregroundTint="@color/colorPrimary"
+            android:hint="@string/username"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:textColorHint="@color/colorPrimaryText" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_first_name_my_profile_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_avatar_my_profile_edit"
+        app:layout_constraintTop_toBottomOf="@id/til_username_my_profile_edit">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etv_first_name_my_profile_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_person_outline_grey"
+            android:drawablePadding="6dp"
+            android:foregroundTint="@color/colorPrimary"
+            android:hint="First Name"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:textColorHint="@color/colorPrimaryText" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_last_name_my_profile_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_avatar_my_profile_edit"
+        app:layout_constraintTop_toBottomOf="@id/til_first_name_my_profile_edit">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etv_last_name_my_profile_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_person_outline_grey"
+            android:drawablePadding="6dp"
+            android:foregroundTint="@color/colorPrimary"
+            android:hint="Last Name"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:textColorHint="@color/colorPrimaryText" />
+    </android.support.design.widget.TextInputLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_gender_my_profile_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/til_last_name_my_profile_edit"
+        app:layout_constraintStart_toStartOf="@id/til_last_name_my_profile_edit">
+
+        <RadioButton
+            android:id="@+id/rb_male_my_profile_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/male" />
+
+        <RadioButton
+            android:id="@+id/rb_female_my_profile_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/female" />
+
+    </RadioGroup>
+
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:id="@+id/tv_change_password_my_profile_edit"
+        app:layout_constraintStart_toEndOf="@id/iv_avatar_my_profile_edit"
+        app:layout_constraintTop_toBottomOf="@id/rg_gender_my_profile_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Change Password"
+        android:layout_marginTop="4dp"
+        android:textSize="20sp"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_password_my_profile_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@id/til_last_name_my_profile_edit"
+        app:layout_constraintStart_toEndOf="@id/iv_avatar_my_profile_edit"
+        app:layout_constraintTop_toBottomOf="@+id/rg_gender_my_profile_edit"
+        android:visibility="invisible">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etv_password_my_profile_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_lock_outline_grey"
+            android:drawablePadding="6dp"
+            android:hint="@string/new_password"
+            android:inputType="textPassword"
+            android:maxLength="256" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_confirm_password_my_profile_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintEnd_toEndOf="@id/til_username_my_profile_edit"
+        app:layout_constraintStart_toEndOf="@id/iv_avatar_my_profile_edit"
+        app:layout_constraintTop_toBottomOf="@+id/til_password_my_profile_edit"
+        android:visibility="invisible">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etv_confirm_password_my_profile_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_lock_outline_grey"
+            android:drawablePadding="6dp"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_confirm_password_change_my_profile_edit"
+        app:layout_constraintTop_toBottomOf="@id/til_confirm_password_my_profile_edit"
+        app:layout_constraintStart_toStartOf="@id/til_confirm_password_my_profile_edit"
+        android:text="Done"
+        android:visibility="invisible"/>
+
+    <!--<TextView-->
+        <!--android:id="@+id/tv_weight_my_profile_edit"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/btn_confirm_password_change_my_profile_edit"-->
+        <!--app:layout_constraintStart_toStartOf="@id/btn_confirm_password_change_my_profile_edit"-->
+        <!--android:text="@string/weight"-->
+        <!--android:textSize="15sp"/>-->
+
+    <!--<Spinner-->
+        <!--android:id="@+id/sp_weight_my_profile_edit"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/tv_weight_my_profile_edit"-->
+        <!--app:layout_constraintStart_toStartOf="@id/tv_weight_my_profile_edit"-->
+        <!--android:prompt="@string/weight"-->
+        <!--/>-->
+    <!--<TextView-->
+        <!--android:id="@+id/tv_height_my_profile_edit"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/btn_confirm_password_change_my_profile_edit"-->
+        <!--app:layout_constraintStart_toEndOf="@id/tv_weight_my_profile_edit"-->
+        <!--android:text="@string/height"-->
+        <!--android:textSize="15sp"-->
+        <!--android:layout_marginStart="50dp"/>-->
+    <!--<Spinner-->
+    <!--android:id="@+id/sp_height_my_profile_edit"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:layout_constraintTop_toBottomOf="@id/tv_height_my_profile_edit"-->
+    <!--app:layout_constraintStart_toStartOf="@id/tv_height_my_profile_edit"-->
+    <!--android:prompt="@string/height"-->
+    <!--/>-->
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_weight_my_profile_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_avatar_my_profile_edit"
+        app:layout_constraintTop_toBottomOf="@id/btn_confirm_password_change_my_profile_edit">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etv_weight_my_profile_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_person_outline_grey"
+            android:drawablePadding="6dp"
+            android:foregroundTint="@color/colorPrimary"
+            android:hint="@string/weight"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:textColorHint="@color/colorPrimaryText" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_height_my_profile_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_avatar_my_profile_edit"
+        app:layout_constraintTop_toBottomOf="@id/til_weight_my_profile_edit">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etv_height_my_profile_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_person_outline_grey"
+            android:drawablePadding="6dp"
+            android:foregroundTint="@color/colorPrimary"
+            android:hint="@string/height"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:textColorHint="@color/colorPrimaryText" />
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/tv_birth_date_my_profile_edit"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/til_height_my_profile_edit"
+    android:text="Birth Date"
+    android:textSize="20sp"
+    android:layout_marginTop="20dp"/>
+
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_save_my_profile_edit"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_avatar_my_profile_edit"/>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,5 +1,7 @@
 package com.har8yun.homeworks.projectx.fragment.launch;
 
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,6 +48,9 @@ public class SignInFragment extends Fragment {
     private Button mSignInButton;
     private TextView mSuggestionSignIn;
 
+    //Dialog
+    ProgressDialog mProgressDialog;
+
     //collections
     private List<User> mUserList = new ArrayList<>();
 
@@ -67,6 +75,7 @@ public class SignInFragment extends Fragment {
 
         getUsersFromDatabase();
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mProgressDialog = new ProgressDialog(this.getActivity());
 
         initViews(view);
 
@@ -75,6 +84,9 @@ public class SignInFragment extends Fragment {
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mProgressDialog.setMessage("Logging In...");
+                mProgressDialog.show();
+
                 if (mUsernameView.getText().length() == 0) {
                     mUsernameView.setError(getResources().getString(R.string.username_enter));
                 }else if (mPasswordView.getText().length() == 0) {
@@ -96,18 +108,38 @@ public class SignInFragment extends Fragment {
         Navigation.findNavController(v).navigate(R.id.action_fragment_sign_in_to_map_fragment,null,navOptions);
     }
 
+    private boolean signInResult;
+
     private boolean isValidUser() {
-        for (int i = 0; i < mUserList.size(); i++) {
-            if (mUsernameView.getText().toString().equals(mUserList.get(i).getEmail())) {
-                if (mPasswordView.getText().toString().equals(mUserList.get(i).getPassword())){
-                    return true;
-                }
-                mPasswordView.setError(getResources().getString(R.string.password_wrong));
-                return false;
-            }
-        }
-        mUsernameView.setError(getResources().getString(R.string.username_availability));
-        return false;
+
+//        for (int i = 0; i < mUserList.size(); i++) {
+//            if (mUsernameView.getText().toString().equals(mUserList.get(i).getEmail())) {
+//                if (mPasswordView.getText().toString().equals(mUserList.get(i).getPassword())){
+//                    return true;
+//                }
+//                mPasswordView.setError(getResources().getString(R.string.password_wrong));
+//                return false;
+//            }
+//        }
+//        mUsernameView.setError(getResources().getString(R.string.username_availability));
+//        return false;
+        mFirebaseAuth.signInWithEmailAndPassword(mUsernameView.getText().toString(),mPasswordView.getText().toString())
+                .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        mProgressDialog.dismiss();
+                        if(task.isSuccessful())
+                        {
+                            //login
+                            signInResult = true;
+                        }
+                        else {
+                            mPasswordView.setError("Wrong Username or Password");
+                            signInResult = false;
+                        }
+                    }
+                });
+        return signInResult;
     }
 
     private void initViews(View view) {

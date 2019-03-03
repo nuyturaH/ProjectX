@@ -14,7 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
@@ -55,12 +57,12 @@ public class MyProfileFragment extends Fragment {
 
         //View listeners
         mLogOutButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.map_fragment, true).build();
-               Navigation.findNavController(v).navigate(R.id.action_my_profile_fragment_to_fragment_launch,null, navOptions);
-               sharedPreferences.setLoggedIn(getActivity(),false);
-           }
+            @Override
+            public void onClick(View v) {
+                NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.map_fragment, true).build();
+                Navigation.findNavController(v).navigate(R.id.action_my_profile_fragment_to_fragment_launch,null, navOptions);
+                sharedPreferences.setLoggedIn(getActivity(),false);
+            }
         });
         return view;
     }
@@ -107,6 +109,10 @@ public class MyProfileFragment extends Fragment {
         Fragment mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.menu_item_log_out, null, navOptions);
         sharedPreferences.setLoggedIn(getActivity(),false);
+
+        FirebaseAuth.getInstance().signOut();
+        Toast.makeText(getContext(),"Signed Out",Toast.LENGTH_SHORT).show();
+
     }
 
 }

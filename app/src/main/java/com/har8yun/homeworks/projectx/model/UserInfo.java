@@ -1,15 +1,25 @@
 package com.har8yun.homeworks.projectx.model;
 
+import android.net.Uri;
+
 import java.util.Date;
 
 public class UserInfo {
     private String firstName;
     private String lastName;
-    private String avatar;
+    private Uri avatar;
     private Date birthDate;
     private Integer gender;
     private Float weight;
     private Float height;
+
+    public Uri getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Uri avatar) {
+        this.avatar = avatar;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -27,13 +37,13 @@ public class UserInfo {
         this.lastName = lastName;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+//    public String getAvatar() {
+//        return avatar;
+//    }
+//
+//    public void setAvatar(String avatar) {
+//        this.avatar = avatar;
+//    }
 
     public Date getBirthDate() {
         return birthDate;

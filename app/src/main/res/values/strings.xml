@@ -47,5 +47,11 @@
     <string name="chats">Chats</string>
     <string name="top_10">Top-10</string>
     <string name="me">Me</string>
+    <string name="new_password">New Password</string>
+    <string name="weight">Weight</string>
+    <string name="height">Height</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+
 
 </resources>
