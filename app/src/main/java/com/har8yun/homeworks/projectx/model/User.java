@@ -82,6 +82,9 @@ public class User implements Parcelable {
         return this.mUsername;
     }
 
+    public User() {
+    }
+
     private User(Parcel in) {
 //        id = in.readLong();
         mSport = in.readParcelable(Sport.class.getClassLoader());

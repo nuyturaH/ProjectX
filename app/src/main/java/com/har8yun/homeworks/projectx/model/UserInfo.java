@@ -15,7 +15,10 @@ public class UserInfo implements Parcelable {
     private Float weight;
     private Float height;
 
-    protected UserInfo(Parcel in) {
+    public UserInfo() {
+    }
+
+    private UserInfo(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
         avatar = in.readParcelable(Uri.class.getClassLoader());
