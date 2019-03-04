@@ -51,6 +51,9 @@ public class SignInFragment extends Fragment {
     //Dialog
     ProgressDialog mProgressDialog;
 
+    //user
+    private User mCurrentUser;
+
     //collections
     private List<User> mUserList = new ArrayList<>();
 
@@ -104,6 +107,8 @@ public class SignInFragment extends Fragment {
     //************************************** METHODS ********************************************
     private void openAccount(View v) {
         sharedPreferences.setLoggedIn(getActivity(), true);
+        Bundle bundle = new Bundle();
+//        bundle.putParcelable("currentObject", mCurrentUser);
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.menu_item_log_out, true).build();
         Navigation.findNavController(v).navigate(R.id.action_fragment_sign_in_to_map_fragment,null,navOptions);
     }
@@ -111,14 +116,12 @@ public class SignInFragment extends Fragment {
     private boolean signInResult;
 
     private boolean isValidUser() {
-
         mFirebaseAuth.signInWithEmailAndPassword(mUsernameView.getText().toString(),mPasswordView.getText().toString())
                 .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         mProgressDialog.dismiss();
-                        if(task.isSuccessful())
-                        {
+                        if(task.isSuccessful()) {
                             //login
                             signInResult = true;
                         }

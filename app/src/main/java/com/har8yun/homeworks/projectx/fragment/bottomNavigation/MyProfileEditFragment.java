@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
 
 
 import android.Manifest;
@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,7 +28,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +58,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 
 public class MyProfileEditFragment extends Fragment {
@@ -101,7 +98,6 @@ public class MyProfileEditFragment extends Fragment {
 
     //constructors
     public MyProfileEditFragment() {
-        // Required empty public constructor
     }
 
 

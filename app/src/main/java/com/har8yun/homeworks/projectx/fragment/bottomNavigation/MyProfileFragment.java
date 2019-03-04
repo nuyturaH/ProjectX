@@ -2,6 +2,7 @@ package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -24,10 +25,14 @@ import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import static com.google.android.gms.common.util.CollectionUtils.setOf;
 
 
 public class MyProfileFragment extends Fragment {
@@ -43,6 +48,8 @@ public class MyProfileFragment extends Fragment {
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private FloatingActionButton mEditButton;
     private TextView mFullnameView;
+    private Fragment mNavHostFragment;
+
 
 
     //constructor
@@ -56,20 +63,15 @@ public class MyProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
         initViews(view);
-
-
         setMyProfileToolbar();
         setNavigationComponent();
-
-
 
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-
-//                Log.e("hhhh","toolbar title "+ mToolbar.getTitle());
-                bundle.putString("username", mFullnameView.getText().toString());
+                bundle.putString("username", NavHostFragment.findNavController(mNavHostFragment).getCurrentDestination()
+                        .getLabel().toString());
                 Navigation.findNavController(v).navigate(R.id.action_my_profile_fragment_to_my_profile_edit_fragment,bundle);
             }
         });
@@ -99,7 +101,23 @@ public class MyProfileFragment extends Fragment {
     //************************************** METHODS ********************************************
     private void setNavigationComponent() {
         mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(mCollapsingToolbarLayout, mToolbar, mNavController);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.my_profile_fragment)).build();
+
+
+        mNavController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                if (destination.getId() == R.id.my_profile_fragment){
+                    if (getArguments() != null){
+                        NavHostFragment.findNavController(mNavHostFragment).getCurrentDestination()
+                                .setLabel(getArguments().getString("username2"));
+                    }
+
+                }
+            }
+        });
+
+        NavigationUI.setupWithNavController(mCollapsingToolbarLayout, mToolbar, mNavController, appBarConfiguration);
     }
 
     private void setMyProfileToolbar() {
@@ -113,11 +131,7 @@ public class MyProfileFragment extends Fragment {
         mCollapsingToolbarLayout = view.findViewById(R.id.ctl_my_profile);
         mEditButton = view.findViewById(R.id.fab_edit_my_profile);
         mFullnameView = view.findViewById(R.id.tv_full_name_my_profile);
-
-        if (getArguments() != null){
-            mFullnameView.setText(getArguments().getString("username2"));
-        }
-
+        mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
     }
 
     private void logOut() {
