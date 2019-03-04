@@ -1,43 +1,46 @@
 package com.har8yun.homeworks.projectx.model;
 
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 
     private Long id;
-    private String username;
-    private UserInfo userInfo;
-    private String email;
+    private String mUsername;
+    private UserInfo mUserInfo;
+    private String mEmail;
     //private String password;
-    private Integer points;
-    private String status;
-    private Sport sport;//sport12345
+    private Integer mPoints;
+    private String mStatus;
+    private Sport mSport;//sport12345
 
     public Long getId() {
         return id;
     }
 
     public String getUsername() {
-        return username;
+        return mUsername;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.mUsername = username;
     }
 
     public UserInfo getUserInfo() {
-        return userInfo;
+        return mUserInfo;
     }
 
     public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+        this.mUserInfo = userInfo;
     }
 
     public String getEmail() {
-        return email;
+        return mEmail;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.mEmail = email;
     }
 
 //    public String getPassword() {
@@ -50,33 +53,70 @@ public class User {
 
 
     public Integer getPoints() {
-        return points;
+        return mPoints;
     }
 
     public void setPoints(Integer points) {
-        this.points = points;
+        this.mPoints = points;
     }
 
     public String getStatus() {
-        return status;
+        return mStatus;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.mStatus = status;
     }
 
     public Sport getSport() {
-        return sport;
+        return mSport;
     }
 
     public void setSport(Sport sport) {
-        this.sport = sport;
+        this.mSport = sport;
     }
 
 
     @Override
     public String toString() {
-        return this.username;
+        return this.mUsername;
     }
 
+    private User(Parcel in) {
+//        id = in.readLong();
+        mSport = in.readParcelable(Sport.class.getClassLoader());
+        mUserInfo = in.readParcelable(UserInfo.class.getClassLoader());
+        mUsername = in.readString();
+        mEmail = in.readString();
+        mStatus = in.readString();
+        mPoints = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+//        dest.writeLong(id);
+        dest.writeParcelable(mSport, flags);
+        dest.writeParcelable(mUserInfo, flags);
+        dest.writeString(mUsername);
+        dest.writeString(mEmail);
+        dest.writeString(mStatus);
+        dest.writeInt(mPoints);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

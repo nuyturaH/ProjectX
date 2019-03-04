@@ -1,10 +1,12 @@
 package com.har8yun.homeworks.projectx.model;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Date;
 
-public class UserInfo {
+public class UserInfo implements Parcelable {
     private String firstName;
     private String lastName;
     private Uri avatar;
@@ -12,6 +14,42 @@ public class UserInfo {
     private Integer gender;
     private Float weight;
     private Float height;
+
+    protected UserInfo(Parcel in) {
+        firstName = in.readString();
+        lastName = in.readString();
+        avatar = in.readParcelable(Uri.class.getClassLoader());
+        gender = in.readInt();
+        weight = in.readFloat();
+        height = in.readFloat();
+    }
+
+    public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
+        @Override
+        public UserInfo createFromParcel(Parcel in) {
+            return new UserInfo(in);
+        }
+
+        @Override
+        public UserInfo[] newArray(int size) {
+            return new UserInfo[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeParcelable(avatar, flags);
+        dest.writeInt(gender);
+        dest.writeFloat(weight);
+        dest.writeFloat(height);
+    }
 
     public Uri getAvatar() {
         return avatar;
@@ -76,4 +114,6 @@ public class UserInfo {
     public void setHeight(Float height) {
         this.height = height;
     }
+
+
 }

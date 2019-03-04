@@ -73,7 +73,7 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/lightGrey"
             tools:context=".fragment.bottomNavigation.MyProfileFragment">
 
@@ -117,12 +117,25 @@
                     android:layout_height="wrap_content"
                     android:padding="20dp"
                     android:paddingStart="0dp"
-                    android:text="Weight:  84kg"
+                    android:text="Weight:       kg"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:textSize="@dimen/my_profile_text_size"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/textView4"
+                    app:layout_constraintStart_toStartOf="@+id/label_height_my_profile"
+                    app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="68dp"
+                    android:padding="20dp"
+                    android:paddingStart="0dp"
+                    android:text="84"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textSize="@dimen/my_profile_text_size"
+                    app:layout_constraintStart_toStartOf="@+id/label_height_my_profile"
                     app:layout_constraintTop_toBottomOf="@+id/line1" />
 
                 <ImageView
@@ -131,21 +144,34 @@
                     android:layout_height="30dp"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/ic_height_grey"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView4"
+                    app:layout_constraintBottom_toBottomOf="@+id/label_height_my_profile"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView4" />
+                    app:layout_constraintTop_toTopOf="@+id/label_height_my_profile" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/label_height_my_profile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:padding="20dp"
                     android:paddingStart="0dp"
-                    android:text="Height:  1.85m"
+                    android:text=" Height:          m"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:textSize="@dimen/my_profile_text_size"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_height_my_profile"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_height_my_profile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="100dp"
+                    android:padding="20dp"
+                    android:paddingStart="0dp"
+                    android:text="1.86"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textSize="@dimen/my_profile_text_size"
                     app:layout_constraintStart_toEndOf="@+id/iv_height_my_profile"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -155,8 +181,8 @@
                     android:layout_height="1dp"
                     android:background="@color/lightGrey"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView4"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                    app:layout_constraintStart_toStartOf="@+id/label_height_my_profile"
+                    app:layout_constraintTop_toBottomOf="@+id/label_height_my_profile" />
 
             </android.support.constraint.ConstraintLayout>
 
