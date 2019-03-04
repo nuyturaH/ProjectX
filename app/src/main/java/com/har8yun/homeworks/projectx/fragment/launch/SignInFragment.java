@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -87,15 +88,14 @@ public class SignInFragment extends Fragment {
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mProgressDialog.setMessage("Logging In...");
-                mProgressDialog.show();
+
 
                 if (mUsernameView.getText().length() == 0) {
                     mUsernameView.setError(getResources().getString(R.string.username_enter));
                 }else if (mPasswordView.getText().length() == 0) {
                     mPasswordView.setError(getResources().getString(R.string.password_enter));
-                }else if (isValidUser()) {
-                    openAccount(v);
+                }else{
+                    isValidUser(v);
                 }
 
             }
@@ -113,9 +113,13 @@ public class SignInFragment extends Fragment {
         Navigation.findNavController(v).navigate(R.id.action_fragment_sign_in_to_map_fragment,null,navOptions);
     }
 
-    private boolean signInResult;
 
-    private boolean isValidUser() {
+    private void isValidUser(View v) {
+
+        final View view = v;
+        mProgressDialog.setMessage("Logging In...");
+        mProgressDialog.show();
+
         mFirebaseAuth.signInWithEmailAndPassword(mUsernameView.getText().toString(),mPasswordView.getText().toString())
                 .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -123,15 +127,20 @@ public class SignInFragment extends Fragment {
                         mProgressDialog.dismiss();
                         if(task.isSuccessful()) {
                             //login
-                            signInResult = true;
+                            openAccount(view);
                         }
                         else {
-                            mPasswordView.setError("Wrong Username or Password");
-                            signInResult = false;
+                            if(task.getException().getMessage().equals(getResources().getString(R.string.task_error_password)))
+                            {
+                                mPasswordView.setError(getResources().getString(R.string.password_wrong));
+                            }
+                            else if(task.getException().getMessage().equals(getResources().getString(R.string.task_error_username)))
+                            {
+                                mUsernameView.setError(getResources().getString(R.string.username_availability));
+                            }
                         }
                     }
                 });
-        return signInResult;
     }
 
     private void initViews(View view) {

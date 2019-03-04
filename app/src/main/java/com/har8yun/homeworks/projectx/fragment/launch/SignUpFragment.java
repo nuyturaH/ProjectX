@@ -109,8 +109,7 @@ public class SignUpFragment extends Fragment {
                         mUser.setEmail(mEmailView.getText().toString());
                         mUserList.add(mUser);
 
-                        mProgressDialog.setMessage("Creating account ...");
-                        mProgressDialog.show();
+
 
                         registerUserToFirebase(mUser); //add user to firebase
                         openAccount(v);
@@ -225,6 +224,8 @@ public class SignUpFragment extends Fragment {
 
     private void registerUserToFirebase(User user) {
 
+        mProgressDialog.setMessage("Creating account ...");
+        mProgressDialog.show();
         final User mUser = user;
 
         mFirebaseAuth.createUserWithEmailAndPassword(user.getEmail(),mPasswordView.getText().toString())

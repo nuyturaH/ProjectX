@@ -23,6 +23,10 @@
     <string name="confirm_password_enter">Please, confirm your password</string>
     <string name="confirm_password_matching">It\'s not match with your password</string>
 
+    <string name="task_error_username">There is no user record corresponding to this identifier. The user may have been deleted.</string>
+    <string name="task_error_password">The password is invalid or the user does not have a password.</string>
+
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sign_in">Sign In</string>
     <string name="description">Description</string>
