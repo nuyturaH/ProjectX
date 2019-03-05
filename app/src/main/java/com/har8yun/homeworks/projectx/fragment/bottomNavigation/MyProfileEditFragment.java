@@ -143,27 +143,17 @@ public class MyProfileEditFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_profile_edit, container, false);
 
 
-        User user = new User();
-        UserInfo userInfo = new UserInfo();
-        userInfo.setWeight(20f);
-        userInfo.setHeight(30f);
-        userInfo.setFirstName("Anun");
-        userInfo.setLastName("Azganun");
-        userInfo.setGender(0);
-        user.setUserInfo(userInfo);
-        user.setEmail("test@gmail.com");
-        user.setUsername("TEST111");
-
-//        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        mCurrentUser = mUserViewModel.getUser().getValue();
 //        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
 //            @Override
 //            public void onChanged(@Nullable final User user) {
-//                Log.e("hhhh", "ViewModel in My profile Edit "+user.toString());
+//                Log.e("hhhh", "ViewModel in My profile Edit " + user.toString());
 //                mCurrentUser = user;
+//                mUserViewModel.setUser(user);
 //            }
 //        });
 
-        mCurrentUser = user;
 
         initViews(view);
         setMyProfileEditToolbar();
@@ -202,7 +192,6 @@ public class MyProfileEditFragment extends Fragment {
                 showPictureDialog();
             }
         });
-
 
 
         return view;
@@ -249,7 +238,7 @@ public class MyProfileEditFragment extends Fragment {
         mSportsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("hhhh",""+parent.getItemAtPosition(position).toString());
+                Log.e("hhhh", "" + parent.getItemAtPosition(position).toString());
             }
 
             @Override
@@ -261,26 +250,28 @@ public class MyProfileEditFragment extends Fragment {
 
         mUsernameView.setText(mCurrentUser.getUsername());
 
-        if (mCurrentUser.getUserInfo().getFirstName() != null) {
-            mFirstNameView.setText(mCurrentUser.getUserInfo().getFirstName());
-        }
-        if (mCurrentUser.getUserInfo().getLastName() != null) {
-            mLastNameView.setText(mCurrentUser.getUserInfo().getLastName());
-        }
-        if (mCurrentUser.getUserInfo().getWeight() != null) {
-            mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getHeight()));
-        }
-        if (mCurrentUser.getUserInfo().getHeight() != null) {
-            mHeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()));
-        }
+        if (mCurrentUser.getUserInfo() != null) {
+            if (mCurrentUser.getUserInfo().getFirstName() != null) {
+                mFirstNameView.setText(mCurrentUser.getUserInfo().getFirstName());
+            }
+            if (mCurrentUser.getUserInfo().getLastName() != null) {
+                mLastNameView.setText(mCurrentUser.getUserInfo().getLastName());
+            }
+            if (mCurrentUser.getUserInfo().getWeight() != null) {
+                mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getHeight()));
+            }
+            if (mCurrentUser.getUserInfo().getHeight() != null) {
+                mHeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()));
+            }
 
-        if (mCurrentUser.getUserInfo().getBirthDate() != null) {
-            mBirthDateView.setText(String.valueOf(mCurrentUser.getUserInfo().getBirthDate().getTime()));
-        }
-        if (mCurrentUser.getUserInfo().getGender() != null) {
-            if (mCurrentUser.getUserInfo().getGender() == 0)
-                mMale.setSelected(true);
-            else mFemale.setSelected(true);
+            if (mCurrentUser.getUserInfo().getBirthDate() != null) {
+                mBirthDateView.setText(String.valueOf(mCurrentUser.getUserInfo().getBirthDate().getTime()));
+            }
+            if (mCurrentUser.getUserInfo().getGender() != null) {
+                if (mCurrentUser.getUserInfo().getGender() == 0)
+                    mMale.setSelected(true);
+                else mFemale.setSelected(true);
+            }
         }
 
 //        ArrayAdapter<CharSequence> weightAdapter = ArrayAdapter.createFromResource(this.getContext(),
@@ -411,32 +402,35 @@ public class MyProfileEditFragment extends Fragment {
     }
 
     private void setUserInformation() {
-        UserInfo mUserInfo = mCurrentUser.getUserInfo();
 
-        if (mFirstNameView.getText() != null) {
-            mUserInfo.setFirstName(mFirstNameView.getText().toString());
-            mFirebaseAnalytics.setUserProperty("first_name", mUserInfo.getFirstName());
-        }
-        if (mLastNameView.getText() != null) {
-            mUserInfo.setLastName(mLastNameView.getText().toString());
-            mFirebaseAnalytics.setUserProperty("last_name", mUserInfo.getLastName());
-        }
+        if (mCurrentUser.getUserInfo() != null) {
+            UserInfo mUserInfo = mCurrentUser.getUserInfo();
 
-        if (mWeightView.getText() != null) {
-            mUserInfo.setWeight(mCurrentUser.getUserInfo().getWeight());
-        }
-        if (mHeightView.getText() != null) {
-            mUserInfo.setHeight(mCurrentUser.getUserInfo().getHeight());
-        }
-        if (mGender.getCheckedRadioButtonId() == mMale.getId()) {
-            mUserInfo.setGender(0);
-            mFirebaseAnalytics.setUserProperty("gender", "male");
-        } else if (mGender.getCheckedRadioButtonId() == mFemale.getId())
-            mUserInfo.setGender(1);
-        mFirebaseAnalytics.setUserProperty("gender", "female");
-        if (dateOpened) {
-            mUserInfo.setBirthDate(mDate);
-            mFirebaseAnalytics.setUserProperty("birth_date", mUserInfo.getBirthDate().toString());
+            if (mFirstNameView.getText() != null) {
+                mUserInfo.setFirstName(mFirstNameView.getText().toString());
+                mFirebaseAnalytics.setUserProperty("first_name", mUserInfo.getFirstName());
+            }
+            if (mLastNameView.getText() != null) {
+                mUserInfo.setLastName(mLastNameView.getText().toString());
+                mFirebaseAnalytics.setUserProperty("last_name", mUserInfo.getLastName());
+            }
+
+            if (mWeightView.getText() != null) {
+                mUserInfo.setWeight(mCurrentUser.getUserInfo().getWeight());
+            }
+            if (mHeightView.getText() != null) {
+                mUserInfo.setHeight(mCurrentUser.getUserInfo().getHeight());
+            }
+            if (mGender.getCheckedRadioButtonId() == mMale.getId()) {
+                mUserInfo.setGender(0);
+                mFirebaseAnalytics.setUserProperty("gender", "male");
+            } else if (mGender.getCheckedRadioButtonId() == mFemale.getId())
+                mUserInfo.setGender(1);
+            mFirebaseAnalytics.setUserProperty("gender", "female");
+            if (dateOpened) {
+                mUserInfo.setBirthDate(mDate);
+                mFirebaseAnalytics.setUserProperty("birth_date", mUserInfo.getBirthDate().toString());
+            }
         }
 
     }
@@ -481,10 +475,9 @@ public class MyProfileEditFragment extends Fragment {
                                 }
                                 break;
                             case 1:
-                                if(PermissionChecker.hasCameraPermission(getContext())) {
+                                if (PermissionChecker.hasCameraPermission(getContext())) {
                                     takePhotoFromCamera();
-                                }
-                                else{
+                                } else {
                                     requestCameraPermission();
                                 }
                                 break;
@@ -517,7 +510,7 @@ public class MyProfileEditFragment extends Fragment {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 
 
-        Uri takenPhotoURI = (Uri)cameraIntent.getExtras().get("data");
+        Uri takenPhotoURI = (Uri) cameraIntent.getExtras().get("data");
         //Bitmap thumbnail = (Bitmap) cameraIntent.getExtras().get("data");
         loadSelectedImage(takenPhotoURI);
         mCurrentUser.getUserInfo().setAvatar(takenPhotoURI);
@@ -525,7 +518,6 @@ public class MyProfileEditFragment extends Fragment {
         Toast.makeText(getContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
 
     }
-
 
 
     private void loadSelectedImage(Uri uri) { //call this method when
@@ -580,6 +572,7 @@ public class MyProfileEditFragment extends Fragment {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_STORAGE);
         }
     }
+
     protected void requestCameraPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMERA);
@@ -630,7 +623,7 @@ public class MyProfileEditFragment extends Fragment {
             @Override
             public void onItemClicked(int pos) {
                 Skill item = mSkillList.get(pos);
-                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName()+": "+item.getSkillCount(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName() + ": " + item.getSkillCount(), Toast.LENGTH_SHORT).show();
                 //TODO remove item
             }
         });
