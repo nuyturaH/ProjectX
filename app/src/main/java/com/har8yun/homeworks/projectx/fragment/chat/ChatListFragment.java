@@ -55,7 +55,7 @@ public class ChatListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        getUsersFromDatabase();
+        getUsersFromBundle();
         initRecyclerView();
     }
 
@@ -81,29 +81,11 @@ public class ChatListFragment extends Fragment {
 
     }
 
-    private void getUsersFromDatabase()
+    private void getUsersFromBundle()   //TODO: this method gets Users from MapFragment,when user clicks on chat with other users
     {
-        mDatabase = FirebaseDatabase.getInstance().getReference("Users");
-
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                mUsersList.clear();
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
-                {
-                    User mUser = userSnapshot.getValue(User.class);
-                    mUsersList.add(mUser);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
     }
+
 
     private void openChat()     //TODO: this method opens ChatFragment
     {}

@@ -13,7 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.model.User;
+import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 
@@ -25,14 +33,24 @@ import androidx.navigation.ui.NavigationUI;
 import static com.google.android.gms.common.util.CollectionUtils.setOf;
 
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     //views
     private BottomNavigationView mBottomNavigationView;
     private Toolbar mToolbarMap;
 
+    //User
+    User mUser;
+
+    private MapView mapView;
+
+    private GoogleMap mGoogleMap;
+
     //navigation
     private NavController mNavController;
+
+    //preferences
+    SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
 
     //user
     private User mCurrentUser;
@@ -48,13 +66,11 @@ public class MapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+       // mUser = sharedPreferences.getCurrentUser(getContext());
         initViews(view);
         showBotNavBar();
         setNavigationComponent();
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.map_fragment, R.id.settings_fragment)).build();
-
-
-
 
 
 
@@ -92,7 +108,26 @@ public class MapFragment extends Fragment {
     private void initViews(View v) {
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
         mToolbarMap = v.findViewById(R.id.toolbar_map);
+        mapView = v.findViewById(R.id.mv_map);
+        if (mapView != null) {
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+        }
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MapsInitializer.initialize(getContext());
+        mGoogleMap = googleMap;
+
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mGoogleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.3092293,-122.1136845))
+                .title("Captain America"));
+
+        //googleMap.addMarker()
+
+    }
 }

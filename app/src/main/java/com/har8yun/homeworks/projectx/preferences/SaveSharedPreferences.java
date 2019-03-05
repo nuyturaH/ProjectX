@@ -4,9 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
+import com.har8yun.homeworks.projectx.model.User;
+
 public class SaveSharedPreferences {
 
     public static final String TAG = SaveSharedPreferences.class.getSimpleName();
+    public static final String USER_KEY = "user_key";
+
+    User mUser;
 
     static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -21,5 +29,23 @@ public class SaveSharedPreferences {
 
     public boolean getLoggedStatus(Context context) {
         return getPreferences(context).getBoolean(TAG, false);
+    }
+
+    public void setCurrentUser(Context context,User mUser)
+    {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(mUser);
+        editor.putString(USER_KEY,json);
+        editor.commit();
+    }
+
+    public User getCurrentUser(Context context)
+    {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        Gson gson = new Gson();
+        String json = getPreferences(context).getString(USER_KEY, "");
+        User mUser = gson.fromJson(json, User.class);
+        return mUser;
     }
 }
