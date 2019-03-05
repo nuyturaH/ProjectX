@@ -1,5 +1,7 @@
 package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +24,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.model.User;
+import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
 import androidx.navigation.NavController;
@@ -33,6 +37,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import static com.google.android.gms.common.util.CollectionUtils.setOf;
+import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
 
 
 public class MyProfileFragment extends Fragment {
@@ -50,6 +55,9 @@ public class MyProfileFragment extends Fragment {
     private TextView mFullnameView;
     private Fragment mNavHostFragment;
 
+    //user
+    private User mCurrentUser;
+    private UserViewModel mUserViewModel;
 
 
     //constructor
@@ -64,19 +72,22 @@ public class MyProfileFragment extends Fragment {
 
         initViews(view);
         setMyProfileToolbar();
-        setNavigationComponent();
 
-        mEditButton.setOnClickListener(new View.OnClickListener() {
+        onClickNavigate(mEditButton, R.id.action_my_profile_fragment_to_my_profile_edit_fragment);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("username", NavHostFragment.findNavController(mNavHostFragment).getCurrentDestination()
-                        .getLabel().toString());
-                Navigation.findNavController(v).navigate(R.id.action_my_profile_fragment_to_my_profile_edit_fragment,bundle);
+            public void onChanged(@Nullable final User user) {
+                Log.e("hhhh", "ViewModel in My profile "+user.toString());
+                setNavigationComponent(user);
             }
         });
-
-        return view;
     }
 
 
@@ -97,26 +108,19 @@ public class MyProfileFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-
     //************************************** METHODS ********************************************
-    private void setNavigationComponent() {
+    private void setNavigationComponent(final User user) {
         mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.my_profile_fragment)).build();
-
-
         mNavController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if (destination.getId() == R.id.my_profile_fragment){
-                    if (getArguments() != null){
-                        NavHostFragment.findNavController(mNavHostFragment).getCurrentDestination()
-                                .setLabel(getArguments().getString("username2"));
-                    }
-
+                    NavHostFragment.findNavController(mNavHostFragment).getCurrentDestination().setLabel(user.getUsername());
+                    Log.e("hhhh","MyProfile "+ user.toString());
                 }
             }
         });
-
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.my_profile_fragment)).build();
         NavigationUI.setupWithNavController(mCollapsingToolbarLayout, mToolbar, mNavController, appBarConfiguration);
     }
 
@@ -141,7 +145,7 @@ public class MyProfileFragment extends Fragment {
         sharedPreferences.setLoggedIn(getActivity(),false);
 
         FirebaseAuth.getInstance().signOut();
-        Toast.makeText(getContext(),"Signed Out",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),"Signed Out", Toast.LENGTH_SHORT).show();
     }
 
 }

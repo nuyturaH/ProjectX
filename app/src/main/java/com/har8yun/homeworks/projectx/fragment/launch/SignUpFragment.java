@@ -2,9 +2,13 @@ package com.har8yun.homeworks.projectx.fragment.launch;
 
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.User;
+import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
 import java.util.ArrayList;
@@ -58,6 +62,13 @@ public class SignUpFragment extends Fragment {
     //Firebase
     private FirebaseAuth mFirebaseAuth;
 
+    //Bundle
+    private Bundle bundle;
+
+    //User
+    private User mCurrentUser;
+    private UserViewModel mUserViewModel;
+
     //constructor
     public SignUpFragment() {
 
@@ -81,9 +92,10 @@ public class SignUpFragment extends Fragment {
 
         onClickNavigate(mSuggestionSignUp, R.id.action_fragment_sign_up_to_fragment_sign_in);
 
+
+
         return view;
     }
-
 
     //************************************** METHODS ********************************************
     private void addUserToList() {
@@ -104,14 +116,12 @@ public class SignUpFragment extends Fragment {
                             && mConfirmPasswordView.getText().length() != 0){
                         mConfirmPasswordView.setError(getResources().getString(R.string.confirm_password_matching));
                     }else{
-                        User mUser = new User();
-                        mUser.setUsername(mUsernameView.getText().toString());
-                        mUser.setEmail(mEmailView.getText().toString());
-                        mUserList.add(mUser);
-
-
-
-                        registerUserToFirebase(mUser); //add user to firebase
+                        mCurrentUser = new User();
+                        mCurrentUser.setUsername(mUsernameView.getText().toString());
+                        mCurrentUser.setEmail(mEmailView.getText().toString());
+                        mUserList.add(mCurrentUser);
+                        registerUserToFirebase(mCurrentUser);//add user to firebase
+                        mUserViewModel.setUser(mCurrentUser);//ViewModel
                         openAccount(v);
                     }
 
@@ -165,7 +175,7 @@ public class SignUpFragment extends Fragment {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length()>20){
+                if (s.length() > 20){
                    mUsernameView.setError(getResources().getString(R.string.username_length_long));
                    mUsernameView.setTextColor(Color.RED);
                 }else {
@@ -209,7 +219,9 @@ public class SignUpFragment extends Fragment {
     private void openAccount(View v) {
         sharedPreferences.setLoggedIn(getActivity(), true);
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.menu_item_log_out, true).build();
-        Navigation.findNavController(v).navigate(R.id.action_fragment_sign_up_to_map_fragment,null,navOptions);
+        bundle = new Bundle();
+//        bundle.putParcelable("signUpUserToMap", mCurrentUser);
+        Navigation.findNavController(v).navigate(R.id.action_fragment_sign_up_to_map_fragment, bundle, navOptions);
     }
 
 
@@ -223,7 +235,6 @@ public class SignUpFragment extends Fragment {
     }
 
     private void registerUserToFirebase(User user) {
-
         mProgressDialog.setMessage("Creating account ...");
         mProgressDialog.show();
         final User mUser = user;

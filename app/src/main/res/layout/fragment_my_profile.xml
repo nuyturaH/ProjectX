@@ -67,6 +67,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
@@ -86,6 +87,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="30sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -96,6 +98,7 @@
                 android:background="@color/colorPrimaryText"
                 android:elevation="2dp"
                 android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/layout_photos_my_profile"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -190,24 +193,11 @@
                 android:id="@+id/layout_photos_my_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:background="@color/colorPrimaryText"
                 android:elevation="2dp"
                 android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_height_and_weight_my_profile">
-
-                <View
-                    android:id="@+id/line2"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@color/lightGrey"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_all_photos_my_profile"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_all_photos_my_profile"
-                    app:layout_constraintTop_toTopOf="@+id/tv_all_photos_my_profile" />
+                tools:layout_editor_absoluteY="140dp">
 
                 <TextView
                     android:id="@+id/tv_all_photos_my_profile"
@@ -225,12 +215,12 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/iv_photo2_my_profile"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_all_photos_my_profile"
+                    app:layout_constraintTop_toTopOf="@+id/tv_all_photos_my_profile"
                     app:srcCompat="@drawable/ic_launcher_background"
                     tools:src="@tools:sample/avatars[3]" />
 
@@ -283,18 +273,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/layout_photos_my_profile">
 
                 <View
-                    android:id="@+id/line3"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@color/lightGrey"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_all_photos_my_profile"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_all_photos_my_profile"
-                    app:layout_constraintTop_toTopOf="@+id/tv_all_photos_my_profile" />
-
-                <View
                     android:id="@+id/line"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
@@ -315,7 +293,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_gender_my_profile" />
 
                 <TextView
-                    android:id="@+id/tv_all_photos_my_profile"
+                    android:id="@+id/tv_user_info_my_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -336,7 +314,7 @@
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:textSize="@dimen/my_profile_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_all_photos_my_profile" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_user_info_my_profile" />
 
                 <TextView
                     android:id="@+id/label_gender_my_profile"
@@ -413,16 +391,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_user_info_my_profile">
 
-                <View
-                    android:id="@+id/line"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@color/lightGrey"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/label_full_name_my_profile"
-                    app:layout_constraintTop_toBottomOf="@+id/label_full_name_my_profile" />
-
                 <TextView
                     android:id="@+id/tv_skills_my_profile"
                     android:layout_width="wrap_content"
@@ -434,54 +402,13 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/label_full_name_my_profile"
-                    android:layout_width="wrap_content"
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="Pull-ups:"
-                    android:textAllCaps="false"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="@dimen/my_profile_text_size"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_skills_my_profile" />
-
-                <TextView
-                    android:id="@+id/label_gender_my_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:paddingBottom="16dp"
-                    android:text="Push-ups:"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="@dimen/my_profile_text_size"
-                    app:layout_constraintStart_toStartOf="@+id/label_full_name_my_profile"
-                    app:layout_constraintTop_toBottomOf="@+id/line" />
-
-                <TextView
-                    android:id="@+id/aaaa"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="45"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="@dimen/my_profile_text_size"
-                    android:textStyle="italic"
-                    app:layout_constraintStart_toEndOf="@+id/label_gender_my_profile"
-                    app:layout_constraintTop_toTopOf="@+id/label_gender_my_profile" />
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="12"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="@dimen/my_profile_text_size"
-                    android:textStyle="italic"
-                    app:layout_constraintStart_toEndOf="@+id/label_full_name_my_profile"
-                    app:layout_constraintTop_toTopOf="@+id/label_full_name_my_profile" />
 
             </android.support.constraint.ConstraintLayout>
         </android.support.constraint.ConstraintLayout>

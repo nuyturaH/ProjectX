@@ -3,6 +3,8 @@ package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,18 +18,27 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,16 +59,25 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.adapter.SkillItemRecyclerAdapter;
+import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserInfo;
+import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.util.DBUtil;
 import com.har8yun.homeworks.projectx.util.PermissionChecker;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
+
+import static com.google.android.gms.common.util.CollectionUtils.setOf;
 
 
 public class MyProfileEditFragment extends Fragment {
@@ -65,6 +85,9 @@ public class MyProfileEditFragment extends Fragment {
     public static final String TAG = MyProfileEditFragment.class.getSimpleName();
     public static final int PERMISSION_STORAGE = 10;
     public static final int PERMISSION_CAMERA = 11;
+
+    //navigation
+    private NavController mNavController;
 
     //views
     private ImageView mAvatarView;
@@ -84,7 +107,13 @@ public class MyProfileEditFragment extends Fragment {
 
     private EditText mWeightView;
     private EditText mHeightView;
+
+    private Spinner mSportsSpinner;
+    private Spinner mSkillsSpinner;
+
     private Button mSaveButton;
+
+    private Toolbar mToolbarEdit;
 
     //Firebase
     private FirebaseAuth mFirebaseAuth;
@@ -93,8 +122,15 @@ public class MyProfileEditFragment extends Fragment {
     private StorageReference mStorageRef;
 
     //User
-    private User mUser;  //current User,    TODO: get this user from MyProfile Fragment
+    private User mCurrentUser;  //current User,    TODO: get this user from MyProfile Fragment
     private FirebaseUser mFirebaseUser;
+
+    //adapter
+    private SkillItemRecyclerAdapter mSkillItemRecyclerAdapter;
+    private List<Skill> mSkillList = new ArrayList<>();
+
+    //viewmodel
+    private UserViewModel mUserViewModel;
 
     //constructors
     public MyProfileEditFragment() {
@@ -106,6 +142,7 @@ public class MyProfileEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_profile_edit, container, false);
 
+
         User user = new User();
         UserInfo userInfo = new UserInfo();
         userInfo.setWeight(20f);
@@ -115,12 +152,22 @@ public class MyProfileEditFragment extends Fragment {
         userInfo.setGender(0);
         user.setUserInfo(userInfo);
         user.setEmail("test@gmail.com");
-        //user.setUsername("TEST111");
-        user.setUsername(getArguments().getString("username"));
+        user.setUsername("TEST111");
 
-        mUser = user;
+//        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+//        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+//            @Override
+//            public void onChanged(@Nullable final User user) {
+//                Log.e("hhhh", "ViewModel in My profile Edit "+user.toString());
+//                mCurrentUser = user;
+//            }
+//        });
+
+        mCurrentUser = user;
 
         initViews(view);
+        setMyProfileEditToolbar();
+        setNavigationComponent();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this.getContext());
@@ -163,13 +210,23 @@ public class MyProfileEditFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_my_profile_edit, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_save:
+                saveChanges();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
     //************************************** METHODS ********************************************
-
     private void initViews(View view) {
         mAvatarView = view.findViewById(R.id.iv_avatar_my_profile_edit);
         mUsernameView = view.findViewById(R.id.etv_username_my_profile_edit);
@@ -184,28 +241,44 @@ public class MyProfileEditFragment extends Fragment {
         mBirthDateView = view.findViewById(R.id.tv_birth_date_my_profile_edit);
         mWeightView = view.findViewById(R.id.etv_weight_my_profile_edit);
         mHeightView = view.findViewById(R.id.etv_height_my_profile_edit);
-        mSaveButton = view.findViewById(R.id.btn_save_my_profile_edit);
+//        mSaveButton = view.findViewById(R.id.btn_save_my_profile_edit);
+        mToolbarEdit = view.findViewById(R.id.toolbar_my_profile_edit);
+        mSportsSpinner = view.findViewById(R.id.spinner_sports_my_profile_edit);
+        mSkillsSpinner = view.findViewById(R.id.spinner_skills_my_profile_edit);
 
-        mUsernameView.setText(mUser.getUsername());
+        mSportsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("hhhh",""+parent.getItemAtPosition(position).toString());
+            }
 
-        if (mUser.getUserInfo().getFirstName() != null) {
-            mFirstNameView.setText(mUser.getUserInfo().getFirstName());
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        mUsernameView.setText(mCurrentUser.getUsername());
+
+        if (mCurrentUser.getUserInfo().getFirstName() != null) {
+            mFirstNameView.setText(mCurrentUser.getUserInfo().getFirstName());
         }
-        if (mUser.getUserInfo().getLastName() != null) {
-            mLastNameView.setText(mUser.getUserInfo().getLastName());
+        if (mCurrentUser.getUserInfo().getLastName() != null) {
+            mLastNameView.setText(mCurrentUser.getUserInfo().getLastName());
         }
-        if (mUser.getUserInfo().getWeight() != null) {
-            mWeightView.setText(String.valueOf(mUser.getUserInfo().getHeight()));
+        if (mCurrentUser.getUserInfo().getWeight() != null) {
+            mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getHeight()));
         }
-        if (mUser.getUserInfo().getHeight() != null) {
-            mHeightView.setText(String.valueOf(mUser.getUserInfo().getWeight()));
+        if (mCurrentUser.getUserInfo().getHeight() != null) {
+            mHeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()));
         }
 
-        if (mUser.getUserInfo().getBirthDate() != null) {
-            mBirthDateView.setText(String.valueOf(mUser.getUserInfo().getBirthDate().getTime()));
+        if (mCurrentUser.getUserInfo().getBirthDate() != null) {
+            mBirthDateView.setText(String.valueOf(mCurrentUser.getUserInfo().getBirthDate().getTime()));
         }
-        if (mUser.getUserInfo().getGender() != null) {
-            if (mUser.getUserInfo().getGender() == 0)
+        if (mCurrentUser.getUserInfo().getGender() != null) {
+            if (mCurrentUser.getUserInfo().getGender() == 0)
                 mMale.setSelected(true);
             else mFemale.setSelected(true);
         }
@@ -227,7 +300,7 @@ public class MyProfileEditFragment extends Fragment {
 //    @Override
 //    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //
-//        UserInfo mUserInfo = mUser.getUserInfo();
+//        UserInfo mUserInfo = mCurrentUser.getUserInfo();
 //
 //        switch (parent.getId()) {
 //            case R.id.sp_weight_my_profile_edit:
@@ -294,7 +367,7 @@ public class MyProfileEditFragment extends Fragment {
                 if (!s.toString().matches("[a-zA-Z0-9]*")) {
                     mUsernameView.setError(getResources().getString(R.string.username_content));
                 }
-                if (mUser.getUsername().equals(s.toString())) {
+                if (mCurrentUser.getUsername().equals(s.toString())) {
                     mUsernameView.setError(getResources().getString(R.string.username_existence));
                     mUsernameView.setTextColor(Color.RED);
                 }
@@ -316,41 +389,29 @@ public class MyProfileEditFragment extends Fragment {
         });
     }
 
-
     private void saveChanges() {
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mUsernameView.getText().length() == 0) {
-                    mUsernameView.setError(getResources().getString(R.string.username_enter));
-                } else if (mUsernameView.getError() == null && mPasswordView.getError() == null &&
-                        mConfirmPasswordView.getError() == null) {
-                    if (!mConfirmPasswordView.getText().toString().equals(mPasswordView.getText().toString())) {
-                        mConfirmPasswordView.setError(getResources().getString(R.string.confirm_password_matching));
-                    } else {
-
-                        //giving changed fields to MyProfileFragment
-                        Bundle bundle = new Bundle();
-                        bundle.putString("username2",mUsernameView.getText().toString());
-                        Navigation.findNavController(v).navigate(R.id.action_my_profile_edit_fragment_to_my_profile_fragment,bundle);
-                        //==========================================
-
-
-                        mUser.setUsername(mUsernameView.getText().toString());
-
-//                        updateUserPassword();
-                        setUserInformation();
-                        //updateUserInFirebase(mUser); //add user to firebase
-                    }
-
-                }
+        if (mUsernameView.getText().length() == 0) {
+            mUsernameView.setError(getResources().getString(R.string.username_enter));
+        } else if (mUsernameView.getError() == null && mPasswordView.getError() == null &&
+                mConfirmPasswordView.getError() == null) {
+            if (!mConfirmPasswordView.getText().toString().equals(mPasswordView.getText().toString())) {
+                mConfirmPasswordView.setError(getResources().getString(R.string.confirm_password_matching));
+            } else {
+                //giving changed fields to MyProfileFragment
+//                       Bundle bundle = new Bundle();
+//                       bundle.putString("username2",mUsernameView.getText().toString());
+//                       Navigation.findNavController(v).navigate(R.id.action_my_profile_edit_fragment_to_my_profile_fragment,bundle);
+                //==========================================
+                mCurrentUser.setUsername(mUsernameView.getText().toString());
+//              updateUserPassword();
+                setUserInformation();
+                //updateUserInFirebase(mCurrentUser); //add user to firebase
             }
-        });
-
+        }
     }
 
     private void setUserInformation() {
-        UserInfo mUserInfo = mUser.getUserInfo();
+        UserInfo mUserInfo = mCurrentUser.getUserInfo();
 
         if (mFirstNameView.getText() != null) {
             mUserInfo.setFirstName(mFirstNameView.getText().toString());
@@ -362,10 +423,10 @@ public class MyProfileEditFragment extends Fragment {
         }
 
         if (mWeightView.getText() != null) {
-            mUserInfo.setWeight(mUser.getUserInfo().getWeight());
+            mUserInfo.setWeight(mCurrentUser.getUserInfo().getWeight());
         }
         if (mHeightView.getText() != null) {
-            mUserInfo.setHeight(mUser.getUserInfo().getHeight());
+            mUserInfo.setHeight(mCurrentUser.getUserInfo().getHeight());
         }
         if (mGender.getCheckedRadioButtonId() == mMale.getId()) {
             mUserInfo.setGender(0);
@@ -448,7 +509,7 @@ public class MyProfileEditFragment extends Fragment {
 //                .load(contentURI) //path
 //                .into(mAvatarView);
         loadSelectedImage(chosenPhotoURI);
-        mUser.getUserInfo().setAvatar(chosenPhotoURI);
+        mCurrentUser.getUserInfo().setAvatar(chosenPhotoURI);
     }
 
 
@@ -459,7 +520,7 @@ public class MyProfileEditFragment extends Fragment {
         Uri takenPhotoURI = (Uri)cameraIntent.getExtras().get("data");
         //Bitmap thumbnail = (Bitmap) cameraIntent.getExtras().get("data");
         loadSelectedImage(takenPhotoURI);
-        mUser.getUserInfo().setAvatar(takenPhotoURI);
+        mCurrentUser.getUserInfo().setAvatar(takenPhotoURI);
         //TODO save this image in firebase
         Toast.makeText(getContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
 
@@ -468,7 +529,6 @@ public class MyProfileEditFragment extends Fragment {
 
 
     private void loadSelectedImage(Uri uri) { //call this method when
-
 
         Glide.with(this)
                 .load(uri)
@@ -550,6 +610,34 @@ public class MyProfileEditFragment extends Fragment {
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
         dateOpened = true;
+    }
+
+
+    private void setMyProfileEditToolbar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbarEdit);
+        setHasOptionsMenu(true);
+    }
+
+    private void setNavigationComponent() {
+        mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(mToolbarEdit, mNavController);
+    }
+
+    private void initRecyclerView() {
+        mSkillItemRecyclerAdapter = new SkillItemRecyclerAdapter();
+        mSkillItemRecyclerAdapter.setOnRvItemClickListener(new SkillItemRecyclerAdapter.OnRvItemClickListener() {
+            @Override
+            public void onItemClicked(int pos) {
+                Skill item = mSkillList.get(pos);
+                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName()+": "+item.getSkillCount(), Toast.LENGTH_SHORT).show();
+                //TODO remove item
+            }
+        });
+        RecyclerView recyclerView = getView().findViewById(R.id.rv_skills_my_profile_edit);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(mSkillItemRecyclerAdapter);
+        mSkillItemRecyclerAdapter.addItems(mSkillList);
     }
 
 

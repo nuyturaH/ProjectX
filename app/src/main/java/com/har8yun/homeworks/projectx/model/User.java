@@ -1,10 +1,8 @@
 package com.har8yun.homeworks.projectx.model;
 
+import java.util.List;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class User implements Parcelable {
+public class User {
 
     private Long id;
     private String mUsername;
@@ -13,7 +11,8 @@ public class User implements Parcelable {
     //private String password;
     private Integer mPoints;
     private String mStatus;
-    private Sport mSport;//sport12345
+//    private Skill mSport;
+    private List<Skill> mSkills;
 
     public Long getId() {
         return id;
@@ -51,7 +50,6 @@ public class User implements Parcelable {
 //        this.password = password;
 //    }
 
-
     public Integer getPoints() {
         return mPoints;
     }
@@ -68,58 +66,20 @@ public class User implements Parcelable {
         this.mStatus = status;
     }
 
-    public Sport getSport() {
-        return mSport;
+    public List getSkills() {
+        return mSkills;
     }
 
-    public void setSport(Sport sport) {
-        this.mSport = sport;
+    public void setSkills(List skills) {
+        mSkills = skills;
     }
-
 
     @Override
     public String toString() {
-        return this.mUsername;
+        return this.mUsername+"|"+this.mEmail;
     }
 
     public User() {
     }
 
-    private User(Parcel in) {
-//        id = in.readLong();
-        mSport = in.readParcelable(Sport.class.getClassLoader());
-        mUserInfo = in.readParcelable(UserInfo.class.getClassLoader());
-        mUsername = in.readString();
-        mEmail = in.readString();
-        mStatus = in.readString();
-        mPoints = in.readInt();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeLong(id);
-        dest.writeParcelable(mSport, flags);
-        dest.writeParcelable(mUserInfo, flags);
-        dest.writeString(mUsername);
-        dest.writeString(mEmail);
-        dest.writeString(mStatus);
-        dest.writeInt(mPoints);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 }

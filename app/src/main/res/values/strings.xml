@@ -51,12 +51,54 @@
     <string name="chats">Chats</string>
     <string name="top_10">Top-10</string>
     <string name="me">Me</string>
-    <string name="new_password">New Password</string>
+    <string name="new_password">New password</string>
     <string name="weight">Weight</string>
     <string name="height">Height</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="avatar">avatar</string>
+    <string name="save">save</string>
+    <string name="save_changes">save changes</string>
+
+
+    <string name="choose_sport">Choose skill</string>
+    <string name="done">Done</string>
+    <string name="change_password">Change Password</string>
+    <string name="kg">kg</string>
+    <string name="heightWithDots">Height:</string>
+    <string name="weightWithDots">Weight:</string>
+    <string name="m">m</string>
+    <string name="add_your_birth_date">Add your Birth Date</string>
+    <string name="gender">Gender:</string>
+    <string name="select_your_skills">Select your Skills</string>
+    <string name="_00_0">00.0</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+
+    <string-array name="sports_array">
+        <item>Football</item>
+        <item>Basketball</item>
+        <item>Tennis</item>
+        <item>Workout</item>
+        <item>Swimming</item>
+    </string-array>
+
+    <string-array name="workout_array">
+        <item>Pull-ups</item>
+        <item>Push-ups</item>
+        <item>Parralel dips</item>
+        <item>Flag</item>
+        <item>Planche</item>
+    </string-array>
+
+    <string-array name="football_array">
+        <item>Jungling</item>
+        <item>Push-ups</item>
+        <item>Parralel dips</item>
+        <item>Flag</item>
+        <item>Planche</item>
+    </string-array>
+
 
 
 </resources>

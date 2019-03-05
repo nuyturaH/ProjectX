@@ -1,15 +1,21 @@
 package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.model.User;
+import com.har8yun.homeworks.projectx.model.UserViewModel;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,6 +34,10 @@ public class MapFragment extends Fragment {
     //navigation
     private NavController mNavController;
 
+    //user
+    private User mCurrentUser;
+    private UserViewModel mUserViewModel;
+
     //constructor
     public MapFragment() {
     }
@@ -45,7 +55,22 @@ public class MapFragment extends Fragment {
 
 
 
+
+
+
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User user) {
+                Log.e("hhhh", "ViewModel "+user.toString());
+            }
+        });
     }
 
 
@@ -53,6 +78,11 @@ public class MapFragment extends Fragment {
     private void setNavigationComponent() {
         mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mToolbarMap, mNavController);
+        if (getArguments() != null) {
+            mCurrentUser = new User();
+            mCurrentUser = getArguments().getParcelable("signUpUserToMap");
+            Log.e("hhhh", "bundle "+mCurrentUser.toString());
+        }
     }
 
     private void showBotNavBar() {

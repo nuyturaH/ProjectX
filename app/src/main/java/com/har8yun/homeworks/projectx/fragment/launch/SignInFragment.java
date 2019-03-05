@@ -2,8 +2,11 @@ package com.har8yun.homeworks.projectx.fragment.launch;
 
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.User;
+import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
 import java.util.ArrayList;
@@ -54,6 +58,7 @@ public class SignInFragment extends Fragment {
 
     //user
     private User mCurrentUser;
+    private UserViewModel mUserViewModel;
 
     //collections
     private List<User> mUserList = new ArrayList<>();
@@ -104,11 +109,16 @@ public class SignInFragment extends Fragment {
     }
 
 
+
     //************************************** METHODS ********************************************
     private void openAccount(View v) {
         sharedPreferences.setLoggedIn(getActivity(), true);
         Bundle bundle = new Bundle();
 //        bundle.putParcelable("currentObject", mCurrentUser);
+        mCurrentUser = new User();
+        mCurrentUser.setUsername(mUsernameView.getText().toString());
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        mUserViewModel.setUser(mCurrentUser);//ViewModel
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.menu_item_log_out, true).build();
         Navigation.findNavController(v).navigate(R.id.action_fragment_sign_in_to_map_fragment,null,navOptions);
     }
@@ -130,12 +140,10 @@ public class SignInFragment extends Fragment {
                             openAccount(view);
                         }
                         else {
-                            if(task.getException().getMessage().equals(getResources().getString(R.string.task_error_password)))
-                            {
+                            if(task.getException().getMessage().equals(getResources().getString(R.string.task_error_password))) {
                                 mPasswordView.setError(getResources().getString(R.string.password_wrong));
                             }
-                            else if(task.getException().getMessage().equals(getResources().getString(R.string.task_error_username)))
-                            {
+                            else if(task.getException().getMessage().equals(getResources().getString(R.string.task_error_username))) {
                                 mUsernameView.setError(getResources().getString(R.string.username_availability));
                             }
                         }
