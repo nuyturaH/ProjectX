@@ -93,57 +93,47 @@ public class SignInFragment extends Fragment {
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 if (mUsernameView.getText().length() == 0) {
                     mUsernameView.setError(getResources().getString(R.string.username_enter));
-                }else if (mPasswordView.getText().length() == 0) {
+                } else if (mPasswordView.getText().length() == 0) {
                     mPasswordView.setError(getResources().getString(R.string.password_enter));
-                }else{
+                } else {
                     isValidUser(v);
                 }
-
             }
         });
         return view;
     }
 
 
-
     //************************************** METHODS ********************************************
     private void openAccount(View v) {
         sharedPreferences.setLoggedIn(getActivity(), true);
-        Bundle bundle = new Bundle();
-//        bundle.putParcelable("currentObject", mCurrentUser);
-        mCurrentUser = new User();
-        mCurrentUser.setUsername(mUsernameView.getText().toString());
+        mCurrentUser = new User();//TODO get user from FireBase
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
-        mUserViewModel.setUser(mCurrentUser);//ViewModel
+        mUserViewModel.setUser(mCurrentUser);
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.menu_item_log_out, true).build();
-        Navigation.findNavController(v).navigate(R.id.action_fragment_sign_in_to_map_fragment,null,navOptions);
+        Navigation.findNavController(v).navigate(R.id.action_fragment_sign_in_to_map_fragment, null, navOptions);
     }
 
 
     private void isValidUser(View v) {
-
         final View view = v;
         mProgressDialog.setMessage("Logging In...");
         mProgressDialog.show();
 
-        mFirebaseAuth.signInWithEmailAndPassword(mUsernameView.getText().toString(),mPasswordView.getText().toString())
+        mFirebaseAuth.signInWithEmailAndPassword(mUsernameView.getText().toString(), mPasswordView.getText().toString())
                 .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         mProgressDialog.dismiss();
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             //login
                             openAccount(view);
-                        }
-                        else {
-                            if(task.getException().getMessage().equals(getResources().getString(R.string.task_error_password))) {
+                        } else {
+                            if (task.getException().getMessage().equals(getResources().getString(R.string.task_error_password))) {
                                 mPasswordView.setError(getResources().getString(R.string.password_wrong));
-                            }
-                            else if(task.getException().getMessage().equals(getResources().getString(R.string.task_error_username))) {
+                            } else if (task.getException().getMessage().equals(getResources().getString(R.string.task_error_username))) {
                                 mUsernameView.setError(getResources().getString(R.string.username_availability));
                             }
                         }
@@ -164,15 +154,15 @@ public class SignInFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUserList.clear();
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User mUser = userSnapshot.getValue(User.class);
                     mUserList.add(mUser);
                     Log.d("SignIn", mUserList.get(0).toString());
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }

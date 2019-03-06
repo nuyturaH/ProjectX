@@ -111,8 +111,6 @@ public class MyProfileEditFragment extends Fragment {
     private Spinner mSportsSpinner;
     private Spinner mSkillsSpinner;
 
-    private Button mSaveButton;
-
     private Toolbar mToolbarEdit;
 
     //Firebase
@@ -122,7 +120,7 @@ public class MyProfileEditFragment extends Fragment {
     private StorageReference mStorageRef;
 
     //User
-    private User mCurrentUser;  //current User,    TODO: get this user from MyProfile Fragment
+    private User mCurrentUser;
     private FirebaseUser mFirebaseUser;
 
     //adapter
@@ -150,7 +148,6 @@ public class MyProfileEditFragment extends Fragment {
 //            public void onChanged(@Nullable final User user) {
 //                Log.e("hhhh", "ViewModel in My profile Edit " + user.toString());
 //                mCurrentUser = user;
-//                mUserViewModel.setUser(user);
 //            }
 //        });
 
@@ -230,7 +227,6 @@ public class MyProfileEditFragment extends Fragment {
         mBirthDateView = view.findViewById(R.id.tv_birth_date_my_profile_edit);
         mWeightView = view.findViewById(R.id.etv_weight_my_profile_edit);
         mHeightView = view.findViewById(R.id.etv_height_my_profile_edit);
-//        mSaveButton = view.findViewById(R.id.btn_save_my_profile_edit);
         mToolbarEdit = view.findViewById(R.id.toolbar_my_profile_edit);
         mSportsSpinner = view.findViewById(R.id.spinner_sports_my_profile_edit);
         mSkillsSpinner = view.findViewById(R.id.spinner_skills_my_profile_edit);
@@ -239,6 +235,13 @@ public class MyProfileEditFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.e("hhhh", "" + parent.getItemAtPosition(position).toString());
+                if (position != 0) {
+                    mSkillsSpinner.setVisibility(View.VISIBLE);
+                }
+                if (position == 0) {
+                    mSkillsSpinner.setVisibility(View.INVISIBLE);
+                    ((TextView) view).setTextColor(Color.GRAY);
+                }
             }
 
             @Override
@@ -274,46 +277,8 @@ public class MyProfileEditFragment extends Fragment {
             }
         }
 
-//        ArrayAdapter<CharSequence> weightAdapter = ArrayAdapter.createFromResource(this.getContext(),
-//                R.array.numbers, android.R.layout.simple_spinner_item);
-//        weightAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        mWeightView.setAdapter(weightAdapter);
-//        mWeightView.setOnItemSelectedListener(this);
-//
-//        ArrayAdapter<CharSequence> heightAdapter = ArrayAdapter.createFromResource(this.getContext(), //TODO change R.array.numbers
-//                R.array.numbers, android.R.layout.simple_spinner_item);
-//        weightAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        mWeightView.setAdapter(heightAdapter);
-//        mWeightView.setOnItemSelectedListener(this);
-
     }
 
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//        UserInfo mUserInfo = mCurrentUser.getUserInfo();
-//
-//        switch (parent.getId()) {
-//            case R.id.sp_weight_my_profile_edit:
-//                String text1 = parent.getItemAtPosition(position).toString();
-//                Toast.makeText(parent.getContext(), text1, Toast.LENGTH_SHORT).show();
-//                mUserInfo.setWeight(Float.valueOf(text1));
-//                mFirebaseAnalytics.setUserProperty("weight", mUserInfo.getWeight().toString());
-//                break;
-//            case R.id.sp_height_my_profile_edit:
-//                String text2 = parent.getItemAtPosition(position).toString();
-//                Toast.makeText(parent.getContext(), text2, Toast.LENGTH_SHORT).show();
-//                mUserInfo.setHeight(Float.valueOf(text2));
-//                mFirebaseAnalytics.setUserProperty("height", mUserInfo.getHeight().toString());
-//                break;
-//        }
-//    }
-//
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//
-//    }
 
     private void setConfirmPasswordError() {
         mConfirmPasswordView.setOnFocusChangeListener(new View.OnFocusChangeListener() {

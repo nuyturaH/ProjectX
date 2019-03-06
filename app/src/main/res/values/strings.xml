@@ -76,6 +76,7 @@
     <string name="last_name">Last Name</string>
 
     <string-array name="sports_array">
+        <item>Choose Sport…</item>
         <item>Football</item>
         <item>Basketball</item>
         <item>Tennis</item>
@@ -84,17 +85,16 @@
     </string-array>
 
     <string-array name="workout_array">
-        <item>Pull-ups</item>
         <item>Push-ups</item>
-        <item>Parralel dips</item>
+        <item>Parallel dips</item>
         <item>Flag</item>
         <item>Planche</item>
     </string-array>
 
     <string-array name="football_array">
-        <item>Jungling</item>
+        <item>Jangling</item>
         <item>Push-ups</item>
-        <item>Parralel dips</item>
+        <item>Parallel bar dips</item>
         <item>Flag</item>
         <item>Planche</item>
     </string-array>

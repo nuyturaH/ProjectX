@@ -8,10 +8,8 @@ public class User {
     private String mUsername;
     private UserInfo mUserInfo;
     private String mEmail;
-    //private String password;
     private Integer mPoints;
     private String mStatus;
-//    private Skill mSport;
     private List<Skill> mSkills;
 
     public Long getId() {
@@ -41,14 +39,6 @@ public class User {
     public void setEmail(String email) {
         this.mEmail = email;
     }
-
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
 
     public Integer getPoints() {
         return mPoints;

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +53,15 @@ public class MyProfileFragment extends Fragment {
     private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private FloatingActionButton mEditButton;
-    private TextView mFullnameView;
+    private TextView mPointsView;
+    private TextView mStatusView;
+    private TextView mHeightView;
+    private TextView mWeightView;
+    private TextView mFirstnameView;
+    private TextView mLastnameView;
+    private TextView mGender;
+    private TextView mAge;
+
     private Fragment mNavHostFragment;
 
     //user
@@ -134,8 +143,32 @@ public class MyProfileFragment extends Fragment {
         mToolbar = view.findViewById(R.id.toolbar_my_profile);
         mCollapsingToolbarLayout = view.findViewById(R.id.ctl_my_profile);
         mEditButton = view.findViewById(R.id.fab_edit_my_profile);
-        mFullnameView = view.findViewById(R.id.tv_full_name_my_profile);
+        mPointsView = view.findViewById(R.id.tv_points_my_profile);
+        mStatusView = view.findViewById(R.id.tv_status_my_profile);
+        mHeightView = view.findViewById(R.id.tv_height_my_profile);
+        mWeightView = view.findViewById(R.id.tv_weight_my_profile);
+        mFirstnameView = view.findViewById(R.id.tv_first_name_my_profile);
+        mLastnameView = view.findViewById(R.id.tv_last_name_my_profile);
+        mGender = view.findViewById(R.id.tv_gender_my_profile);
+        mAge = view.findViewById(R.id.tv_age_my_profile);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable final User user) {
+                Log.e("hhhh", "ViewModel in My profile " + user.toString());
+                mCurrentUser = user;
+            }
+        });
+
+
+
+    }
+
+    private void fillViews(){
+
     }
 
     private void logOut() {

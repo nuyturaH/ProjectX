@@ -121,7 +121,7 @@ public class SignUpFragment extends Fragment {
                         mCurrentUser.setEmail(mEmailView.getText().toString());
                         mUserList.add(mCurrentUser);
                         registerUserToFirebase(mCurrentUser);//add user to firebase
-                        mUserViewModel.setUser(mCurrentUser);//ViewModel
+                        mUserViewModel.setUser(mCurrentUser);
                         openAccount(v);
                     }
 
@@ -219,9 +219,7 @@ public class SignUpFragment extends Fragment {
     private void openAccount(View v) {
         sharedPreferences.setLoggedIn(getActivity(), true);
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.menu_item_log_out, true).build();
-        bundle = new Bundle();
-//        bundle.putParcelable("signUpUserToMap", mCurrentUser);
-        Navigation.findNavController(v).navigate(R.id.action_fragment_sign_up_to_map_fragment, bundle, navOptions);
+        Navigation.findNavController(v).navigate(R.id.action_fragment_sign_up_to_map_fragment, null, navOptions);
     }
 
 
