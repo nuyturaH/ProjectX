@@ -83,6 +83,7 @@ public class SignInFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
         getUsersFromDatabase();
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         mProgressDialog = new ProgressDialog(this.getActivity());
 
@@ -109,7 +110,6 @@ public class SignInFragment extends Fragment {
     //************************************** METHODS ********************************************
     private void openAccount(View v) {
         sharedPreferences.setLoggedIn(getActivity(), true);
-        mCurrentUser = new User();//TODO get user from FireBase
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mUserViewModel.setUser(mCurrentUser);
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.menu_item_log_out, true).build();
@@ -129,6 +129,7 @@ public class SignInFragment extends Fragment {
                         mProgressDialog.dismiss();
                         if (task.isSuccessful()) {
                             //login
+                            getCurrentUserFromDatabase();
                             openAccount(view);
                         } else {
                             if (task.getException().getMessage().equals(getResources().getString(R.string.task_error_password))) {
@@ -157,7 +158,7 @@ public class SignInFragment extends Fragment {
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User mUser = userSnapshot.getValue(User.class);
                     mUserList.add(mUser);
-                    Log.d("SignIn", mUserList.get(0).toString());
+
                 }
             }
 
@@ -165,6 +166,18 @@ public class SignInFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+    }
+
+    public void getCurrentUserFromDatabase()
+    {
+        for(User user:mUserList)
+        {
+            if(user.getEmail().equals(mUsernameView.getText().toString())) {
+                mCurrentUser = user;
+            }
+        }
+        Log.d("SignIn", mCurrentUser.toString());
+
     }
 
 }
