@@ -88,6 +88,7 @@ public class SignUpFragment extends Fragment {
         setConfirmPasswordError();
         addUserToList();
 
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         onClickNavigate(mSuggestionSignUp, R.id.action_fragment_sign_up_to_fragment_sign_in);

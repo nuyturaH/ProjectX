@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,6 +57,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -94,9 +96,6 @@ public class MyProfileEditFragment extends Fragment {
     private ImageView mAvatarView;
 
     private EditText mUsernameView;
-    private EditText mPasswordView;
-    private ConstraintLayout mChangePasswordLayout;
-    private EditText mConfirmPasswordView;
     private EditText mFirstNameView;
     private EditText mLastNameView;
 
@@ -104,7 +103,12 @@ public class MyProfileEditFragment extends Fragment {
     private RadioButton mMale;
     private RadioButton mFemale;
 
-    private TextView mChangePasswordView;
+    private TextView mChangePasswordView;   //TextView
+    private ConstraintLayout mChangePasswordLayout;
+    private EditText mPasswordView;
+    private EditText mConfirmPasswordView;
+    private Button mChangePasswordButton;
+
     private TextView mBirthDateView;
 
     private EditText mWeightView;
@@ -138,6 +142,9 @@ public class MyProfileEditFragment extends Fragment {
     //viewmodel
     private UserViewModel mUserViewModel;
 
+    //
+    private boolean mToChangePassword;
+
     //constructors
     public MyProfileEditFragment() {
     }
@@ -167,7 +174,8 @@ public class MyProfileEditFragment extends Fragment {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this.getContext());
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
 
         setUsernameErrors();
         setPasswordError();
@@ -178,10 +186,14 @@ public class MyProfileEditFragment extends Fragment {
         mChangePasswordView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mChangePasswordLayout.setVisibility(View.VISIBLE);
-//                mPasswordView.setVisibility(View.VISIBLE);
-//                mConfirmPasswordView.setVisibility(View.VISIBLE);
-                mChangePasswordView.setVisibility(View.GONE);
+                mToChangePassword = !mToChangePassword;
+                setChangePasswordViews();
+            }
+        });
+
+        mChangePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 updateUserPassword();
             }
         });
@@ -232,9 +244,10 @@ public class MyProfileEditFragment extends Fragment {
         mMale = view.findViewById(R.id.rb_male_my_profile_edit);
         mFemale = view.findViewById(R.id.rb_female_my_profile_edit);
         mPasswordView = view.findViewById(R.id.etv_password_my_profile_edit);
-        mChangePasswordLayout = view.findViewById(R.id.layout_change_password_my_profile_edit);
         mConfirmPasswordView = view.findViewById(R.id.etv_confirm_password_my_profile_edit);
+        mChangePasswordLayout = view.findViewById(R.id.layout_change_password_my_profile_edit);
         mChangePasswordView = view.findViewById(R.id.tv_change_password_my_profile_edit);
+        mChangePasswordButton = view.findViewById(R.id.btn_confirm_password_change_my_profile_edit);
         mBirthDateView = view.findViewById(R.id.tv_birth_date_my_profile_edit);
         mWeightView = view.findViewById(R.id.etv_weight_my_profile_edit);
         mHeightView = view.findViewById(R.id.etv_height_my_profile_edit);
@@ -302,8 +315,6 @@ public class MyProfileEditFragment extends Fragment {
                             initRecyclerView();
                         }
                     }
-
-
                 }
             }
 
@@ -334,12 +345,25 @@ public class MyProfileEditFragment extends Fragment {
                 mBirthDateView.setText(String.valueOf(mCurrentUser.getUserInfo().getBirthDate().getTime()));
             }
             if (mCurrentUser.getUserInfo().getGender() != null) {
-                if (mCurrentUser.getUserInfo().getGender() == 0)
-                    mMale.setSelected(true);
-                else mFemale.setSelected(true);
+                if (mCurrentUser.getUserInfo().getGender() == 0) {
+                    mMale.setChecked(true);
+                } else {
+                    mFemale.setChecked(true);
+                }
             }
         }
 
+    }
+
+    private void setChangePasswordViews() {
+        if (mToChangePassword) {
+            mChangePasswordLayout.setVisibility(View.VISIBLE);
+            mPasswordView.setVisibility(View.VISIBLE);
+            mConfirmPasswordView.setVisibility(View.VISIBLE);
+            mChangePasswordButton.setVisibility(View.VISIBLE);
+        } else {
+            mChangePasswordLayout.setVisibility(View.GONE);
+        }
     }
 
 
@@ -431,7 +455,6 @@ public class MyProfileEditFragment extends Fragment {
     }
 
     private void setUserInformation() {
-//        mCurrentUser.setUserInfo(new UserInfo());
         UserInfo mUserInfo;
         if (mCurrentUser.getUserInfo() == null) {
             mUserInfo = new UserInfo();
@@ -439,57 +462,59 @@ public class MyProfileEditFragment extends Fragment {
             mUserInfo = mCurrentUser.getUserInfo();
         }
 
+        mCurrentUser.setUsername(mUsernameView.getText().toString());
 
         if (mFirstNameView.getText() != null) {
             mUserInfo.setFirstName(mFirstNameView.getText().toString());
         }
         if (mLastNameView.getText() != null) {
             mUserInfo.setLastName(mLastNameView.getText().toString());
-//            mFirebaseAnalytics.setUserProperty("last_name", mUserInfo.getLastName());
         }
 
         if (mWeightView.getText() != null) {
-            mUserInfo.setWeight(mUserInfo.getWeight());
+            mUserInfo.setWeight(Float.valueOf(mWeightView.getText().toString()));
         }
         if (mHeightView.getText() != null) {
-            mUserInfo.setHeight(mUserInfo.getHeight());
+            mUserInfo.setHeight(Float.valueOf(mHeightView.getText().toString()));
         }
         if (mGender.getCheckedRadioButtonId() == mMale.getId()) {
             mUserInfo.setGender(0);
-//            mFirebaseAnalytics.setUserProperty("gender", "male");
         } else if (mGender.getCheckedRadioButtonId() == mFemale.getId())
             mUserInfo.setGender(1);
-//        mFirebaseAnalytics.setUserProperty("gender", "female");
         if (dateOpened) {
             mUserInfo.setBirthDate(mDate);
-//            mFirebaseAnalytics.setUserProperty("birth_date", mUserInfo.getBirthDate().toString());
         }
 
+        mCurrentUser.setId(mFirebaseUser.getUid());
         mCurrentUser.setUserInfo(mUserInfo);
         mUserViewModel.setUser(mCurrentUser);
-        mDatabase.child("Users").
-                child(mFirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(mCurrentUser);
 
-
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(mCurrentUser.getId());
+        mDatabase.setValue(mCurrentUser);
 
     }
 
     private void updateUserPassword() {
-        if (mFirebaseUser != null) {
-            if (mPasswordView.getText() != null) {
-                mFirebaseUser.updatePassword(mPasswordView.getText().toString())
-                        .addOnCompleteListener(this.getActivity(), new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "Success");
-                                } else {
-                                    Log.d(TAG, "Unsuccess");
+        if (mPasswordView.getText().length() == 0) {
+            mPasswordView.setError(getResources().getString(R.string.password_enter));
+        } else if (mConfirmPasswordView.getText().length() == 0) {
+            mConfirmPasswordView.setError(getResources().getString(R.string.confirm_password_enter));
+        } else if (mFirebaseUser != null) {
+            mFirebaseUser.updatePassword(mPasswordView.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                mToChangePassword = false;
+                                setChangePasswordViews();
+                                Log.d(TAG, "Success");
+                            } else {
 
-                                }
+                                Log.d(TAG, "Unsuccess" + task.getException().getMessage());
+
                             }
-                        });
-            }
+                        }
+                    });
         }
     }
 
@@ -641,7 +666,7 @@ public class MyProfileEditFragment extends Fragment {
                     }
                 }, year, month, dayOfMonth);
 
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.getDatePicker();
         datePickerDialog.show();
         dateOpened = true;
     }

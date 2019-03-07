@@ -4,7 +4,7 @@ import java.util.List;
 
 public class User {
 
-    private Long id;
+    private String id;
     private String mUsername;
     private UserInfo mUserInfo;
     private String mEmail;
@@ -12,8 +12,12 @@ public class User {
     private String mStatus;
     private List<Skill> mSkills;
 
-    public Long getId() {
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {

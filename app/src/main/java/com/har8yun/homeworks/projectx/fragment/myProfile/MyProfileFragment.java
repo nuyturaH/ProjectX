@@ -192,6 +192,8 @@ public class MyProfileFragment extends Fragment {
             }
             if (mCurrentUser.getUserInfo().getWeight() != null) {
                 mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()));
+                Log.d("Profile",String.valueOf(mCurrentUser.getUserInfo().getWeight()));
+                Toast.makeText(getContext(),String.valueOf(mCurrentUser.getUserInfo().getWeight()),Toast.LENGTH_SHORT).show();
             }
             if (mCurrentUser.getUserInfo().getHeight() != null) {
                 mHeightView.setText(String.valueOf((mCurrentUser.getUserInfo().getHeight())));

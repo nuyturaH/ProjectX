@@ -66,7 +66,7 @@ public class SignInFragment extends Fragment {
     //Firebase
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
-    public static final String DATABASE_PATH_NAME = "Users";
+    public static final String DATABASE_PATH_NAME = "users";
 
     //constructor
     public SignInFragment() {
