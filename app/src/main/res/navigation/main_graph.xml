@@ -23,7 +23,25 @@
         android:id="@+id/map_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MapFragment"
         android:label="Map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_map_fragment_to_create_event_fragment"
+            app:destination="@id/create_event_fragment"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/create_event_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.event.CreateEventFragment"
+        android:label="Create Event"
+        tools:layout="@layout/fragment_create_event">
+
+        <action
+            android:id="@+id/action_create_event_fragment_to_map_fragment"
+            app:destination="@id/map_fragment"
+            />
+        </fragment>
     <fragment
         android:id="@+id/top_charts_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.TopChartsFragment"

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.event.CreateEventFragment">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_title_create_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etv_title_create_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:hint="Event Title"
+            android:maxLines="1"
+            android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_description_create_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/til_title_create_event"
+        app:layout_constraintStart_toStartOf="@id/til_title_create_event"
+        app:layout_constraintTop_toBottomOf="@id/til_title_create_event">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etv_description_create_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:foregroundTint="@color/colorPrimary"
+            android:hint="Description"
+            android:textColorHint="@color/colorPrimaryText" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_time"
+        app:layout_constraintTop_toBottomOf="@id/til_description_create_event"
+        android:text="Set Time"/>
+
+    <Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/btn_save_create_event"
+    app:layout_constraintTop_toBottomOf="@id/tv_time"
+    app:layout_constraintStart_toStartOf="@id/tv_time"
+    android:text="Create Event"/>
+
+
+</android.support.constraint.ConstraintLayout>
