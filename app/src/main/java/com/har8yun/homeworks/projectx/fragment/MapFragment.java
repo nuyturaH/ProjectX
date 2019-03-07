@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
+package com.har8yun.homeworks.projectx.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;

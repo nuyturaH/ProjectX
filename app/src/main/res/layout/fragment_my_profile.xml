@@ -104,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/lightGrey"
-            tools:context=".fragment.bottomNavigation.MyProfileFragment">
+            tools:context=".fragment.myProfile.MyProfileFragment">
 
             <TextView
                 android:id="@+id/tv_suggestion_my_profile"
@@ -303,7 +303,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/layout_photos_my_profile">
 
                 <View
-                    android:id="@+id/line"
+                    android:id="@+id/line_edit_item"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
@@ -355,7 +355,7 @@
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:textSize="@dimen/my_profile_text_size"
                     app:layout_constraintStart_toStartOf="@+id/label_full_name_my_profile"
-                    app:layout_constraintTop_toBottomOf="@+id/line" />
+                    app:layout_constraintTop_toBottomOf="@+id/line_edit_item" />
 
                 <TextView
                     android:id="@+id/tv_gender_my_profile"

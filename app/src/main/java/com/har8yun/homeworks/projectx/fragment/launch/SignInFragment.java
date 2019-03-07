@@ -168,11 +168,9 @@ public class SignInFragment extends Fragment {
         });
     }
 
-    public void getCurrentUserFromDatabase()
-    {
-        for(User user:mUserList)
-        {
-            if(user.getEmail().equals(mUsernameView.getText().toString())) {
+    public void getCurrentUserFromDatabase() {
+        for (User user : mUserList) {
+            if (user.getEmail().equals(mUsernameView.getText().toString())) {
                 mCurrentUser = user;
             }
         }

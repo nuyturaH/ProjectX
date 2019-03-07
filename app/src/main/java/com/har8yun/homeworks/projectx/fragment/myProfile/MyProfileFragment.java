@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
+package com.har8yun.homeworks.projectx.fragment.myProfile;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -10,6 +10,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,13 +20,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.adapter.SkillItemRecyclerAdapter;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
@@ -57,10 +58,10 @@ public class MyProfileFragment extends Fragment {
     private TextView mStatusView;
     private TextView mHeightView;
     private TextView mWeightView;
-    private TextView mFirstnameView;
-    private TextView mLastnameView;
-    private TextView mGender;
-    private TextView mAge;
+    private TextView mFirstNameView;
+    private TextView mLastNameView;
+    private TextView mGenderView;
+    private TextView mAgeView;
 
     private Fragment mNavHostFragment;
 
@@ -93,8 +94,11 @@ public class MyProfileFragment extends Fragment {
         mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User user) {
-                Log.e("hhhh", "ViewModel in My profile "+user.toString());
+                Log.e("hhhh", "ViewModel in My profile " + user.toString());
                 setNavigationComponent(user);
+                mCurrentUser.setUserInfo(user.getUserInfo());
+                mCurrentUser = user;
+                fillViews();
             }
         });
     }
@@ -104,9 +108,9 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_my_profile, menu);
-
         super.onCreateOptionsMenu(menu, inflater);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -123,9 +127,10 @@ public class MyProfileFragment extends Fragment {
         mNavController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if (destination.getId() == R.id.my_profile_fragment){
-                    NavHostFragment.findNavController(mNavHostFragment).getCurrentDestination().setLabel(user.getUsername());
-                    Log.e("hhhh","MyProfile "+ user.toString());
+                if (destination.getId() == R.id.my_profile_fragment) {
+                    if (mCurrentUser.getUsername() != null) {
+                        NavHostFragment.findNavController(mNavHostFragment).getCurrentDestination().setLabel(user.getUsername());
+                    }
                 }
             }
         });
@@ -147,10 +152,10 @@ public class MyProfileFragment extends Fragment {
         mStatusView = view.findViewById(R.id.tv_status_my_profile);
         mHeightView = view.findViewById(R.id.tv_height_my_profile);
         mWeightView = view.findViewById(R.id.tv_weight_my_profile);
-        mFirstnameView = view.findViewById(R.id.tv_first_name_my_profile);
-        mLastnameView = view.findViewById(R.id.tv_last_name_my_profile);
-        mGender = view.findViewById(R.id.tv_gender_my_profile);
-        mAge = view.findViewById(R.id.tv_age_my_profile);
+        mFirstNameView = view.findViewById(R.id.tv_first_name_my_profile);
+        mLastNameView = view.findViewById(R.id.tv_last_name_my_profile);
+        mGenderView = view.findViewById(R.id.tv_gender_my_profile);
+        mAgeView = view.findViewById(R.id.tv_age_my_profile);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
 
@@ -164,10 +169,44 @@ public class MyProfileFragment extends Fragment {
         });
 
 
-
     }
 
-    private void fillViews(){
+    private void fillViews() {
+        Log.e("hhhh", "fillviews");
+        if (mCurrentUser.getUserInfo() != null) {
+            if (mCurrentUser.getUserInfo().getFirstName() != null) {
+                mFirstNameView.setText(mCurrentUser.getUserInfo().getFirstName());
+            }
+            if (mCurrentUser.getUserInfo().getLastName() != null) {
+                mLastNameView.setText(mCurrentUser.getUserInfo().getLastName());
+            }
+            if (mCurrentUser.getUserInfo().getGender() != null) {
+                if (mCurrentUser.getUserInfo().getGender() == 0) {
+                    mGenderView.setText("Male");
+                } else {
+                    mGenderView.setText("Female");
+                }
+            }
+            if (mCurrentUser.getUserInfo().getBirthDate() != null) {
+                //TODO set age
+            }
+            if (mCurrentUser.getUserInfo().getWeight() != null) {
+                mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()));
+            }
+            if (mCurrentUser.getUserInfo().getHeight() != null) {
+                mHeightView.setText(String.valueOf((mCurrentUser.getUserInfo().getHeight())));
+            }
+            if (mCurrentUser.getUserInfo().getAvatar() != null) {
+                //TODO set avatar
+            }
+
+            if (mCurrentUser.getUsername() != null) {
+                //username setting is in setNavigationComponent()
+            }
+            if (mCurrentUser.getSkills() != null) {
+                initRecyclerView();
+            }
+        }
 
     }
 
@@ -175,10 +214,26 @@ public class MyProfileFragment extends Fragment {
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.map_fragment, true).build();
         Fragment mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.menu_item_log_out, null, navOptions);
-        sharedPreferences.setLoggedIn(getActivity(),false);
+        sharedPreferences.setLoggedIn(getActivity(), false);
 
         FirebaseAuth.getInstance().signOut();
-        Toast.makeText(getContext(),"Signed Out", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Signed Out", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void initRecyclerView() {
+        SkillItemRecyclerAdapter skillItemRecyclerAdapter = new SkillItemRecyclerAdapter();
+//        mSkillItemRecyclerAdapter.setOnRvItemClickListener(new SkillItemRecyclerAdapter.OnRvItemClickListener() {
+//            @Override
+//            public void onItemClicked(int pos) {
+//                Skill item = mSkillList.get(pos);
+//                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName() + ": " + item.getSkillCount(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+        RecyclerView recyclerView = getView().findViewById(R.id.rv_skills_my_profile);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(skillItemRecyclerAdapter);
+        skillItemRecyclerAdapter.addItems(mCurrentUser.getSkills());
     }
 
 }

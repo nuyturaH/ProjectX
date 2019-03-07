@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content" >
 
     <TextView
-        android:id="@+id/tv_skill_name_item"
+        android:id="@+id/tv_skill_name_edit_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -19,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_dots_item"
+        android:id="@+id/tv_dots_edit_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -27,39 +26,40 @@
         android:textAllCaps="false"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="@dimen/my_profile_text_size"
-        app:layout_constraintStart_toEndOf="@+id/tv_skill_name_item"
+        app:layout_constraintStart_toEndOf="@+id/tv_skill_name_edit_item"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_skill_count_item"
+    <EditText
+        android:id="@+id/tv_skill_count_edit_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="12"
+        android:hint="12"
+        android:textAlignment="center"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="@dimen/my_profile_text_size"
         android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_skill_name_item"
-        app:layout_constraintStart_toEndOf="@+id/tv_dots_item"
-        app:layout_constraintTop_toTopOf="@+id/tv_skill_name_item" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_skill_count_item"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_skill_count_item"
-        app:srcCompat="@drawable/ic_delete_red" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_skill_name_edit_item"
+        app:layout_constraintStart_toEndOf="@+id/tv_dots_edit_item"
+        app:layout_constraintTop_toTopOf="@+id/tv_skill_name_edit_item" />
 
     <View
-        android:id="@+id/line"
+        android:id="@+id/line_edit_item"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
         android:background="@color/lightGrey"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/label_full_name_my_profile"
-        app:layout_constraintTop_toBottomOf="@+id/tv_skill_name_item" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_skill_name_edit_item" />
+
+    <ImageView
+        android:id="@+id/iv_remove_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_skill_count_edit_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_skill_count_edit_item"
+        app:srcCompat="@drawable/ic_delete_red" />
 </android.support.constraint.ConstraintLayout>

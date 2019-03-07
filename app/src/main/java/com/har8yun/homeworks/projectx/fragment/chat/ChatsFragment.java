@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
+package com.har8yun.homeworks.projectx.fragment.chat;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

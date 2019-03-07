@@ -3,7 +3,12 @@ package com.har8yun.homeworks.projectx.model;
 
 public class Skill {
     private String mSkillName;
-    private String mSkillCount;
+    private Integer mSkillCount;
+
+    public Skill(String skillName, int skillCount) {
+        mSkillName = skillName;
+        mSkillCount = skillCount;
+    }
 
     public String getSkillName() {
         return mSkillName;
@@ -13,11 +18,19 @@ public class Skill {
         mSkillName = skillName;
     }
 
-    public String getSkillCount() {
+    public Integer getSkillCount() {
         return mSkillCount;
     }
 
-    public void setSkillCount(String skillCount) {
+    public void setSkillCount(Integer skillCount) {
         mSkillCount = skillCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Skill{" +
+                "mSkillName='" + mSkillName + '\'' +
+                ", mSkillCount=" + mSkillCount +
+                '}';
     }
 }

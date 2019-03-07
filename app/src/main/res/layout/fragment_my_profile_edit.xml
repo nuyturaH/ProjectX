@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGrey"
-    tools:context=".fragment.bottomNavigation.MyProfileEditFragment">
+    tools:context=".fragment.myProfile.MyProfileEditFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_my_profile_edit"
@@ -25,7 +25,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_my_profile_edit"
         tools:layout_editor_absoluteX="0dp">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -38,7 +38,7 @@
                 android:elevation="2dp"
                 android:padding="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_my_profile_edit">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/til_first_name_my_profile_edit"
@@ -351,32 +351,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:background="@color/colorPrimaryText"
                 android:elevation="2dp"
                 android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
                 <Spinner
                     android:id="@+id/spinner_sports_my_profile_edit"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
-                    android:background="@drawable/bg_tv_border"
+                    android:background="@drawable/bg_spinner_border"
                     android:entries="@array/sports_array"
-                    android:padding="10dp"
+                    android:padding="8dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="18dp"
                     android:prompt="@string/choose_sport"
-                    app:layout_constraintEnd_toStartOf="@+id/spinner_skills_my_profile_edit"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_select_skills_my_profile_edit"
                     app:layout_constraintTop_toBottomOf="@+id/tv_select_skills_my_profile_edit" />
 
                 <TextView
                     android:id="@+id/tv_select_skills_my_profile_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/select_your_skills"
+                    android:text="@string/add_skills"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -384,12 +385,14 @@
 
                 <Spinner
                     android:id="@+id/spinner_skills_my_profile_edit"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_tv_border"
-                    android:padding="10dp"
+                    android:layout_marginStart="24dp"
+                    android:background="@drawable/bg_spinner_border"
+                    android:padding="8dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="18dp"
                     android:visibility="invisible"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/spinner_sports_my_profile_edit"
                     app:layout_constraintTop_toTopOf="@+id/spinner_sports_my_profile_edit" />
 
@@ -402,44 +405,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/spinner_sports_my_profile_edit" />
             </android.support.constraint.ConstraintLayout>
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
     </ScrollView>
-
-
-    <!--<TextView-->
-    <!--android:id="@+id/tv_weight_my_profile_edit"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:layout_constraintTop_toBottomOf="@id/btn_confirm_password_change_my_profile_edit"-->
-    <!--app:layout_constraintStart_toStartOf="@id/btn_confirm_password_change_my_profile_edit"-->
-    <!--android:text="@string/weight"-->
-    <!--android:textSize="15sp"/>-->
-
-    <!--<Spinner-->
-    <!--android:id="@+id/sp_weight_my_profile_edit"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:layout_constraintTop_toBottomOf="@id/tv_weight_my_profile_edit"-->
-    <!--app:layout_constraintStart_toStartOf="@id/tv_weight_my_profile_edit"-->
-    <!--android:prompt="@string/weight"-->
-    <!--/>-->
-    <!--<TextView-->
-    <!--android:id="@+id/tv_height_my_profile_edit"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:layout_constraintTop_toBottomOf="@id/btn_confirm_password_change_my_profile_edit"-->
-    <!--app:layout_constraintStart_toEndOf="@id/tv_weight_my_profile_edit"-->
-    <!--android:text="@string/height"-->
-    <!--android:textSize="15sp"-->
-    <!--android:layout_marginStart="50dp"/>-->
-    <!--<Spinner-->
-    <!--android:id="@+id/sp_height_my_profile_edit"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:layout_constraintTop_toBottomOf="@id/tv_height_my_profile_edit"-->
-    <!--app:layout_constraintStart_toStartOf="@id/tv_height_my_profile_edit"-->
-    <!--android:prompt="@string/height"-->
-    <!--/>-->
-
 
 </android.support.constraint.ConstraintLayout>

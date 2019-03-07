@@ -1,16 +1,11 @@
-package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
+package com.har8yun.homeworks.projectx.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,52 +19,46 @@ import androidx.navigation.ui.NavigationUI;
 import static com.google.android.gms.common.util.CollectionUtils.setOf;
 
 
-public class SettingsFragment extends Fragment {
+public class TopChartsFragment extends Fragment {
 
     //navigation
     private NavController mNavController;
 
     //views
-    private Toolbar mToolbarSettings;
+    private Toolbar mToolbarTopCharts;
 
     //constructor
-    public SettingsFragment() {
+    public TopChartsFragment() {
     }
-
 
     //************************************ LIFECYCLE METHODS ****************************************
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        initViews(view);
-        setSettingsToolbar();
+        View view = inflater.inflate(R.layout.fragment_top_charts, container, false);
 
+        initViews(view);
+        setTopChartsToolbar();
         setNavigationComponent();
 
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_settings, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
 
     //************************************** METHODS ********************************************
     private void initViews(View view) {
-        mToolbarSettings = view.findViewById(R.id.toolbar_settings);
+        mToolbarTopCharts = view.findViewById(R.id.toolbar_top_charts);
+    }
+
+    private void setTopChartsToolbar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbarTopCharts);
+        setHasOptionsMenu(true);
     }
 
     private void setNavigationComponent() {
         mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.settings_fragment)).build();
-        NavigationUI.setupWithNavController(mToolbarSettings, mNavController, appBarConfiguration);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.top_charts_fragment)).build();
+        NavigationUI.setupWithNavController(mToolbarTopCharts, mNavController, appBarConfiguration);
     }
 
-    private void setSettingsToolbar() {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(mToolbarSettings);
-        setHasOptionsMenu(true);
-    }
 }

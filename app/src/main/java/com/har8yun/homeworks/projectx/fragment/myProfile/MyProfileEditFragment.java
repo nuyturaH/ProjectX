@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment.bottomNavigation;
+package com.har8yun.homeworks.projectx.fragment.myProfile;
 
 
 import android.Manifest;
@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,7 +60,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.har8yun.homeworks.projectx.R;
-import com.har8yun.homeworks.projectx.adapter.SkillItemRecyclerAdapter;
+import com.har8yun.homeworks.projectx.adapter.SkillItemEditRecyclerAdapter;
 import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserInfo;
@@ -94,6 +95,7 @@ public class MyProfileEditFragment extends Fragment {
 
     private EditText mUsernameView;
     private EditText mPasswordView;
+    private ConstraintLayout mChangePasswordLayout;
     private EditText mConfirmPasswordView;
     private EditText mFirstNameView;
     private EditText mLastNameView;
@@ -123,9 +125,15 @@ public class MyProfileEditFragment extends Fragment {
     private User mCurrentUser;
     private FirebaseUser mFirebaseUser;
 
-    //adapter
-    private SkillItemRecyclerAdapter mSkillItemRecyclerAdapter;
+    //Skills
     private List<Skill> mSkillList = new ArrayList<>();
+
+    List<String> spinnerSkillsNameList = new ArrayList<>();
+    List<Skill> spinnerSkillsList = new ArrayList<>();
+
+
+    //adapter
+    private SkillItemEditRecyclerAdapter mSkillItemEditRecyclerAdapter;
 
     //viewmodel
     private UserViewModel mUserViewModel;
@@ -143,13 +151,13 @@ public class MyProfileEditFragment extends Fragment {
 
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mCurrentUser = mUserViewModel.getUser().getValue();
-//        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
-//            @Override
-//            public void onChanged(@Nullable final User user) {
+        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable final User user) {
 //                Log.e("hhhh", "ViewModel in My profile Edit " + user.toString());
-//                mCurrentUser = user;
-//            }
-//        });
+                mCurrentUser = user;
+            }
+        });
 
 
         initViews(view);
@@ -164,13 +172,15 @@ public class MyProfileEditFragment extends Fragment {
         setUsernameErrors();
         setPasswordError();
         setConfirmPasswordError();
-        saveChanges();
+//        setUserInformation();
+//        saveChanges();
 
         mChangePasswordView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPasswordView.setVisibility(View.VISIBLE);
-                mConfirmPasswordView.setVisibility(View.VISIBLE);
+                mChangePasswordLayout.setVisibility(View.VISIBLE);
+//                mPasswordView.setVisibility(View.VISIBLE);
+//                mConfirmPasswordView.setVisibility(View.VISIBLE);
                 mChangePasswordView.setVisibility(View.GONE);
                 updateUserPassword();
             }
@@ -222,6 +232,7 @@ public class MyProfileEditFragment extends Fragment {
         mMale = view.findViewById(R.id.rb_male_my_profile_edit);
         mFemale = view.findViewById(R.id.rb_female_my_profile_edit);
         mPasswordView = view.findViewById(R.id.etv_password_my_profile_edit);
+        mChangePasswordLayout = view.findViewById(R.id.layout_change_password_my_profile_edit);
         mConfirmPasswordView = view.findViewById(R.id.etv_confirm_password_my_profile_edit);
         mChangePasswordView = view.findViewById(R.id.tv_change_password_my_profile_edit);
         mBirthDateView = view.findViewById(R.id.tv_birth_date_my_profile_edit);
@@ -234,13 +245,65 @@ public class MyProfileEditFragment extends Fragment {
         mSportsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("hhhh", "" + parent.getItemAtPosition(position).toString());
+                String currentItemName = parent.getItemAtPosition(position).toString();
+
+                spinnerSkillsList.clear();
+
                 if (position != 0) {
                     mSkillsSpinner.setVisibility(View.VISIBLE);
                 }
                 if (position == 0) {
                     mSkillsSpinner.setVisibility(View.INVISIBLE);
                     ((TextView) view).setTextColor(Color.GRAY);
+                } else if (currentItemName.equals("Workout")) {
+                    List<Skill> workoutSkills = new ArrayList<>();
+                    workoutSkills.add(new Skill("Pull-ups", 1));
+                    workoutSkills.add(new Skill("Push-ups", 1));
+                    workoutSkills.add(new Skill("Planche", 0));
+                    workoutSkills.add(new Skill("Human Flag", 0));
+                    spinnerSkillsList.addAll(workoutSkills);
+
+                } else if (currentItemName.equals("Football")) {
+                    List<Skill> footballSkills = new ArrayList<>();
+                    footballSkills.add(new Skill("Juggling", 1));
+                    footballSkills.add(new Skill("ATM", 0));
+                    footballSkills.add(new Skill("Akka", 0));
+                    spinnerSkillsList.addAll(footballSkills);
+
+                }
+                spinnerSkillsNameList.clear();
+                spinnerSkillsNameList.add("Choose Skill...");
+                for (Skill skill : spinnerSkillsList) {
+                    spinnerSkillsNameList.add(skill.getSkillName());
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, spinnerSkillsNameList);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mSkillsSpinner.setAdapter(adapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mSkillsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String currentItemName = parent.getItemAtPosition(position).toString();
+
+                if (position == 0) {
+                    ((TextView) view).setTextColor(Color.GRAY);
+                } else {
+                    for (Skill s : spinnerSkillsList) {
+                        if (s.getSkillName().equals(currentItemName)) {
+                            mSkillList.add(s);
+                            mCurrentUser.setSkills(mSkillList);
+                            initRecyclerView();
+                        }
+                    }
+
+
                 }
             }
 
@@ -353,67 +416,80 @@ public class MyProfileEditFragment extends Fragment {
             if (!mConfirmPasswordView.getText().toString().equals(mPasswordView.getText().toString())) {
                 mConfirmPasswordView.setError(getResources().getString(R.string.confirm_password_matching));
             } else {
-                //giving changed fields to MyProfileFragment
-//                       Bundle bundle = new Bundle();
-//                       bundle.putString("username2",mUsernameView.getText().toString());
-//                       Navigation.findNavController(v).navigate(R.id.action_my_profile_edit_fragment_to_my_profile_fragment,bundle);
-                //==========================================
-                mCurrentUser.setUsername(mUsernameView.getText().toString());
 //              updateUserPassword();
                 setUserInformation();
+                mUserViewModel.setUser(mCurrentUser);
+                if (mUserViewModel.getUser().getValue().getUserInfo() != null) {
+                    Log.e("hhhh", "gender " + mUserViewModel.getUser().getValue().getUserInfo().getGender());
+                }
+//                Navigation.findNavController(v).navigate(R.id.action_my_profile_edit_fragment_to_my_profile_fragment);
+                Fragment mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+//                NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_my_profile_edit_fragment_to_my_profile_fragment);
                 //updateUserInFirebase(mCurrentUser); //add user to firebase
             }
         }
     }
 
     private void setUserInformation() {
-
-        if (mCurrentUser.getUserInfo() != null) {
-            UserInfo mUserInfo = mCurrentUser.getUserInfo();
-
-            if (mFirstNameView.getText() != null) {
-                mUserInfo.setFirstName(mFirstNameView.getText().toString());
-                mFirebaseAnalytics.setUserProperty("first_name", mUserInfo.getFirstName());
-            }
-            if (mLastNameView.getText() != null) {
-                mUserInfo.setLastName(mLastNameView.getText().toString());
-                mFirebaseAnalytics.setUserProperty("last_name", mUserInfo.getLastName());
-            }
-
-            if (mWeightView.getText() != null) {
-                mUserInfo.setWeight(mCurrentUser.getUserInfo().getWeight());
-            }
-            if (mHeightView.getText() != null) {
-                mUserInfo.setHeight(mCurrentUser.getUserInfo().getHeight());
-            }
-            if (mGender.getCheckedRadioButtonId() == mMale.getId()) {
-                mUserInfo.setGender(0);
-                mFirebaseAnalytics.setUserProperty("gender", "male");
-            } else if (mGender.getCheckedRadioButtonId() == mFemale.getId())
-                mUserInfo.setGender(1);
-            mFirebaseAnalytics.setUserProperty("gender", "female");
-            if (dateOpened) {
-                mUserInfo.setBirthDate(mDate);
-                mFirebaseAnalytics.setUserProperty("birth_date", mUserInfo.getBirthDate().toString());
-            }
+//        mCurrentUser.setUserInfo(new UserInfo());
+        UserInfo mUserInfo;
+        if (mCurrentUser.getUserInfo() == null) {
+            mUserInfo = new UserInfo();
+        } else {
+            mUserInfo = mCurrentUser.getUserInfo();
         }
+
+
+        if (mFirstNameView.getText() != null) {
+            mUserInfo.setFirstName(mFirstNameView.getText().toString());
+        }
+        if (mLastNameView.getText() != null) {
+            mUserInfo.setLastName(mLastNameView.getText().toString());
+//            mFirebaseAnalytics.setUserProperty("last_name", mUserInfo.getLastName());
+        }
+
+        if (mWeightView.getText() != null) {
+            mUserInfo.setWeight(mUserInfo.getWeight());
+        }
+        if (mHeightView.getText() != null) {
+            mUserInfo.setHeight(mUserInfo.getHeight());
+        }
+        if (mGender.getCheckedRadioButtonId() == mMale.getId()) {
+            mUserInfo.setGender(0);
+//            mFirebaseAnalytics.setUserProperty("gender", "male");
+        } else if (mGender.getCheckedRadioButtonId() == mFemale.getId())
+            mUserInfo.setGender(1);
+//        mFirebaseAnalytics.setUserProperty("gender", "female");
+        if (dateOpened) {
+            mUserInfo.setBirthDate(mDate);
+//            mFirebaseAnalytics.setUserProperty("birth_date", mUserInfo.getBirthDate().toString());
+        }
+
+        mCurrentUser.setUserInfo(mUserInfo);
+        mUserViewModel.setUser(mCurrentUser);
+        mDatabase.child("Users").
+                child(mFirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(mCurrentUser);
+
+
 
     }
 
     private void updateUserPassword() {
         if (mFirebaseUser != null) {
-            mFirebaseUser.updatePassword(mPasswordView.getText().toString())
-                    .addOnCompleteListener(this.getActivity(), new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "Success");
-                            } else {
-                                Log.d(TAG, "Unsuccess");
+            if (mPasswordView.getText() != null) {
+                mFirebaseUser.updatePassword(mPasswordView.getText().toString())
+                        .addOnCompleteListener(this.getActivity(), new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "Success");
+                                } else {
+                                    Log.d(TAG, "Unsuccess");
 
+                                }
                             }
-                        }
-                    });
+                        });
+            }
         }
     }
 
@@ -583,19 +659,20 @@ public class MyProfileEditFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        mSkillItemRecyclerAdapter = new SkillItemRecyclerAdapter();
-        mSkillItemRecyclerAdapter.setOnRvItemClickListener(new SkillItemRecyclerAdapter.OnRvItemClickListener() {
+        mSkillItemEditRecyclerAdapter = new SkillItemEditRecyclerAdapter();
+        mSkillItemEditRecyclerAdapter.setOnRvItemClickListener(new SkillItemEditRecyclerAdapter.OnRvItemClickListener() {
             @Override
             public void onItemClicked(int pos) {
                 Skill item = mSkillList.get(pos);
-                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName() + ": " + item.getSkillCount(), Toast.LENGTH_SHORT).show();
-                //TODO remove item
+//                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName() + ": " + item.getSkillCount(), Toast.LENGTH_SHORT).show();
+                mSkillList.remove(pos);
+                mSkillItemEditRecyclerAdapter.removeItem(pos);
             }
         });
         RecyclerView recyclerView = getView().findViewById(R.id.rv_skills_my_profile_edit);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(mSkillItemRecyclerAdapter);
-        mSkillItemRecyclerAdapter.addItems(mSkillList);
+        recyclerView.setAdapter(mSkillItemEditRecyclerAdapter);
+        mSkillItemEditRecyclerAdapter.addItems(mSkillList);
     }
 
 

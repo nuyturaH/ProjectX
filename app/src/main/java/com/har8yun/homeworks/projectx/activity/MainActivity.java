@@ -1,7 +1,9 @@
 package com.har8yun.homeworks.projectx.activity;
 
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +51,17 @@ public class MainActivity extends AppCompatActivity {
         initViews();
         setNavigationComponent();
 
+
+
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        mUser = mUserViewModel.getUser().getValue();
+        mUserViewModel.getUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable final User user) {
+//                Log.e("hhhh", "ViewModel in My profile Edit " + user.toString());
+                mUser = user;
+            }
+        });
 
         if (!sharedPreferences.getLoggedStatus(this)) {
             NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.map_fragment, true).build();

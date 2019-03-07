@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/my_profile_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MyProfileFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.myProfile.MyProfileFragment"
         android:label="nickname"
         tools:layout="@layout/fragment_my_profile">
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/map_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MapFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.MapFragment"
         android:label="Map"
         tools:layout="@layout/fragment_map">
         <action
@@ -44,12 +44,12 @@
         </fragment>
     <fragment
         android:id="@+id/top_charts_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.TopChartsFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.TopChartsFragment"
         android:label="Top charts"
         tools:layout="@layout/fragment_top_charts" />
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.SettingsFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
@@ -104,16 +104,18 @@
     </fragment>
     <fragment
         android:id="@+id/chats_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.ChatsFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.chat.ChatsFragment"
         android:label="Chats"
         tools:layout="@layout/fragment_chats" />
     <fragment
         android:id="@+id/my_profile_edit_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.bottomNavigation.MyProfileEditFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.myProfile.MyProfileEditFragment"
         android:label="Edit"
         tools:layout="@layout/fragment_my_profile_edit" >
         <action
             android:id="@+id/action_my_profile_edit_fragment_to_my_profile_fragment"
-            app:destination="@id/my_profile_fragment" />
+            app:destination="@id/my_profile_fragment"
+            app:popUpTo="@id/my_profile_fragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

@@ -74,6 +74,7 @@
     <string name="_00_0">00.0</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="add_skills">Add Skills</string>
 
     <string-array name="sports_array">
         <item>Choose Sport…</item>
@@ -85,18 +86,22 @@
     </string-array>
 
     <string-array name="workout_array">
-        <item>Push-ups</item>
-        <item>Parallel dips</item>
-        <item>Flag</item>
+        <item>Choose Skill…</item>
+        <item>Pull-Ups</item>
+        <item>Push-Ups</item>
+        <item>Parallel Dips</item>
+        <item>Human Flag</item>
         <item>Planche</item>
+        <item>Front Lever</item>
+        <item>Back Lever</item>
+        <item>Elbow Lever</item>
     </string-array>
 
     <string-array name="football_array">
-        <item>Jangling</item>
-        <item>Push-ups</item>
-        <item>Parallel bar dips</item>
-        <item>Flag</item>
-        <item>Planche</item>
+        <item>Choose Skill…</item>
+        <!--<item>Juggling</item>-->
+        <!--<item>ATM</item>-->
+        <!--<item>Akka</item>-->
     </string-array>
 
 
