@@ -2,6 +2,9 @@ package com.har8yun.homeworks.projectx.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,10 +14,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
@@ -30,6 +39,7 @@ import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,15 +55,18 @@ import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNaviga
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
-    public static final String DATABASE_PATH_EVENTS = "Events";
+//    public static final String DATABASE_PATH_EVENTS = "Events";
 
     //views
     private BottomNavigationView mBottomNavigationView;
     private FloatingActionButton mAddEventButton;
+    private EditText mSearchView;
     private MapView mapView;
 
     private GoogleMap mGoogleMap;
 
+    //navigation
+    private NavController mNavController;
 
     //preferences
     SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
@@ -67,7 +80,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private EventViewModel mEventViewModel;
 
     //Firebase
-    DatabaseReference mFirebaseReference = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mDatabase;
 
 
     //constructor
@@ -82,7 +95,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // mUser = sharedPreferences.getCurrentUser(getContext());
         initViews(view);
-        onClickNavigate(mAddEventButton, R.id.action_map_fragment_to_create_event_fragment);
+        initSearch();
+        showBotNavBar();
 
         return view;
     }
@@ -94,7 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(@Nullable User user) {
-//                Log.e("hhhh", "ViewModel " + user.toString());
+                Log.e("hhhh", "ViewModel " + user.toString());
             }
         });
 
@@ -102,10 +116,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+
     //************************************** METHODS ********************************************
+
+    private void showBotNavBar() {
+        mBottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
     private void initViews(View v) {
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
         mAddEventButton = v.findViewById(R.id.fab_add_event_map);
+        mSearchView = v.findViewById(R.id.et_search_map_fragment);
         mapView = v.findViewById(R.id.mv_map);
         if (mapView != null) {
             mapView.onCreate(null);
@@ -113,7 +134,63 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapView.getMapAsync(this);
         }
 
+
+        onClickNavigate(mAddEventButton, R.id.action_map_fragment_to_create_event_fragment);
+
+
     }
+
+    private void initSearch()
+    {
+        Log.d("Map","initSearch");
+        mSearchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH
+                || actionId == EditorInfo.IME_ACTION_DONE
+                || event.getAction() == KeyEvent.ACTION_DOWN
+                || event.getAction() == KeyEvent.KEYCODE_ENTER)
+                {
+                    Log.d("Map","geoLocate MAP");
+                    geoLocate();
+                }
+                return false;
+            }
+        });
+    }
+
+    private void geoLocate()
+    {
+        Log.d("Map","geoLocate");
+        String searchString  = mSearchView.getText().toString();
+        Geocoder mGeocoder = new Geocoder(getContext());
+        List<Address> mAddressList = new ArrayList<>();
+        try {
+            mAddressList = mGeocoder.getFromLocationName(searchString,1);
+
+        }catch (IOException e)
+        {
+            Log.d("MAP","IOException " + e.getMessage());
+        }
+        if(mAddressList.size() > 0)
+        {
+            Address address = mAddressList.get(0);
+            Log.d("Map","address " + address.toString());
+            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),address.getAddressLine(0));
+        }
+
+    }
+
+    private void moveCamera(LatLng latLng,String title)
+    {
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        MarkerOptions mMarkerOptions = new MarkerOptions()
+                .position(latLng)
+                .title(title);
+        mGoogleMap.addMarker(mMarkerOptions);
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -136,27 +213,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onDestroy() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("events");
         super.onDestroy();
         for (Event event : mEventList) {
-            event.setUid(mFirebaseReference.child(DATABASE_PATH_EVENTS).push().getKey());
+            event.setUid(mDatabase.push().getKey());
+            mDatabase.child(event.getUid()).setValue(event);
 
-            mFirebaseReference.child(DATABASE_PATH_EVENTS).child(event.getUid()).setValue(event);
-//            FirebaseDatabase.getInstance()
-//                    .getReference(DATABASE_PATH_EVENTS)
-//                    .child(FirebaseAuth.getInstance().)
-//                    .setValue(mUser)
-//                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            if (task.isSuccessful()) {
-//
-//                                //Toast.makeText(getContext(), "User Added To Firebase",Toast.LENGTH_SHORT).show();
-//
-//                            } else {
-//                                //Toast.makeText(getContext(), "User Not Added To Firebase",Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
         }
     }
 }
