@@ -471,11 +471,15 @@ public class MyProfileEditFragment extends Fragment {
             mUserInfo.setLastName(mLastNameView.getText().toString());
         }
 
-        if (mWeightView.getText() != null) {
-            mUserInfo.setWeight(Float.valueOf(mWeightView.getText().toString()));
+        if (mWeightView.getText().toString().isEmpty()) {
+            mUserInfo.setWeight(null);
+        } else {
+            mUserInfo.setWeight(Float.parseFloat(mWeightView.getText().toString()));
         }
-        if (mHeightView.getText() != null) {
-            mUserInfo.setHeight(Float.valueOf(mHeightView.getText().toString()));
+        if (mHeightView.getText().toString().isEmpty()) {
+            mUserInfo.setHeight(null);
+        } else {
+            mUserInfo.setHeight(Float.parseFloat(mHeightView.getText().toString()));
         }
         if (mGender.getCheckedRadioButtonId() == mMale.getId()) {
             mUserInfo.setGender(0);
@@ -518,9 +522,6 @@ public class MyProfileEditFragment extends Fragment {
         }
     }
 
-    private void updateUserInFirebase(User user) {
-
-    }
 
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this.getContext());
@@ -586,7 +587,7 @@ public class MyProfileEditFragment extends Fragment {
     }
 
 
-    private void loadSelectedImage(Uri uri) { //call this method when
+    private void loadSelectedImage(Uri uri) {
 
         Glide.with(this)
                 .load(uri)
@@ -594,6 +595,8 @@ public class MyProfileEditFragment extends Fragment {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         //showMessage(getString(R.string.message_try_again));
+                        Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("EDIT PROFILE", e.getMessage());
                         return false;
                     }
 

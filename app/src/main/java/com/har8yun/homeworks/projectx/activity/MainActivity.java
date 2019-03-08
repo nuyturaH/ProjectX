@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
@@ -69,8 +71,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mUser = sharedPreferences.getCurrentUser(this);
             mUserViewModel.setUser(mUser);
-            Log.d("MainActivity", mUser.toString());
+//            Log.d("MainActivity", mUser.toString());
         }
+
+
+//        FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+//        Log.d("Main",u.getUid());
     }
 
     //************************************** OVERRIDE METHODS ********************************************

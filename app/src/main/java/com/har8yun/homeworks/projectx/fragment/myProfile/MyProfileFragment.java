@@ -191,12 +191,10 @@ public class MyProfileFragment extends Fragment {
                 //TODO set age
             }
             if (mCurrentUser.getUserInfo().getWeight() != null) {
-                mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()));
-                Log.d("Profile",String.valueOf(mCurrentUser.getUserInfo().getWeight()));
-                Toast.makeText(getContext(),String.valueOf(mCurrentUser.getUserInfo().getWeight()),Toast.LENGTH_SHORT).show();
+                mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()) + " kg");
             }
             if (mCurrentUser.getUserInfo().getHeight() != null) {
-                mHeightView.setText(String.valueOf((mCurrentUser.getUserInfo().getHeight())));
+                mHeightView.setText(String.valueOf((mCurrentUser.getUserInfo().getHeight())) + " m");
             }
             if (mCurrentUser.getUserInfo().getAvatar() != null) {
                 //TODO set avatar
