@@ -75,6 +75,7 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="add_skills">Add Skills</string>
+    <string name="current_location">Current Location</string>
 
     <string-array name="sports_array">
         <item>Choose Sport…</item>

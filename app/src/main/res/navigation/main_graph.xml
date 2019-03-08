@@ -27,6 +27,8 @@
         <action
             android:id="@+id/action_map_fragment_to_create_event_fragment"
             app:destination="@id/create_event_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right"
             />
 
     </fragment>
@@ -40,6 +42,8 @@
         <action
             android:id="@+id/action_create_event_fragment_to_map_fragment"
             app:destination="@id/map_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right"
             />
         </fragment>
     <fragment
@@ -116,6 +120,8 @@
             android:id="@+id/action_my_profile_edit_fragment_to_my_profile_fragment"
             app:destination="@id/my_profile_fragment"
             app:popUpTo="@id/my_profile_fragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right"/>
     </fragment>
 </navigation>

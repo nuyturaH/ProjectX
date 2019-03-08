@@ -10,30 +10,43 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mv_map"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_event_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fab_add_event"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_map"
-        app:srcCompat="@drawable/ic_add_event"/>
+        app:srcCompat="@drawable/ic_add_white" />
 
-
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_map"
-        android:layout_width="match_parent"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_my_location_map"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:src="@drawable/ic_my_location_white"
+        app:layout_constraintBottom_toTopOf="@+id/fab_add_event_map"
+        app:layout_constraintEnd_toEndOf="@+id/fab_add_event_map"
+        android:focusable="true" />
+
+    <ImageView
+        android:id="@+id/iv_current_location_map"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:contentDescription="@string/current_location"
+        android:src="@drawable/ic_add_location_red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/mv_map"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

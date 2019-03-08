@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,14 +49,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     //views
     private BottomNavigationView mBottomNavigationView;
-    private Toolbar mToolbarMap;
     private FloatingActionButton mAddEventButton;
     private MapView mapView;
 
     private GoogleMap mGoogleMap;
 
-    //navigation
-    private NavController mNavController;
 
     //preferences
     SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
@@ -84,9 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // mUser = sharedPreferences.getCurrentUser(getContext());
         initViews(view);
-        showBotNavBar();
-        setNavigationComponent();
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.map_fragment, R.id.settings_fragment)).build();
+        onClickNavigate(mAddEventButton, R.id.action_map_fragment_to_create_event_fragment);
 
         return view;
     }
@@ -98,7 +94,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(@Nullable User user) {
-                Log.e("hhhh", "ViewModel " + user.toString());
+//                Log.e("hhhh", "ViewModel " + user.toString());
             }
         });
 
@@ -106,26 +102,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
     //************************************** METHODS ********************************************
-    private void setNavigationComponent() {
-        mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(mToolbarMap, mNavController);
-        if (getArguments() != null) {
-            mCurrentUser = new User();
-            mCurrentUser = getArguments().getParcelable("signUpUserToMap");
-            Log.e("hhhh", "bundle " + mCurrentUser.toString());
-        }
-    }
-
-    private void showBotNavBar() {
-        mBottomNavigationView.setVisibility(View.VISIBLE);
-    }
-
     private void initViews(View v) {
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
-        mToolbarMap = v.findViewById(R.id.toolbar_map);
-        mAddEventButton = v.findViewById(R.id.fab_add_event);
+        mAddEventButton = v.findViewById(R.id.fab_add_event_map);
         mapView = v.findViewById(R.id.mv_map);
         if (mapView != null) {
             mapView.onCreate(null);
@@ -133,19 +113,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapView.getMapAsync(this);
         }
 
-        //TODO: էս ես դրել եմ,բայց դու ճիշտ ձևով գրի
-        onClickNavigate(mAddEventButton, R.id.action_map_fragment_to_create_event_fragment);
-
-//        mAddEventButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //TODO open CreateEventFragment
-//            }
-//        });
-
-
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
