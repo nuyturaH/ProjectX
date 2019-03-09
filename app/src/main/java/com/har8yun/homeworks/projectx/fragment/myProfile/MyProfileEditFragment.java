@@ -131,7 +131,7 @@ public class MyProfileEditFragment extends Fragment {
     private FirebaseUser mFirebaseUser;
 
     //Skills
-    private List<Skill> mSkillList = new ArrayList<>();
+    private ArrayList<Skill> mSkillList = new ArrayList<>();
 
     List<String> spinnerSkillsNameList = new ArrayList<>();
     List<Skill> spinnerSkillsList = new ArrayList<>();

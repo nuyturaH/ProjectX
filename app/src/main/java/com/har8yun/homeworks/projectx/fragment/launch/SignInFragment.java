@@ -23,12 +23,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
@@ -82,9 +84,11 @@ public class SignInFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
-        getUsersFromDatabase();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        getUsersFromDatabase();
+
+
         mProgressDialog = new ProgressDialog(this.getActivity());
 
         initViews(view);
@@ -149,7 +153,11 @@ public class SignInFragment extends Fragment {
         mSuggestionSignIn = view.findViewById(R.id.tv_suggestion_sign_in);
     }
 
+    private FirebaseUser mFirebaseUser;
+
     public void getUsersFromDatabase() {
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
         mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_NAME);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override

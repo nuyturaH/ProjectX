@@ -3,6 +3,7 @@ package com.har8yun.homeworks.projectx.fragment;
 import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Address;
@@ -33,10 +34,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -75,6 +79,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
 //    public static final String DATABASE_PATH_EVENTS = "Events";
 
+    private static final String TAG = "MapFragment";
+    public static final int PLACE_PICKER_REQUEST = 2;
     public static final int REQUEST_LOCATION_PERMISSION_CODE = 1;
     public static final String MY_LOCATION = "My Location";
     public static final float DEFAULT_ZOOM = 15f;
@@ -94,12 +100,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private MapView mapView;
     private SupportMapFragment mMapFragment;
     private ImageView mMagnifyView;
+    private ImageView mPlacePicker;
 
     //Map, Location
     private GoogleMap mGoogleMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
+    private Location mDeviceLocation;
 
     //navigation
     private NavController mNavController;
@@ -173,6 +181,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mSearchView = v.findViewById(R.id.et_search_map_fragment);
         mMagnifyView = v.findViewById(R.id.iv_magnify_map_fragment);
         mTaskSpinner = v.findViewById(R.id.spinner_task_map);
+        mPlacePicker = v.findViewById(R.id.iv_current_location_map);
 
         mapView = v.findViewById(R.id.mv_map);
         if (mapView != null) {
@@ -226,6 +235,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             }
         });
 
+        mPlacePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                try {
+                    startPicking(builder.build(getActivity()),PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         onClickNavigate(mAddEventButton, R.id.action_map_fragment_to_create_event_fragment);
 //        mTaskButton.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +263,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 //            }
 //        });
 
+
+    }
+
+    private void startPicking(Intent intent,int code)
+    {
 
     }
 
@@ -261,7 +290,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                     if(task.isSuccessful() && task.getResult() !=null)
                     {
                         Toast.makeText(getContext(),"Location Found",Toast.LENGTH_SHORT).show();
-                        Location mDeviceLocation = (Location) task.getResult();
+                        mDeviceLocation = (Location) task.getResult();
                         moveCamera(new LatLng(mDeviceLocation.getLatitude(),mDeviceLocation.getLongitude()),DEFAULT_ZOOM,MY_LOCATION);
 
                     }
@@ -337,16 +366,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         }
 
     }
-
-    private void moveCamera(LatLng latLng,String title)
-    {
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        MarkerOptions mMarkerOptions = new MarkerOptions()
-                .position(latLng)
-                .title(title);
-        mGoogleMap.addMarker(mMarkerOptions);
-    }
+    
 
 
     @Override

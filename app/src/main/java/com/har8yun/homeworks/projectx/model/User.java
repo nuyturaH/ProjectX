@@ -1,5 +1,6 @@
 package com.har8yun.homeworks.projectx.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -10,7 +11,7 @@ public class User {
     private String mEmail;
     private Integer mPoints;
     private String mStatus;
-    private List<Skill> mSkills;
+    private ArrayList<Skill> mSkills;
 
     public String getId() {
         return id;
@@ -64,7 +65,7 @@ public class User {
         return mSkills;
     }
 
-    public void setSkills(List skills) {
+    public void setSkills(ArrayList skills) {
         mSkills = skills;
     }
 
