@@ -78,6 +78,7 @@ import java.util.List;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import static com.google.android.gms.common.util.CollectionUtils.setOf;
@@ -134,6 +135,8 @@ public class MyProfileEditFragment extends Fragment {
 
     List<String> spinnerSkillsNameList = new ArrayList<>();
     List<Skill> spinnerSkillsList = new ArrayList<>();
+
+    private Fragment mNavHostFragment;
 
 
     //adapter
@@ -228,6 +231,7 @@ public class MyProfileEditFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_item_save:
                 saveChanges();
+                NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_my_profile_edit_fragment_to_my_profile_fragment);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -254,6 +258,8 @@ public class MyProfileEditFragment extends Fragment {
         mToolbarEdit = view.findViewById(R.id.toolbar_my_profile_edit);
         mSportsSpinner = view.findViewById(R.id.spinner_sports_my_profile_edit);
         mSkillsSpinner = view.findViewById(R.id.spinner_skills_my_profile_edit);
+        mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
 
         mSportsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

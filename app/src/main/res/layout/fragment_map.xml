@@ -31,7 +31,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/et_search_map_fragment" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/et_search_map_fragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -61,6 +61,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:tools="http://schemas.android.com/tools"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:id="@+id/mv_map"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--tools:context=".fragment.MapFragment"-->
+        <!--android:name="com.google.android.gms.maps.SupportMapFragment" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_event_map"
