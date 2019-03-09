@@ -85,7 +85,12 @@
         <item>Workout</item>
         <item>Swimming</item>
     </string-array>
-
+    <string-array name="task_array">
+        <item>&#160;&#160;•&#160;&#160;Loose Weight</item>
+        <item>&#160;&#160;•&#160;&#160;Develop Stamina</item>
+        <item>&#160;&#160;•&#160;&#160;Build Muscles</item>
+    </string-array>
+    <string name="country_prompt">Choose your aim according which will be made today\'s training program.</string>
     <string-array name="workout_array">
         <item>Choose Skill…</item>
         <item>Pull-Ups</item>

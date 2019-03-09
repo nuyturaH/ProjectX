@@ -3,6 +3,7 @@ package com.har8yun.homeworks.projectx.fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,7 +21,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.Event;
 import com.har8yun.homeworks.projectx.model.EventViewModel;
+import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
@@ -60,6 +65,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //views
     private BottomNavigationView mBottomNavigationView;
     private FloatingActionButton mAddEventButton;
+//    private FloatingActionButton mTaskButton;
+    private Spinner mTaskSpinner;
     private EditText mSearchView;
     private MapView mapView;
 
@@ -126,6 +133,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void initViews(View v) {
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
         mAddEventButton = v.findViewById(R.id.fab_add_event_map);
+        mTaskSpinner = v.findViewById(R.id.spinner_task_map);
         mSearchView = v.findViewById(R.id.et_search_map_fragment);
         mapView = v.findViewById(R.id.mv_map);
         if (mapView != null) {
@@ -134,8 +142,35 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapView.getMapAsync(this);
         }
 
+        mTaskSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String currentItemName = parent.getItemAtPosition(position).toString();
+
+                if (position == 0) {
+                    view.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
 
         onClickNavigate(mAddEventButton, R.id.action_map_fragment_to_create_event_fragment);
+//        mTaskButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new AlertDialog.Builder(getContext())
+//                        .setTitle("Title")
+//                        .setMessage("Message")
+//                        .setPositiveButton("Ok", null)
+//                        .show();
+//            }
+//        });
 
 
     }
