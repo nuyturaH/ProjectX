@@ -7,6 +7,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -81,6 +82,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import static android.app.Activity.RESULT_OK;
 import static com.google.android.gms.common.util.CollectionUtils.setOf;
 
 
@@ -89,6 +91,9 @@ public class MyProfileEditFragment extends Fragment {
     public static final String TAG = MyProfileEditFragment.class.getSimpleName();
     public static final int PERMISSION_STORAGE = 10;
     public static final int PERMISSION_CAMERA = 11;
+
+    private static final int GALLERY_REQUEST_CODE = 1;
+    private static final int CAMERA_REQUEST_CODE = 2;
 
     //navigation
     private NavController mNavController;
@@ -237,6 +242,27 @@ public class MyProfileEditFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+//        @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+//            Log.e("abov", "data : " + data.getData());
+//            loadSelectedImage(data.getData());
+//           mProgressDialog.setMessage("Loading...");
+//            mProgressDialog.show();
+//            imageUri = data.getData();
+//            final StorageReference myPath = mReference.child("USER BOX").child(imageUri.getLastPathSegment());
+//            myPath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    mProgressDialog.dismiss();
+//                }
+//            });
+//        } else if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
+//            loadSelectedImage(data.getData());
+//        }
+//    }
+
 
     //************************************** METHODS ********************************************
     private void initViews(View view) {
@@ -348,7 +374,10 @@ public class MyProfileEditFragment extends Fragment {
             }
 
             if (mCurrentUser.getUserInfo().getBirthDate() != null) {
-                mBirthDateView.setText(String.valueOf(mCurrentUser.getUserInfo().getBirthDate().getTime()));
+                Date date = mCurrentUser.getUserInfo().getBirthDate();
+                mBirthDateView.setText(String.valueOf(date.getDay()
+                        + "/" + date.getMonth()
+                        + "/" + date.getYear()));
             }
             if (mCurrentUser.getUserInfo().getGender() != null) {
                 if (mCurrentUser.getUserInfo().getGender() == 0) {
@@ -491,7 +520,7 @@ public class MyProfileEditFragment extends Fragment {
             mUserInfo.setGender(0);
         } else if (mGender.getCheckedRadioButtonId() == mFemale.getId())
             mUserInfo.setGender(1);
-        if (dateOpened) {
+        if (mBirthDateView.getText() != null) {
             mUserInfo.setBirthDate(mDate);
         }
 
@@ -563,7 +592,7 @@ public class MyProfileEditFragment extends Fragment {
 
 
     public void choosePhotoFromGallery() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+/*        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         Uri chosenPhotoURI = galleryIntent.getData();
@@ -575,26 +604,21 @@ public class MyProfileEditFragment extends Fragment {
 //                .load(contentURI) //path
 //                .into(mAvatarView);
         loadSelectedImage(chosenPhotoURI);
-        mCurrentUser.getUserInfo().setAvatar(chosenPhotoURI);
+        mCurrentUser.getUserInfo().setAvatar(chosenPhotoURI);*/
+
+        Intent galleryAction = new Intent();
+        galleryAction.setType("image/*");
+        galleryAction.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(galleryAction, "Select Picture"), GALLERY_REQUEST_CODE);
     }
 
 
     private void takePhotoFromCamera() {
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-
-
-        Uri takenPhotoURI = (Uri) cameraIntent.getExtras().get("data");
-        //Bitmap thumbnail = (Bitmap) cameraIntent.getExtras().get("data");
-        loadSelectedImage(takenPhotoURI);
-        mCurrentUser.getUserInfo().setAvatar(takenPhotoURI);
-        //TODO save this image in firebase
-        Toast.makeText(getContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
-
+        //todo camera
     }
 
 
     private void loadSelectedImage(Uri uri) {
-
         Glide.with(this)
                 .load(uri)
                 .listener(new RequestListener<Drawable>() {
@@ -654,6 +678,22 @@ public class MyProfileEditFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                choosePhotoFromGallery();
+            }
+        }else if(requestCode == PERMISSION_CAMERA){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                takePhotoFromCamera();
+            }
+        }
+    }
+
 
     private Date mDate;
     private int year, month, dayOfMonth;
@@ -662,6 +702,7 @@ public class MyProfileEditFragment extends Fragment {
     public void DateDialog() {
 
         final Calendar calendar = Calendar.getInstance();
+        mDate = new Date();
 
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this.getActivity(),
@@ -672,12 +713,18 @@ public class MyProfileEditFragment extends Fragment {
                         calendar.set(Calendar.MONTH, m);
                         calendar.set(Calendar.YEAR, y);
                         mDate.setTime(calendar.getTimeInMillis());
+                        mBirthDateView.setText(String.valueOf(mDate.getDay()
+                                + "/" + mDate.getMonth()
+                                + "/" + mDate.getYear()));
                     }
                 }, year, month, dayOfMonth);
 
+        //TODO set datePicker, so the chosen date appears on dialog
         datePickerDialog.getDatePicker();
         datePickerDialog.show();
         dateOpened = true;
+
+
     }
 
 

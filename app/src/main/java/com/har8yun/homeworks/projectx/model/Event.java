@@ -16,6 +16,9 @@ public class Event
     private List<User> participants;
     private Date date;
 
+    public Event() {
+    }
+
     public Date getDate() {
         return date;
     }

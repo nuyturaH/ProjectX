@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.har8yun.homeworks.projectx.R;
@@ -16,6 +17,7 @@ public class EventInformationDialog extends Dialog {
     public TextView mDateLocationView;
     public Button mGoingButton;
     public Button mCancelButton;
+    public ImageView mEditEventView;
 
     EventInformationDialog.OnEventInformationActionListener mOnEventInformationActionListener;
 
@@ -34,6 +36,7 @@ public class EventInformationDialog extends Dialog {
         mDateLocationView = findViewById(R.id.tv_date_location_dialog);
         mGoingButton = findViewById(R.id.btn_going_dialog);
         mCancelButton = findViewById(R.id.btn_cancel_dialog);
+        mEditEventView = findViewById(R.id.iv_to_change_event_dialog);
 
     }
 

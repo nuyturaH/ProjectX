@@ -103,7 +103,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
 
             new LatLng(-40, -168), new LatLng(71, 136));
-    private EventInformationDialog mEventInformationDialog = new EventInformationDialog(getContext());
+    private EventInformationDialog mEventInformationDialog;
 
     String[] mPermissions = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
 
@@ -532,16 +532,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     }
 
-    private void moveCamera(LatLng latLng, String title) {
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-        MarkerOptions mMarkerOptions = new MarkerOptions()
-                .position(latLng)
-                .title(title);
-        mGoogleMap.addMarker(mMarkerOptions);
-    }
 
 
+    private boolean goingToEvent;
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
@@ -551,14 +544,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
         setEventsOnMap();
 
-        mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng point) {
-//                mGoogleMap.clear();
-//                mMarkerList.add(mGoogleMap.addMarker(new MarkerOptions().position(point)));
-            }
-        });
-
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker)
@@ -567,16 +552,42 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 {
                     if(marker.getPosition().equals(event.getPosition()))
                     {
+                        mEventInformationDialog = new EventInformationDialog(getContext());
                         mEventInformationDialog.mTitleView.setText(event.getTitle());
                         mEventInformationDialog.mDescriptionView.setText(event.getDescription());
                         mEventInformationDialog.mDateLocationView.setText("Date "+ event.getDate().toString() + "Location " + event.getPlace());
+                        //checking if current user is the creator of event
+                        if(event.getCreator().equals(mCurrentUser))
+                        {
+                            mEventInformationDialog.mEditEventView.setVisibility(View.VISIBLE);
+                            mEventInformationDialog.mEditEventView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //TODO navigate to EditEventFragment
+                                }
+                            });
+                        }
 
                         mEventInformationDialog.show();
                         mEventInformationDialog.mGoingButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                event.getParticipants().add(mCurrentUser);
+                                goingToEvent = !goingToEvent;
+                                if (goingToEvent) {
+                                    mEventInformationDialog.mGoingButton.setText("Not Going");
+                                    event.getParticipants().add(mCurrentUser);
+                                } else {
+                                    mEventInformationDialog.mGoingButton.setText("Going");
+                                    event.getParticipants().remove(mCurrentUser);
+                                }
 
+                            }
+                        });
+                        mEventInformationDialog.mCancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                goingToEvent = false;
+                                mEventInformationDialog.dismiss();
                             }
                         });
 
@@ -602,16 +613,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mEventList.add(mEventViewModel.getEvent().getValue());
     }
 
-    @Override
-    public void onDestroy() {
-        mFirebaseDatabse = FirebaseDatabase.getInstance().getReference("events");
-        super.onDestroy();
-        for (Event event : mEventList) {
-            event.setUid(mFirebaseDatabse.push().getKey());
-            mFirebaseDatabse.child(event.getUid()).setValue(event);
-
-        }
-    }
 
     private LatLng getDestinationPoint(LatLng source, double brng, double dist) {
         dist = dist / 6371;

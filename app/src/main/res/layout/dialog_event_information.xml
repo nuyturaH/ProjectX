@@ -53,5 +53,14 @@
         android:textColor="#5DBCD2"
         android:textStyle="bold" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_to_change_event_dialog"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_edit_event"
+        android:visibility="gone"/>
+
 
 </android.support.constraint.ConstraintLayout>

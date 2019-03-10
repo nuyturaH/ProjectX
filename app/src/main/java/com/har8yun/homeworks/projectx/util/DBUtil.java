@@ -29,7 +29,8 @@ public class DBUtil {
 
     public static StorageReference getRefAvatars()
     {
-        return getStorageReference().child(REF_STORAGE_AVATARS);
+        String s  = "" + System.currentTimeMillis();
+        return getStorageReference().child(REF_STORAGE_AVATARS).child(s);
     }
 
     public static StorageReference getRefChatImages() {

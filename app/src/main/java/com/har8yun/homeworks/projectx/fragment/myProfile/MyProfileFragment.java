@@ -30,6 +30,9 @@ import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.NavOptions;
@@ -160,13 +163,15 @@ public class MyProfileFragment extends Fragment {
 
 
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
-        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable final User user) {
-                Log.e("hhhh", "ViewModel in My profile " + user.toString());
-                mCurrentUser = user;
-            }
-        });
+//        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+//            @Override
+//            public void onChanged(@Nullable final User user) {
+//                Log.e("hhhh", "ViewModel in My profile " + user.toString());
+//                mCurrentUser = user;
+//            }
+//        });
+
+        mCurrentUser = mUserViewModel.getUser().getValue();
 
 
     }
@@ -189,6 +194,18 @@ public class MyProfileFragment extends Fragment {
             }
             if (mCurrentUser.getUserInfo().getBirthDate() != null) {
                 //TODO set age
+                Date date = mCurrentUser.getUserInfo().getBirthDate();
+                int b = date.getYear();
+                int y = Calendar.getInstance().get(Calendar.YEAR) % 100;
+                int m = Calendar.getInstance().get(Calendar.MONTH);
+                int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                int ss = (b + (100-b) + y + (100-b) )%100;
+                if (date.getMonth() < m && date.getDay() < d) {
+                    mAgeView.setText(String.valueOf(ss));
+                } else {
+                    mAgeView.setText(String.valueOf(ss - 1));
+                }
+
             }
             if (mCurrentUser.getUserInfo().getWeight() != null) {
                 mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()) + " kg");
@@ -215,6 +232,7 @@ public class MyProfileFragment extends Fragment {
         Fragment mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.menu_item_log_out, null, navOptions);
         sharedPreferences.setLoggedIn(getActivity(), false);
+        mUserViewModel.setUser(mCurrentUser);
 
         FirebaseAuth.getInstance().signOut();
         Toast.makeText(getContext(), "Signed Out", Toast.LENGTH_SHORT).show();
@@ -236,4 +254,10 @@ public class MyProfileFragment extends Fragment {
         skillItemRecyclerAdapter.addItems(mCurrentUser.getSkills());
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mUserViewModel.setUser(mCurrentUser);
+
+    }
 }
