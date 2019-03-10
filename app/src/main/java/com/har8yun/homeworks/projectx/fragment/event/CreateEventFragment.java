@@ -1,8 +1,10 @@
 package com.har8yun.homeworks.projectx.fragment.event;
 
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.Event;
 import com.har8yun.homeworks.projectx.model.EventViewModel;
@@ -24,7 +29,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import static com.google.android.gms.common.util.CollectionUtils.setOf;
-import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
 
 
 public class CreateEventFragment extends Fragment {
@@ -35,16 +39,19 @@ public class CreateEventFragment extends Fragment {
     private EditText mDescriptionView;
     private TextView mTimeView;
     private Button mSaveButton;
+    private TextView mLocationView;
 
     //navigation
     private NavController mNavController;
 
     //Object
-
     private Event mEvent;
     private EventViewModel mEventViewModel;
     private UserViewModel mUserViewModel;
     private User mCurrentUser;
+
+    //Firebase
+    DatabaseReference mDatabaseReference;
 
 
     //constructor
@@ -60,13 +67,24 @@ public class CreateEventFragment extends Fragment {
 
 
         mEventViewModel = ViewModelProviders.of(getActivity()).get(EventViewModel.class);
-        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        mEventViewModel.getEvent().observe(getViewLifecycleOwner(), new Observer<Event>() {
+            @Override
+            public void onChanged(@Nullable final Event event) {
+                mEvent = event;
+            }
+        });
+        mEvent = mEventViewModel.getEvent().getValue();
+        Toast.makeText(getContext(), ""+mEvent.getPosition(), Toast.LENGTH_LONG).show();
 
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mCurrentUser = mUserViewModel.getUser().getValue();
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
+
         initViews(view);
         setCreateEventToolbar();
         setNavigationComponent();
-        onClickNavigate(mSaveButton, R.id.action_map_fragment_to_create_event_fragment);
+        //onClickNavigate(mSaveButton, R.id.action_map_fragment_to_create_event_fragment);
 
 
         return view;
@@ -78,7 +96,9 @@ public class CreateEventFragment extends Fragment {
         mDescriptionView = v.findViewById(R.id.etv_description_create_event);
         mTimeView = v.findViewById(R.id.tv_time_create_event);
         mSaveButton = v.findViewById(R.id.btn_save_create_event);
+        mLocationView = v.findViewById(R.id.tv_location_create_event);
 
+        mLocationView.setText(mEvent.getPlace());
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +116,15 @@ public class CreateEventFragment extends Fragment {
         mEvent.setDescription(mDescriptionView.getText().toString());
 
         mEventViewModel.setEvent(mEvent);
+        addEventToFirebase();
+
+    }
+
+    private void addEventToFirebase()
+    {
+
+        mEvent.setUid(mDatabaseReference.push().getKey());
+        mDatabaseReference.child(mEvent.getUid()).setValue(mEvent);
 
     }
 

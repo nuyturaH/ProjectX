@@ -153,11 +153,8 @@ public class SignInFragment extends Fragment {
         mSuggestionSignIn = view.findViewById(R.id.tv_suggestion_sign_in);
     }
 
-    private FirebaseUser mFirebaseUser;
 
     public void getUsersFromDatabase() {
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-
         mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_NAME);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
