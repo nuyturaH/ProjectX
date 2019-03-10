@@ -77,6 +77,9 @@
     <string name="add_skills">Add Skills</string>
     <string name="current_location">Current Location</string>
 
+    <string name="google_maps_key">AIzaSyBFsdF95CqchO5MOAabdmXK-UAJvYYGNE0</string>
+
+
     <string-array name="sports_array">
         <item>Choose Sport…</item>
         <item>Football</item>

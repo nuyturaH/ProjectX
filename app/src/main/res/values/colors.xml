@@ -6,4 +6,6 @@
   <color name="colorPrimaryText">#FFFFFF</color>
   <color name="lightGrey">#E0E0E0</color>
 
+  <color name="colorRouteLine">#FF4081</color>
+
 </resources>
