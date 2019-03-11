@@ -113,5 +113,7 @@
         <!--<item>Akka</item>-->
     </string-array>
 
+    <string name="Camera">Camera</string>
+
 
 </resources>

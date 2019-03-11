@@ -63,6 +63,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.activity.MainActivity;
 import com.har8yun.homeworks.projectx.adapter.SkillItemEditRecyclerAdapter;
 import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
@@ -72,6 +73,7 @@ import com.har8yun.homeworks.projectx.util.DBUtil;
 import com.har8yun.homeworks.projectx.util.PermissionChecker;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -93,7 +95,7 @@ public class MyProfileEditFragment extends Fragment {
     public static final int PERMISSION_CAMERA = 11;
 
     private static final int GALLERY_REQUEST_CODE = 1;
-    private static final int CAMERA_REQUEST_CODE = 2;
+    public static final int CAMERA_REQUEST_CODE = 220;
 
     //navigation
     private NavController mNavController;
@@ -220,7 +222,6 @@ public class MyProfileEditFragment extends Fragment {
             }
         });
 
-
         return view;
 
     }
@@ -242,26 +243,26 @@ public class MyProfileEditFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-//        @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-//            Log.e("abov", "data : " + data.getData());
-//            loadSelectedImage(data.getData());
-//           mProgressDialog.setMessage("Loading...");
-//            mProgressDialog.show();
-//            imageUri = data.getData();
-//            final StorageReference myPath = mReference.child("USER BOX").child(imageUri.getLastPathSegment());
-//            myPath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    mProgressDialog.dismiss();
-//                }
-//            });
-//        } else if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
-//            loadSelectedImage(data.getData());
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+/*            Log.e("abov", "data : " + data.getData());
+            loadSelectedImage(data.getData());
+           mProgressDialog.setMessage("Loading...");
+            mProgressDialog.show();
+            imageUri = data.getData();
+            final StorageReference myPath = mReference.child("USER BOX").child(imageUri.getLastPathSegment());
+            myPath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mProgressDialog.dismiss();
+                }
+            });*/
+        } else if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
+            loadSelectedImage(data.getData().toString());
+        }
+    }
 
 
     //************************************** METHODS ********************************************
@@ -614,11 +615,11 @@ public class MyProfileEditFragment extends Fragment {
 
 
     private void takePhotoFromCamera() {
-        //todo camera
+        ((MainActivity) getActivity()).takePicture(CAMERA_REQUEST_CODE);
     }
 
 
-    private void loadSelectedImage(Uri uri) {
+    private void loadSelectedImage(String uri) {
         Glide.with(this)
                 .load(uri)
                 .listener(new RequestListener<Drawable>() {
@@ -757,4 +758,9 @@ public class MyProfileEditFragment extends Fragment {
     }
 
 
+    public void onUploadFileCreated(String path) {
+        loadSelectedImage(path);
+    }
+
 }
+

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <paths>
+        <cache-path name="cache_files" path="."/>
+        <external-path name="exports" path="Android/data/com.har8yun.homeworks.projectx/files/Pictures" />
+    </paths>

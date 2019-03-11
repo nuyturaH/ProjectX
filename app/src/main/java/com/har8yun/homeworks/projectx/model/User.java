@@ -11,7 +11,7 @@ public class User {
     private String mEmail;
     private Integer mPoints;
     private String mStatus;
-    private ArrayList<Skill> mSkills;
+    private List<Skill> mSkills;
 
     public String getId() {
         return id;
