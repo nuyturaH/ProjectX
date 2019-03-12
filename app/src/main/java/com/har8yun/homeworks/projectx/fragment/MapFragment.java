@@ -32,6 +32,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -183,7 +184,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         //getDeviceLocation();
 
 
-        Toast.makeText(getContext(),"Choose Location for your Event",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Choose Location for your Event", Toast.LENGTH_LONG).show();
 
         return view;
     }
@@ -245,7 +246,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mGoogleApiClient.stopAutoManage(getActivity());
         mGoogleApiClient.disconnect();
     }
-
 
 
     //************************************** METHODS ********************************************
@@ -332,11 +332,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             @Override
             public void onClick(View v) {
                 if (PermissionChecker.hasLocationPermission(getContext())) {
-                if (PermissionChecker.hasLocationPermission1(getContext())) {
                     getDeviceLocation();
-                } else {
-                    requestLocationPermissions();
-                    PermissionChecker.createLocationRequest(); //TODO
                 } else {
                     requestLocationPermissions();
                     Log.d(TAG, "onClick: PERFSDFSDFSDFSDFSDFSDFS");
@@ -344,6 +340,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 }
             }
         });
+
 
 //        mPlacePicker.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -421,7 +418,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        Toast.makeText(getContext(),String.valueOf(mEventList.size()),Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), String.valueOf(mEventList.size()), Toast.LENGTH_LONG).show();
 
 //        for(Event event : mEventList)
 //        {
@@ -477,7 +474,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     protected void requestLocationPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(mPermissions,REQUEST_LOCATION_PERMISSION_CODE);
+            requestPermissions(mPermissions, REQUEST_LOCATION_PERMISSION_CODE);
         }
 //        ActivityCompat.requestPermissions(this.getActivity(),
 //                mPermissions,
@@ -489,7 +486,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-    private void getDeviceLocation() {
         Log.d(TAG, "onRequestPermissionsResult: MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
         switch (requestCode) {
             case REQUEST_LOCATION_PERMISSION_CODE:
@@ -505,6 +501,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         }
     }
 
+
     private void getDeviceLocation() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
 
@@ -518,9 +515,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         mDeviceLocation = (Location) task.getResult();
                         moveCamera(new LatLng(mDeviceLocation.getLatitude(), mDeviceLocation.getLongitude()), DEFAULT_ZOOM, MY_LOCATION);
 
-                    } else {
-                        Log.d("Map", task.getException().getMessage());
-                        Toast.makeText(getContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
                     } else {
 //                        Log.d("Map", task.getException().getMessage());
                         Toast.makeText(getContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
@@ -595,10 +589,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         });
     }
 
-    private void geoLocate()
-    {
-        Log.d("Map","geoLocate");
-        String searchString  = mSearchView.getText().toString();
+    private void geoLocate() {
+        Log.d("Map", "geoLocate");
+        String searchString = mSearchView.getText().toString();
         Geocoder mGeocoder = new Geocoder(getContext());
         List<Address> mAddressList = new ArrayList<>();
         try {
@@ -606,22 +599,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 //            mGeocoder.get
             mAddressList = mGeocoder.getFromLocationName(searchString, 1);
 
-        }catch (IOException e)
-        {
-            Log.d("MAP","IOException " + e.getMessage());
+        } catch (IOException e) {
+            Log.d("MAP", "IOException " + e.getMessage());
         }
-        if(mAddressList.size() > 0)
-        {
+        if (mAddressList.size() > 0) {
             Address address = mAddressList.get(0);
-            Log.d("Map","address " + address.toString());
-            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),DEFAULT_ZOOM,address.getAddressLine(0));
+            Log.d("Map", "address " + address.toString());
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
 
     }
 
 
-
     private boolean goingToEvent;
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
@@ -633,17 +624,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
-                for (final Event event : mEventList) {
-                    if (marker.getPosition().equals(event.getPosition())) {
-                        mEventInformationDialog = new EventInformationDialog(getContext());
-                        mEventInformationDialog.mTitleView.setText(event.getTitle());
-                        mEventInformationDialog.mDescriptionView.setText(event.getDescription());
-                        mEventInformationDialog.mDateLocationView.setText("Date " + event.getDate().toString() + "Location " + event.getPlace());
-                        //checking if current user is the creator of event
-                        if (event.getCreator().equals(mCurrentUser)) {
-                            mEventInformationDialog.mEditEventView.setVisibility(View.VISIBLE);
-                            mEventInformationDialog.mEditEventView.setOnClickListener(new View.OnClickListener() {
             public boolean onMarkerClick(Marker marker) {
                 for (final Event event : mEventList) {
                     if (marker.getPosition().latitude == event.getPosition().getLatitude()
@@ -665,8 +645,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         dateLocationView.setText("AAAA");
 
                         //checking if current user is the creator of event ------------------------------------------
-                        if (event.getCreator().getId().equals(mCurrentUser.getId()))
-                        {
+                        if (event.getCreator().getId().equals(mCurrentUser.getId())) {
                             Log.d(TAG, "onMarkerClick: CLCLCLCCL");
                             editView.setVisibility(View.VISIBLE);
                             editView.setOnClickListener(new View.OnClickListener() {
@@ -680,8 +659,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                                 }
                             });
                         }
-                        mEventInformationDialog.show();
-                        mEventInformationDialog.mGoingButton.setOnClickListener(new View.OnClickListener() {
                         //checking if current user is going to current event -------------------------------------
 //                        for(User user : event.getParticipants())      //TODO
 //                        {
