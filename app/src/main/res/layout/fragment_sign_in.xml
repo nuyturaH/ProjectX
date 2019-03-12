@@ -89,14 +89,14 @@
                 android:id="@+id/etv_username_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_person_outline_grey"
+                android:drawableStart="@drawable/ic_mail_outline_grey"
                 android:drawablePadding="6dp"
                 android:foregroundTint="@color/colorPrimary"
-                android:hint="@string/username"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
                 android:maxLength="20"
                 android:singleLine="true"
-                android:textColorHint="@color/colorPrimaryText"
-                android:inputType="textEmailAddress"/>
+                android:textColorHint="@color/colorPrimaryText" />
         </android.support.design.widget.TextInputLayout>
     </android.support.constraint.ConstraintLayout>
 

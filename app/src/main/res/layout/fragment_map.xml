@@ -110,20 +110,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_place_red" />
 
-    <Spinner
-        android:id="@+id/spinner_task_map"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_tasks_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:background="@drawable/bg_spinner_task"
-        android:elevation="10dp"
-        android:entries="@array/task_array"
-        android:prompt="@string/country_prompt"
-        android:spinnerMode="dialog"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:src="@drawable/ic_bullseye_arrow"
+        app:backgroundTint="@color/colorPrimaryLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.24000001" />
+        app:layout_constraintVertical_bias="0.26" />
 
 
 </android.support.constraint.ConstraintLayout>

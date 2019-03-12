@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="test_title_text_size">36sp</dimen>
     <dimen name="test_logo_text_size">80sp</dimen>
     <dimen name="description_text_size">24sp</dimen>
@@ -9,5 +9,8 @@
     <dimen name="launch_button_layout_height">72dp</dimen>
     <dimen name="logo_margin_top">16dp</dimen>
     <dimen name="my_profile_text_size">18dp</dimen>
+
+    <!--<dimen name="fab_margin">6dp</dimen>-->
+    <dimen name="design_fab_image_size" tools:override="true">32dp</dimen>
 
 </resources>

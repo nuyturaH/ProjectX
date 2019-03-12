@@ -28,8 +28,12 @@
             android:id="@+id/action_map_fragment_to_create_event_fragment"
             app:destination="@id/create_event_fragment"
             app:enterAnim="@anim/enter_from_right"
-            app:popExitAnim="@anim/exit_to_right"
-            />
+            app:popExitAnim="@anim/exit_to_right" />
+        <action
+            android:id="@+id/action_map_fragment_to_tasks_fragment"
+            app:destination="@id/tasks_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
 
     </fragment>
 
@@ -124,4 +128,9 @@
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right"/>
     </fragment>
+    <fragment
+        android:id="@+id/tasks_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.TasksFragment"
+        android:label="fragment_tasks"
+        tools:layout="@layout/fragment_tasks" />
 </navigation>
