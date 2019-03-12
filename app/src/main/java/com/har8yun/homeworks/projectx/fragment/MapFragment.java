@@ -289,7 +289,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 //                    Bitmap anImage      = ((BitmapDrawable) myDrawable).getBitmap();
                     Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),
                             R.drawable.ic_add_location_red);
-
 //                   setAnimation(mGoogleMap,path,convertToBitmap(myDrawable,130,130));
 
                     MapAnimator.getInstance().setPrimaryLineColor(getResources().getColor(R.color.colorPrimary));
