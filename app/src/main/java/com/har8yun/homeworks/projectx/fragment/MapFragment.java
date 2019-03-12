@@ -9,7 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -273,10 +273,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         }
 
 
-        if (mCurrentEvent != null) {
-            Log.d(TAG, "initViews:" + mCurrentEvent.toString());
-        }
-
         onClickNavigate(mTasksButton, R.id.action_map_fragment_to_tasks_fragment);
         mTasksButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -310,10 +306,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             }
         });
 
-//        if (mCurrentEvent != null) {
-//            Log.d(TAG, "initViews:" + mCurrentEvent.toString());
-//        }
-
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getContext())
@@ -325,8 +317,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(getContext(), mGoogleApiClient, LAT_LNG_BOUNDS, null);
         mSearchView.setAdapter(mPlaceAutocompleteAdapter);
 
-//        mMapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.mv_map);
-//        mMapFragment.getMapAsync(this);
 
         mLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -396,13 +386,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mEventList.clear();
-//                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-//                    Event mEvent = eventSnapshot.getValue(Event.class);
-//                    Log.d(TAG, "onDataChange: " + mEvent.getPosition());
-//                    mEventList.add(mEvent);
-////                    MarkerOptions markerOptions = new MarkerOptions().position(mEvent.getPosition());
-////                    mGoogleMap.addMarker(markerOptions);
-//                }
+
                 for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                     Event mEvent = eventSnapshot.getValue(Event.class);
                     Log.d(TAG, "onDataChange: " + mEvent.getPosition());
@@ -420,12 +404,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         });
         Toast.makeText(getContext(), String.valueOf(mEventList.size()), Toast.LENGTH_LONG).show();
 
-//        for(Event event : mEventList)
-//        {
-//            MarkerOptions markerOptions = new MarkerOptions().position(event.getPosition());
-//            mGoogleMap.addMarker(markerOptions);
-//            Log.d(TAG, "setEventsOnMap: " + event.getTitle());
-//        }
     }
 
 //    private void startPicking(Intent data) {
@@ -528,33 +506,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         }
 
     }
-
-//    private void moveCamera(LatLng latLng, float zoom, PlaceInfo placeInfo) {
-//
-//        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
-//
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-//
-//
-//        if (placeInfo != null) {
-//
-//            try {
-//                String snippet = "Address: " + placeInfo.getAddress() + "\n" +
-//                        "Phone Number: " + placeInfo.getPhoneNumber() + "\n";
-//
-//                MarkerOptions options = new MarkerOptions()
-//                        .position(latLng)
-//                        .title(placeInfo.getName())
-//                        .snippet(snippet);
-//                mMarker = mGoogleMap.addMarker(options);
-//            } catch (NullPointerException e) {
-//                Log.e(TAG, "moveCamera: NullPointerException: " + e.getMessage());
-//            }
-//
-//        } else {
-//            mGoogleMap.addMarker(new MarkerOptions().position(latLng));
-//        }
-//    }
 
 
     private void moveCamera(LatLng latLng, float zoom, String title) {
@@ -704,12 +655,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     }
 
 
-    private void addEvent()   //this method sets event  TODO: call this method when event is created
-    {
-        mEventList.add(mEventViewModel.getEvent().getValue());
-    }
-
-
     private LatLng getDestinationPoint(LatLng source, double brng, double dist) {
         dist = dist / 6371;
         brng = Math.toRadians(brng);
@@ -791,11 +736,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         } catch (Exception ex) {
             Log.e(TAG, ex.getLocalizedMessage());
         }
-//        Draw the polyline
-//        if (path.size() > 0) {
-//            PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.RED).width(6);
-//            mGoogleMap.addPolyline(opts);
-//        }
 
     }
 

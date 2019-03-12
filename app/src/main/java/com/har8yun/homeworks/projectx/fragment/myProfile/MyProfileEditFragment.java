@@ -651,7 +651,7 @@ public class MyProfileEditFragment extends Fragment {
                     }
                 })
                 .into(mAvatarView);
-        mCurrentUser.getUserInfo().setAvatar(uri);
+//        mCurrentUser.getUserInfo().setAvatar(uri);
     }
 
     private void uploadImageToFirebase(Drawable resource) {
@@ -672,8 +672,8 @@ public class MyProfileEditFragment extends Fragment {
                 //switchToPhotoMessageView(false);
                 Task<Uri> downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
                 if (null != downloadUrl) {
-                    DBUtil.addAvatarToFirebase(downloadUrl.toString());
-//                    mCurrentUser.getUserInfo().setAvatar(downloadUrl.toString());
+                    DBUtil.addAvatarToFirebase(downloadUrl.getResult().toString());
+                    mCurrentUser.getUserInfo().setAvatar(downloadUrl.getResult().toString());
                 } else {
 
                 }
