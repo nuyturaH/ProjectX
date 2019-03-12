@@ -2,6 +2,7 @@ package com.har8yun.homeworks.projectx.model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,10 +11,10 @@ public class Event
     private String uid;
     private String title;
     private String description;
-    private LatLng position;
+    private MyLatLng position;
     private String place;
     private User creator;
-    private List<User> participants;
+    private List<User> participants = new ArrayList<>();
     private Date date;
 
     public Event() {
@@ -51,11 +52,11 @@ public class Event
         this.description = description;
     }
 
-    public LatLng getPosition() {
+    public MyLatLng getPosition() {
         return position;
     }
 
-    public void setPosition(LatLng position) {
+    public void setPosition(MyLatLng position) {
         this.position = position;
     }
 

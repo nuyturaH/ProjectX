@@ -59,7 +59,6 @@ public class CreateEventFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,17 +73,37 @@ public class CreateEventFragment extends Fragment {
             }
         });
         mEvent = mEventViewModel.getEvent().getValue();
-        Toast.makeText(getContext(), ""+mEvent.getPosition(), Toast.LENGTH_LONG).show();
+        initViews(view);
+
+
+        if (mEventViewModel.isToEdit()) {
+            initEditViews();
+        }
+        Toast.makeText(getContext(), "" + mEvent.getPosition(), Toast.LENGTH_LONG).show();
 
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mCurrentUser = mUserViewModel.getUser().getValue();
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
 
-        initViews(view);
+
         setCreateEventToolbar();
         setNavigationComponent();
         //onClickNavigate(mSaveButton, R.id.action_map_fragment_to_create_event_fragment);
+
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mEventViewModel.isToEdit())
+                {
+                    editEvent();
+                }
+                else {
+                    initEvent();
+                }
+                Navigation.findNavController(v).navigate(R.id.action_create_event_fragment_to_map_fragment);
+            }
+        });
 
 
         return view;
@@ -100,17 +119,10 @@ public class CreateEventFragment extends Fragment {
 
         mLocationView.setText(mEvent.getPlace());
 
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initEvent();
-                Navigation.findNavController(v).navigate(R.id.action_create_event_fragment_to_map_fragment);
-            }
-        });
     }
 
+
     private void initEvent() {
-        mEvent = new Event();
         mEvent.setCreator(mCurrentUser);
         mEvent.setTitle(mTitleView.getText().toString());
         mEvent.setDescription(mDescriptionView.getText().toString());
@@ -120,12 +132,32 @@ public class CreateEventFragment extends Fragment {
 
     }
 
-    private void addEventToFirebase()
+    private void initEditViews()
     {
+        mTitleView.setText(mEvent.getTitle());
+        mDescriptionView.setText(mEvent.getDescription());
+        //mTimeView.setText(mEvent.getDate().toString());
+        mSaveButton.setText("Save Changes");
 
+    }
+
+    private void editEvent()
+    {
+        mEvent.setTitle(mTitleView.getText().toString());
+        mEvent.setDescription(mDescriptionView.getText().toString());
+
+        mEventViewModel.setEvent(mEvent);
+        updateEventInFirebase();
+    }
+
+    private void addEventToFirebase() {
         mEvent.setUid(mDatabaseReference.push().getKey());
         mDatabaseReference.child(mEvent.getUid()).setValue(mEvent);
+    }
 
+    private void updateEventInFirebase()
+    {
+        mDatabaseReference.child(mEvent.getUid()).setValue(mEvent);
     }
 
     private void setCreateEventToolbar() {
@@ -134,7 +166,7 @@ public class CreateEventFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-        private void setNavigationComponent() {
+    private void setNavigationComponent() {
         mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mToolbarCreateEvent, mNavController);
     }

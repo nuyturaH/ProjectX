@@ -1,12 +1,15 @@
 package com.har8yun.homeworks.projectx.fragment;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -72,15 +75,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.maps.model.TravelMode;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.adapter.PlaceAutocompleteAdapter;
+//import com.har8yun.homeworks.projectx.directionhelpers.FetchURL;
+//import com.har8yun.homeworks.projectx.directionhelpers.TaskLoadedCallback;
+
 import com.har8yun.homeworks.projectx.mapAnim.MapAnimator;
 import com.har8yun.homeworks.projectx.mapHelper.TaskLoadedCallback;
 import com.har8yun.homeworks.projectx.model.Event;
 import com.har8yun.homeworks.projectx.model.EventViewModel;
 import com.har8yun.homeworks.projectx.model.TaskViewModel;
+import com.har8yun.homeworks.projectx.model.MyLatLng;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
-import com.har8yun.homeworks.projectx.util.EventInformationDialog;
 import com.har8yun.homeworks.projectx.util.PermissionChecker;
 
 import java.io.IOException;
@@ -103,13 +109,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     private static final String TAG = "MapFragment";
     public static final int PLACE_PICKER_REQUEST = 2;
-    public static final int REQUEST_LOCATION_PERMISSION_CODE = 1;
+    public static final int REQUEST_LOCATION_PERMISSION_CODE = 1234;
     public static final String MY_LOCATION = "My Location";
     public static final float DEFAULT_ZOOM = 15f;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
 
             new LatLng(-40, -168), new LatLng(71, 136));
-    private EventInformationDialog mEventInformationDialog;
+
 
     String[] mPermissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
@@ -177,7 +183,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         //getDeviceLocation();
 
 
-        Toast.makeText(getContext(), "Choose Location for your Event", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),"Choose Location for your Event",Toast.LENGTH_LONG).show();
 
         return view;
     }
@@ -232,6 +238,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 //
 //    }
 
+
     @Override
     public void onPause() {
         super.onPause();
@@ -240,12 +247,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     }
 
 
+
     //************************************** METHODS ********************************************
 
     private void showBotNavBar() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
     }
-
 
     private void initViews(View v) {
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
@@ -303,6 +310,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             }
         });
 
+//        if (mCurrentEvent != null) {
+//            Log.d(TAG, "initViews:" + mCurrentEvent.toString());
+//        }
+
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getContext())
@@ -321,10 +332,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             @Override
             public void onClick(View v) {
                 if (PermissionChecker.hasLocationPermission(getContext())) {
+                if (PermissionChecker.hasLocationPermission1(getContext())) {
                     getDeviceLocation();
                 } else {
                     requestLocationPermissions();
                     PermissionChecker.createLocationRequest(); //TODO
+                } else {
+                    requestLocationPermissions();
+                    Log.d(TAG, "onClick: PERFSDFSDFSDFSDFSDFSDFS");
+                    //PermissionChecker.createLocationRequest(); //TODO
                 }
             }
         });
@@ -346,8 +362,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
 
 //        onClickNavigate(mAddEventButton, R.id.action_map_fragment_to_create_event_fragment);
-
-
         mAddEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -356,9 +370,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 mEventMarker = mGoogleMap.addMarker(markerOptions);
                 mMarkerList.add(mEventMarker);
                 Event event = new Event();
-                event.setPosition(mEventMarker.getPosition());
+                MyLatLng myLatLng = new MyLatLng(mEventMarker.getPosition().latitude, mEventMarker.getPosition().longitude);
+                event.setPosition(myLatLng);
                 event.setPlace(mEventMarker.getTitle());
                 mEventViewModel.setEvent(event);
+                mEventViewModel.setToEdit(false);
 
                 NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_map_fragment_to_create_event_fragment);
             }
@@ -373,7 +389,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 //                        .show();
 //            }
 //        });
-
 
     }
 
@@ -391,13 +406,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 ////                    MarkerOptions markerOptions = new MarkerOptions().position(mEvent.getPosition());
 ////                    mGoogleMap.addMarker(markerOptions);
 //                }
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    Event mEvent = eventSnapshot.getValue(Event.class);
+                    Log.d(TAG, "onDataChange: " + mEvent.getPosition());
+                    mEventList.add(mEvent);
+                    LatLng latLng = new LatLng(mEvent.getPosition().getLatitude(), mEvent.getPosition().getLongitude());
+
+                    MarkerOptions markerOptions = new MarkerOptions().position(latLng);
+                    mGoogleMap.addMarker(markerOptions);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        Toast.makeText(getContext(), String.valueOf(mEventList.size()), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),String.valueOf(mEventList.size()),Toast.LENGTH_LONG).show();
 
 //        for(Event event : mEventList)
 //        {
@@ -453,10 +477,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     protected void requestLocationPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(mPermissions, REQUEST_LOCATION_PERMISSION_CODE);
+            requestPermissions(mPermissions,REQUEST_LOCATION_PERMISSION_CODE);
         }
+//        ActivityCompat.requestPermissions(this.getActivity(),
+//                mPermissions,
+//                REQUEST_LOCATION_PERMISSION_CODE);
+        Log.d(TAG, "requestLocationPermissions: BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+    private void getDeviceLocation() {
+        Log.d(TAG, "onRequestPermissionsResult: MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+        switch (requestCode) {
+            case REQUEST_LOCATION_PERMISSION_CODE:
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < grantResults.length; i++) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }
+                    }
+                    getDeviceLocation();
+                    Log.d(TAG, "onRequestPermissionsResult: AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                }
+        }
+    }
 
     private void getDeviceLocation() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
@@ -473,6 +520,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
                     } else {
                         Log.d("Map", task.getException().getMessage());
+                        Toast.makeText(getContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
+                    } else {
+//                        Log.d("Map", task.getException().getMessage());
                         Toast.makeText(getContext(), "Location Not Found", Toast.LENGTH_SHORT).show();
                     }
 
@@ -545,9 +595,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         });
     }
 
-    private void geoLocate() {
-        Log.d("Map", "geoLocate");
-        String searchString = mSearchView.getText().toString();
+    private void geoLocate()
+    {
+        Log.d("Map","geoLocate");
+        String searchString  = mSearchView.getText().toString();
         Geocoder mGeocoder = new Geocoder(getContext());
         List<Address> mAddressList = new ArrayList<>();
         try {
@@ -555,20 +606,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 //            mGeocoder.get
             mAddressList = mGeocoder.getFromLocationName(searchString, 1);
 
-        } catch (IOException e) {
-            Log.d("MAP", "IOException " + e.getMessage());
+        }catch (IOException e)
+        {
+            Log.d("MAP","IOException " + e.getMessage());
         }
-        if (mAddressList.size() > 0) {
+        if(mAddressList.size() > 0)
+        {
             Address address = mAddressList.get(0);
-            Log.d("Map", "address " + address.toString());
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
+            Log.d("Map","address " + address.toString());
+            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),DEFAULT_ZOOM,address.getAddressLine(0));
         }
 
     }
 
 
-    private boolean goingToEvent;
 
+    private boolean goingToEvent;
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
@@ -591,31 +644,72 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         if (event.getCreator().equals(mCurrentUser)) {
                             mEventInformationDialog.mEditEventView.setVisibility(View.VISIBLE);
                             mEventInformationDialog.mEditEventView.setOnClickListener(new View.OnClickListener() {
+            public boolean onMarkerClick(Marker marker) {
+                for (final Event event : mEventList) {
+                    if (marker.getPosition().latitude == event.getPosition().getLatitude()
+                            && marker.getPosition().longitude == event.getPosition().getLongitude()) {
+                        Dialog dialog = new Dialog(getContext());
+                        dialog.setTitle(event.getTitle());
+                        dialog.setContentView(R.layout.dialog_event_information);
+
+                        //setting Dialog Views ----------------------------------------------
+                        TextView titleView = dialog.findViewById(R.id.tv_title_dialog);
+                        TextView descriptionView = dialog.findViewById(R.id.tv_description_dialog);
+                        TextView dateLocationView = dialog.findViewById(R.id.tv_date_location_dialog);
+                        ImageView editView = dialog.findViewById(R.id.iv_to_change_event_dialog);
+                        Button goingButton = dialog.findViewById(R.id.btn_going_dialog);
+                        Button cancelButton = dialog.findViewById(R.id.btn_cancel_dialog);
+
+                        titleView.setText(event.getTitle());
+                        descriptionView.setText(event.getDescription());
+                        dateLocationView.setText("AAAA");
+
+                        //checking if current user is the creator of event ------------------------------------------
+                        if (event.getCreator().getId().equals(mCurrentUser.getId()))
+                        {
+                            Log.d(TAG, "onMarkerClick: CLCLCLCCL");
+                            editView.setVisibility(View.VISIBLE);
+                            editView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    mEventViewModel.setEvent(event);
+                                    mEventViewModel.setToEdit(true);
+                                    dialog.dismiss();
+                                    NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_map_fragment_to_create_event_fragment);
                                     //TODO navigate to EditEventFragment
                                 }
                             });
                         }
                         mEventInformationDialog.show();
                         mEventInformationDialog.mGoingButton.setOnClickListener(new View.OnClickListener() {
+                        //checking if current user is going to current event -------------------------------------
+//                        for(User user : event.getParticipants())      //TODO
+//                        {
+//                            if(user.getId() == mCurrentUser.getId()) {
+//                                goingToEvent = true;
+//                                goingButton.setText("Not Going");
+//                            }
+//                        }
+                        dialog.show();
+                        goingButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 goingToEvent = !goingToEvent;
                                 if (goingToEvent) {
-                                    mEventInformationDialog.mGoingButton.setText("Not Going");
+                                    goingButton.setText("Not Going");
                                     event.getParticipants().add(mCurrentUser);
                                 } else {
-                                    mEventInformationDialog.mGoingButton.setText("Going");
+                                    goingButton.setText("Going");
                                     event.getParticipants().remove(mCurrentUser);
                                 }
+
                             }
                         });
-                        mEventInformationDialog.mCancelButton.setOnClickListener(new View.OnClickListener() {
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 goingToEvent = false;
-                                mEventInformationDialog.dismiss();
+                                dialog.dismiss();
                             }
                         });
                     }
@@ -789,5 +883,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             currentPolyline.remove();
         currentPolyline = mGoogleMap.addPolyline((PolylineOptions) values[0]);
     }
+
 
 }

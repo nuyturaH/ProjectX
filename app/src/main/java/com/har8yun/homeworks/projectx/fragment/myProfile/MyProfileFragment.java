@@ -2,6 +2,9 @@ package com.har8yun.homeworks.projectx.fragment.myProfile;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,11 +23,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.auth.FirebaseAuth;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.activity.MainActivity;
 import com.har8yun.homeworks.projectx.adapter.SkillItemRecyclerAdapter;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
@@ -47,6 +57,7 @@ import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNaviga
 
 public class MyProfileFragment extends Fragment {
 
+
     //shared preferences
     private SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
 
@@ -65,6 +76,7 @@ public class MyProfileFragment extends Fragment {
     private TextView mLastNameView;
     private TextView mGenderView;
     private TextView mAgeView;
+    private ImageView mAvatarView;
 
     private Fragment mNavHostFragment;
 
@@ -159,6 +171,7 @@ public class MyProfileFragment extends Fragment {
         mLastNameView = view.findViewById(R.id.tv_last_name_my_profile);
         mGenderView = view.findViewById(R.id.tv_gender_my_profile);
         mAgeView = view.findViewById(R.id.tv_age_my_profile);
+        mAvatarView = view.findViewById(R.id.app_bar_image);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
 
@@ -193,13 +206,12 @@ public class MyProfileFragment extends Fragment {
                 }
             }
             if (mCurrentUser.getUserInfo().getBirthDate() != null) {
-                //TODO set age
                 Date date = mCurrentUser.getUserInfo().getBirthDate();
                 int b = date.getYear();
-                int y = Calendar.getInstance().get(Calendar.YEAR) % 100;
+                int y = Calendar.getInstance().get(Calendar.YEAR);
                 int m = Calendar.getInstance().get(Calendar.MONTH);
                 int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                int ss = (b + (100-b) + y + (100-b) )%100;
+                int ss = (y - b)%100;
                 if (date.getMonth() < m && date.getDay() < d) {
                     mAgeView.setText(String.valueOf(ss));
                 } else {
@@ -215,6 +227,7 @@ public class MyProfileFragment extends Fragment {
             }
             if (mCurrentUser.getUserInfo().getAvatar() != null) {
                 //TODO set avatar
+                setAvatar();
             }
 
             if (mCurrentUser.getUsername() != null) {
@@ -226,6 +239,12 @@ public class MyProfileFragment extends Fragment {
         }
 
     }
+
+    private void setAvatar()
+    {
+
+    }
+
 
     private void logOut() {
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.map_fragment, true).build();
