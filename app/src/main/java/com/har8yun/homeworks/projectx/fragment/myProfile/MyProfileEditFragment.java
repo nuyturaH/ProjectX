@@ -57,8 +57,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -190,8 +193,6 @@ public class MyProfileEditFragment extends Fragment {
         setUsernameErrors();
         setPasswordError();
         setConfirmPasswordError();
-//        setUserInformation();
-//        saveChanges();
 
         mChangePasswordView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -387,7 +388,34 @@ public class MyProfileEditFragment extends Fragment {
                     mFemale.setChecked(true);
                 }
             }
+            if (mCurrentUser.getUserInfo().getAvatar() != null) {
+                setAvatar(mCurrentUser.getUserInfo().getAvatar());
+            }
         }
+
+    }
+
+    public void setAvatar(String url)
+    {
+
+        Glide.with(this)
+                .load(url)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        //showMessage(getString(R.string.message_try_again));
+                        Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("EDIT PROFILE", e.getMessage());
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+
+                        return false;
+                    }
+                })
+                .into(mAvatarView);
 
     }
 
@@ -586,27 +614,12 @@ public class MyProfileEditFragment extends Fragment {
                                 break;
                         }
                     }
-
                 });
         pictureDialog.show();
     }
 
 
     public void choosePhotoFromGallery() {
-/*        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        Uri chosenPhotoURI = galleryIntent.getData();
-//            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), contentURI);
-//            String path = saveImage(bitmap);
-//        Toast.makeText(getContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
-//        //mAvatarView.setImageBitmap(bitmap);
-//        Glide.with(getContext())
-//                .load(contentURI) //path
-//                .into(mAvatarView);
-        loadSelectedImage(chosenPhotoURI);
-        mCurrentUser.getUserInfo().setAvatar(chosenPhotoURI);*/
-
         Intent galleryAction = new Intent();
         galleryAction.setType("image/*");
         galleryAction.setAction(Intent.ACTION_GET_CONTENT);
@@ -638,6 +651,7 @@ public class MyProfileEditFragment extends Fragment {
                     }
                 })
                 .into(mAvatarView);
+        mCurrentUser.getUserInfo().setAvatar(uri);
     }
 
     private void uploadImageToFirebase(Drawable resource) {
@@ -650,8 +664,7 @@ public class MyProfileEditFragment extends Fragment {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-//                showMessage(getString(R.string.message_try_again));
-//                switchToPhotoMessageView(false);
+
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -660,8 +673,9 @@ public class MyProfileEditFragment extends Fragment {
                 Task<Uri> downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
                 if (null != downloadUrl) {
                     DBUtil.addAvatarToFirebase(downloadUrl.toString());
+//                    mCurrentUser.getUserInfo().setAvatar(downloadUrl.toString());
                 } else {
-                    //showMessage(getString(R.string.message_try_again));
+
                 }
             }
         });
@@ -688,13 +702,16 @@ public class MyProfileEditFragment extends Fragment {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 choosePhotoFromGallery();
             }
-        }else if(requestCode == PERMISSION_CAMERA){
+        } else if (requestCode == PERMISSION_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 takePhotoFromCamera();
             }
         }
     }
 
+    public void onUploadFileCreated(String path) {
+        loadSelectedImage(path);
+    }
 
     private Date mDate;
     private int year, month, dayOfMonth;
@@ -724,8 +741,6 @@ public class MyProfileEditFragment extends Fragment {
         datePickerDialog.getDatePicker();
         datePickerDialog.show();
         dateOpened = true;
-
-
     }
 
 
@@ -757,10 +772,6 @@ public class MyProfileEditFragment extends Fragment {
         mSkillItemEditRecyclerAdapter.addItems(mSkillList);
     }
 
-
-    public void onUploadFileCreated(String path) {
-        loadSelectedImage(path);
-    }
 
 }
 

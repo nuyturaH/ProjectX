@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             if (requestCode == MyProfileEditFragment.CAMERA_REQUEST_CODE) {
                 if (null != fileUrl) {
                     MyProfileEditFragment myProfileEditFragment =
-                            (MyProfileEditFragment) mNavHostFragment.getChildFragmentManager().getFragments().get(0);;
+                            (MyProfileEditFragment) mNavHostFragment.getChildFragmentManager().getFragments().get(0);
                     if (myProfileEditFragment != null && myProfileEditFragment.isVisible()) {
                         (myProfileEditFragment).onUploadFileCreated(fileUrl);
                     }
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     takePictureIntent.setPackage(nativePackage);
                 }
                 fileUrl = photoFile.toURI().toString();
-                startActivityForResult(takePictureIntent, requestId);
+                startActivityForResult(takePictureIntent, requestId); //this goes to onActivityResult
             }
         }
     }

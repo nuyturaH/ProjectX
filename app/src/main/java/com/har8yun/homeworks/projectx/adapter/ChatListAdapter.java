@@ -64,7 +64,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ViewHo
 
 
         viewHolder.mUsername.setText(user.getUsername());
-        viewHolder.mUserPhotoImg.setImageURI(user.getUserInfo().getAvatar());
+        //viewHolder.mUserPhotoImg.setImageURI(user.getUserInfo().getAvatar());
 
 
         viewHolder.mUsername.setOnClickListener(new View.OnClickListener() {

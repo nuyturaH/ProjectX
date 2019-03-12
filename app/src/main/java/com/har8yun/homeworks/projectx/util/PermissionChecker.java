@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -17,10 +18,15 @@ import android.util.Log;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class PermissionChecker {
+
+    static String[] mPermissions = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
 
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm =
@@ -35,11 +41,6 @@ public class PermissionChecker {
     public static boolean hasLocationPermission(Context context) {
         int locationMode = 0;
 
-//        if (ContextCompat.checkSelfPermission(context,
-//                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-//                && ContextCompat.checkSelfPermission(context,
-//                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//
         String locationProviders;
         boolean isAvailable = false;
 
@@ -61,6 +62,21 @@ public class PermissionChecker {
 
         return isAvailable && (coarsePermissionCheck || finePermissionCheck);
 
+    }
+
+    public static boolean hasLocationPermission1(Context context)
+    {
+        boolean result = false;
+        if(ContextCompat.checkSelfPermission(context,FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            if(ContextCompat.checkSelfPermission(context,COARSE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED)
+            {
+                result = true;
+            }
+        }
+        return result;
     }
 
     //

@@ -21,7 +21,7 @@ public class OtherProfileFragment extends Fragment {
     //views
     private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
-    private FloatingActionButton mEditButton;
+    private FloatingActionButton mMessageButton;
     private TextView mPointsView;
     private TextView mStatusView;
     private TextView mHeightView;
@@ -51,7 +51,7 @@ public class OtherProfileFragment extends Fragment {
     {
         mToolbar = view.findViewById(R.id.toolbar_other_profile);
         mCollapsingToolbarLayout = view.findViewById(R.id.ctl_other_profile);
-        mEditButton = view.findViewById(R.id.fab_edit_other_profile);
+        mMessageButton = view.findViewById(R.id.fab_message_other_profile);
         mPointsView = view.findViewById(R.id.tv_points_other_profile);
         mStatusView = view.findViewById(R.id.tv_status_other_profile);
         mHeightView = view.findViewById(R.id.tv_height_other_profile);

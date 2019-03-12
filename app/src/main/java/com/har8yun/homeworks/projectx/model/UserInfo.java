@@ -9,7 +9,7 @@ import java.util.Date;
 public class UserInfo implements Parcelable {
     private String firstName;
     private String lastName;
-    private Uri avatar;
+    private String avatar;
     private Date birthDate;
     private Integer gender;
     private Float weight;
@@ -21,7 +21,8 @@ public class UserInfo implements Parcelable {
     private UserInfo(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
-        avatar = in.readParcelable(Uri.class.getClassLoader());
+//        avatar = in.readParcelable(Uri.class.getClassLoader());
+        avatar = in.readString();
         gender = in.readInt();
         weight = in.readFloat();
         height = in.readFloat();
@@ -48,19 +49,20 @@ public class UserInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(firstName);
         dest.writeString(lastName);
-        dest.writeParcelable(avatar, flags);
+//        dest.writeParcelable(avatar, flags);
+        dest.writeString(avatar);
         dest.writeInt(gender);
         dest.writeFloat(weight);
         dest.writeFloat(height);
     }
 
-    public Uri getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Uri avatar) {
-        this.avatar = avatar;
-    }
+//    public Uri getAvatar() {
+//        return avatar;
+//    }
+//
+//    public void setAvatar(Uri avatar) {
+//        this.avatar = avatar;
+//    }
 
     public String getFirstName() {
         return firstName;
@@ -78,13 +80,13 @@ public class UserInfo implements Parcelable {
         this.lastName = lastName;
     }
 
-//    public String getAvatar() {
-//        return avatar;
-//    }
-//
-//    public void setAvatar(String avatar) {
-//        this.avatar = avatar;
-//    }
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public Date getBirthDate() {
         return birthDate;
