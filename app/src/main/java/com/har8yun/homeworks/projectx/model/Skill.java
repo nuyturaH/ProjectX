@@ -5,8 +5,8 @@ public class Skill {
     private String mSkillName;
     private Integer mSkillCount;
 
-    public Skill()
-    {}
+    public Skill() {
+    }
 
     public Skill(String skillName, int skillCount) {
         mSkillName = skillName;

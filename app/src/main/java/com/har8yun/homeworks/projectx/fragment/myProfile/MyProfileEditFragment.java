@@ -80,7 +80,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -130,6 +132,8 @@ public class MyProfileEditFragment extends Fragment {
 
     private Toolbar mToolbarEdit;
 
+    private RecyclerView recyclerView;
+
     //Firebase
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
@@ -145,6 +149,8 @@ public class MyProfileEditFragment extends Fragment {
 
     List<String> spinnerSkillsNameList = new ArrayList<>();
     List<Skill> spinnerSkillsList = new ArrayList<>();
+
+    Map<String,Integer> mSkillMap = new HashMap<>();
 
     private Fragment mNavHostFragment;
 
@@ -287,6 +293,7 @@ public class MyProfileEditFragment extends Fragment {
         mSportsSpinner = view.findViewById(R.id.spinner_sports_my_profile_edit);
         mSkillsSpinner = view.findViewById(R.id.spinner_skills_my_profile_edit);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        recyclerView = view.findViewById(R.id.rv_skills_my_profile_edit);
 
 
         mSportsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -345,7 +352,9 @@ public class MyProfileEditFragment extends Fragment {
                     for (Skill s : spinnerSkillsList) {
                         if (s.getSkillName().equals(currentItemName)) {
                             mSkillList.add(s);
-                            mCurrentUser.setSkills(mSkillList);
+                            //mSkillMap = new HashMap<>();
+                            mSkillMap.put(s.getSkillName(), s.getSkillCount());
+                            mCurrentUser.setSkills(mSkillMap);
                             initRecyclerView();
                         }
                     }
@@ -390,6 +399,19 @@ public class MyProfileEditFragment extends Fragment {
             }
             if (mCurrentUser.getUserInfo().getAvatar() != null) {
                 setAvatar(mCurrentUser.getUserInfo().getAvatar());
+            }
+
+            if (mCurrentUser.getSkills()!=null){
+                Map<String,Integer> map = mCurrentUser.getSkills();
+
+
+                for(String currentKey : map.keySet()){
+                    Skill skill = new Skill();
+                    skill.setSkillName(currentKey);
+                    skill.setSkillCount(map.get(currentKey));
+                    mSkillList.add(skill);
+                }
+                initRecyclerView();
             }
         }
 
@@ -766,7 +788,8 @@ public class MyProfileEditFragment extends Fragment {
                 mSkillItemEditRecyclerAdapter.removeItem(pos);
             }
         });
-        RecyclerView recyclerView = getView().findViewById(R.id.rv_skills_my_profile_edit);
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mSkillItemEditRecyclerAdapter);
         mSkillItemEditRecyclerAdapter.addItems(mSkillList);

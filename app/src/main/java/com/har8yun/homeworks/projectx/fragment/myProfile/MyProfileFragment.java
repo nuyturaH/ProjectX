@@ -36,12 +36,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.activity.MainActivity;
 import com.har8yun.homeworks.projectx.adapter.SkillItemRecyclerAdapter;
+import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -267,10 +272,21 @@ public class MyProfileFragment extends Fragment {
 //                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName() + ": " + item.getSkillCount(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
+        Map<String,Integer> map = mCurrentUser.getSkills();
+        List<Skill> list = new ArrayList<>();
+
+
+        for(String currentKey : map.keySet()){
+            Skill skill = new Skill();
+            skill.setSkillName(currentKey);
+            skill.setSkillCount(map.get(currentKey));
+            list.add(skill);
+        }
+
         RecyclerView recyclerView = getView().findViewById(R.id.rv_skills_my_profile);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(skillItemRecyclerAdapter);
-        skillItemRecyclerAdapter.addItems(mCurrentUser.getSkills());
+        skillItemRecyclerAdapter.addItems(list);
     }
 
     @Override

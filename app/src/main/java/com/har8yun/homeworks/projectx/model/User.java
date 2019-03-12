@@ -2,6 +2,7 @@ package com.har8yun.homeworks.projectx.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class User {
 
@@ -11,7 +12,7 @@ public class User {
     private String mEmail;
     private Integer mPoints;
     private String mStatus;
-    private List<Skill> mSkills;
+    private Map<String, Integer> mSkills;
 
     public String getId() {
         return id;
@@ -61,11 +62,11 @@ public class User {
         this.mStatus = status;
     }
 
-    public List getSkills() {
+    public Map<String, Integer> getSkills() {
         return mSkills;
     }
 
-    public void setSkills(ArrayList skills) {
+    public void setSkills(Map<String, Integer> skills) {
         mSkills = skills;
     }
 
