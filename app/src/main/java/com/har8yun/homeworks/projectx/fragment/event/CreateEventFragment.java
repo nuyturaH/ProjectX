@@ -51,7 +51,7 @@ public class CreateEventFragment extends Fragment {
     private User mCurrentUser;
 
     //Firebase
-    DatabaseReference mDatabaseReference;
+    DatabaseReference mDatabaseReference= FirebaseDatabase.getInstance().getReference("events");
 
 
     //constructor
@@ -84,7 +84,7 @@ public class CreateEventFragment extends Fragment {
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mCurrentUser = mUserViewModel.getUser().getValue();
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
+//        mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
 
 
         setCreateEventToolbar();
@@ -158,6 +158,10 @@ public class CreateEventFragment extends Fragment {
     private void updateEventInFirebase()
     {
         mDatabaseReference.child(mEvent.getUid()).setValue(mEvent);
+    }
+    public void updateEventInFirebase(Event event)
+    {
+        mDatabaseReference.child(event.getUid()).setValue(event);
     }
 
     private void setCreateEventToolbar() {

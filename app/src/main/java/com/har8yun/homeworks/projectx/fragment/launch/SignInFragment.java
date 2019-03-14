@@ -34,6 +34,8 @@ import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
+import com.har8yun.homeworks.projectx.util.DBUtil;
+import com.har8yun.homeworks.projectx.util.PermissionChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +100,11 @@ public class SignInFragment extends Fragment {
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mUsernameView.getText().length() == 0) {
+                if(!PermissionChecker.isNetworkConnected(getContext()))
+                {
+                    Toast.makeText(getContext(),"You are not connected to Internet",Toast.LENGTH_SHORT).show();
+                }
+                else if (mUsernameView.getText().length() == 0) {
                     mUsernameView.setError(getResources().getString(R.string.username_enter));
                 } else if (mPasswordView.getText().length() == 0) {
                     mPasswordView.setError(getResources().getString(R.string.password_enter));

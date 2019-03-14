@@ -14,7 +14,7 @@ public class Event
     private MyLatLng position;
     private String place;
     private User creator;
-    private List<User> participants = new ArrayList<>();
+    private List<String> participants = new ArrayList<>();
     private Date date;
 
     public Event() {
@@ -76,11 +76,11 @@ public class Event
         this.creator = creator;
     }
 
-    public List<User> getParticipants() {
+    public List<String> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<User> participants) {
+    public void setParticipants(List<String> participants) {
         this.participants = participants;
     }
 
@@ -88,7 +88,7 @@ public class Event
     @Override
     public String toString() {
         return position +
-                creator.getUsername()
+                 creator.getUsername()
                 + title;
     }
 }

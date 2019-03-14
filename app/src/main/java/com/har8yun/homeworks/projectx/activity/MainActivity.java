@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         mUserViewModel.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User user) {
-//                Log.e("hhhh", "ViewModel in My profile Edit " + user.toString());
                 mUser = user;
             }
         });
@@ -103,8 +102,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        sharedPreferences.setCurrentUser(this, mUserViewModel.getUser().getValue());
-        Log.d("MainActivity setUser", mUserViewModel.getUser().getValue().toString());
+        if(sharedPreferences.getLoggedStatus(getApplicationContext())) {
+            sharedPreferences.setCurrentUser(this, mUserViewModel.getUser().getValue());
+            Log.d("MainActivity setUser", mUserViewModel.getUser().getValue().toString());
+        }
         super.onPause();
     }
 

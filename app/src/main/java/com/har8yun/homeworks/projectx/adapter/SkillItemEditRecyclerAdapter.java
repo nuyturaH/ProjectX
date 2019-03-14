@@ -2,6 +2,9 @@ package com.har8yun.homeworks.projectx.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +23,12 @@ import java.util.List;
 
 public class SkillItemEditRecyclerAdapter extends RecyclerView.Adapter<SkillItemEditRecyclerAdapter.SkillItemViewHolder> {
 
+    private static final String TAG = "SkillItemEditRecyclerAd";
+
     private List<Skill> mData = new ArrayList<>();
     private static OnRvItemClickListener mOnRvItemClickListener;
+
+    String ss = "0";
 
     @NonNull
     @Override
@@ -35,13 +42,41 @@ public class SkillItemEditRecyclerAdapter extends RecyclerView.Adapter<SkillItem
         Skill skill = mData.get(position);
 
         holder.skillNameView.setText(skill.getSkillName());
-        if (skill.getSkillCount() == 0) {
-            holder.dotsView.setVisibility(View.INVISIBLE);
-            holder.skillCountView.setVisibility(View.INVISIBLE);
-        } else {
-            holder.skillCountView.setText(skill.getSkillCount().toString());
-
+        if (skill.getSkillCount() != 0) {
+            holder.skillCountView.setText(String.valueOf(skill.getSkillCount()));
+            Log.d(TAG, "onBindViewHolder: " + skill.getSkillCount());
         }
+
+//        holder.skillCountView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    mData.get(position).setSkillCount(Integer.parseInt(ss));
+//                    updateItem(mData.get(position));
+//                }
+//            }
+//        });
+
+
+        holder.skillCountView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mData.get(position).setSkillCount(Integer.valueOf(s.toString()));
+//                ss=s.toString();
+            }
+        });
+
     }
 
     @Override
@@ -81,6 +116,15 @@ public class SkillItemEditRecyclerAdapter extends RecyclerView.Adapter<SkillItem
     public void addItems(List<Skill> items) {
         mData.addAll(items);
         notifyDataSetChanged();
+    }
+    public void addItem(Skill item) {
+        mData.add(item);
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<Skill> getSkills()
+    {
+        return (ArrayList<Skill>) mData;
     }
 
 

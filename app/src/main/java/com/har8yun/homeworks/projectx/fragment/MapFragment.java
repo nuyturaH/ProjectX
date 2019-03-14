@@ -79,6 +79,7 @@ import com.har8yun.homeworks.projectx.adapter.PlaceAutocompleteAdapter;
 //import com.har8yun.homeworks.projectx.directionhelpers.FetchURL;
 //import com.har8yun.homeworks.projectx.directionhelpers.TaskLoadedCallback;
 
+import com.har8yun.homeworks.projectx.fragment.event.CreateEventFragment;
 import com.har8yun.homeworks.projectx.mapAnim.MapAnimator;
 import com.har8yun.homeworks.projectx.mapHelper.TaskLoadedCallback;
 import com.har8yun.homeworks.projectx.model.Event;
@@ -155,6 +156,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
 
     //user
+    private List<User> mUserList = new ArrayList<>();
     private User mCurrentUser;
     private UserViewModel mUserViewModel;
 
@@ -165,6 +167,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     //Firebase
     DatabaseReference mFirebaseDatabse;
+    DatabaseReference mFirebaseDatabseUser;
 
 
     //constructor
@@ -597,7 +600,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
                         //checking if current user is the creator of event ------------------------------------------
                         if (event.getCreator().getId().equals(mCurrentUser.getId())) {
-                            Log.d(TAG, "onMarkerClick: CLCLCLCCL");
                             editView.setVisibility(View.VISIBLE);
                             editView.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -606,29 +608,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                                     mEventViewModel.setToEdit(true);
                                     dialog.dismiss();
                                     NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_map_fragment_to_create_event_fragment);
-                                    //TODO navigate to EditEventFragment
                                 }
                             });
                         }
+
                         //checking if current user is going to current event -------------------------------------
-//                        for(User user : event.getParticipants())      //TODO
-//                        {
-//                            if(user.getId() == mCurrentUser.getId()) {
-//                                goingToEvent = true;
-//                                goingButton.setText("Not Going");
-//                            }
-//                        }
+                        mFirebaseDatabseUser = FirebaseDatabase.getInstance().getReference("users");
+                        mFirebaseDatabseUser.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                mUserList.clear();
+                                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                    User user = userSnapshot.getValue(User.class);
+                                    mUserList.add(user);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+
+                        for(String id : event.getParticipants())      //TODO
+                        {
+                            if(id.equals(mCurrentUser.getId())) {
+                                goingToEvent = true;
+                                goingButton.setText("Not Going");
+                            }
+                        }
+
                         dialog.show();
+                        CreateEventFragment cef = new CreateEventFragment();
+
                         goingButton.setOnClickListener(new View.OnClickListener() {
+
                             @Override
                             public void onClick(View v) {
                                 goingToEvent = !goingToEvent;
                                 if (goingToEvent) {
                                     goingButton.setText("Not Going");
-                                    event.getParticipants().add(mCurrentUser);
+                                    event.getParticipants().add(mCurrentUser.getId());
+
+                                    cef.updateEventInFirebase(event);
                                 } else {
                                     goingButton.setText("Going");
-                                    event.getParticipants().remove(mCurrentUser);
+                                    event.getParticipants().remove(mCurrentUser.getId());
+                                    cef.updateEventInFirebase(event);
                                 }
 
                             }

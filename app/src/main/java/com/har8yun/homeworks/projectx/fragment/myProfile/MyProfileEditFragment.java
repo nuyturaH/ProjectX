@@ -76,7 +76,6 @@ import com.har8yun.homeworks.projectx.util.DBUtil;
 import com.har8yun.homeworks.projectx.util.PermissionChecker;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -150,13 +149,13 @@ public class MyProfileEditFragment extends Fragment {
     List<String> spinnerSkillsNameList = new ArrayList<>();
     List<Skill> spinnerSkillsList = new ArrayList<>();
 
-    Map<String,Integer> mSkillMap = new HashMap<>();
+    Map<String, Integer> mSkillMap = new HashMap<>();
 
     private Fragment mNavHostFragment;
 
 
     //adapter
-    private SkillItemEditRecyclerAdapter mSkillItemEditRecyclerAdapter;
+    private SkillItemEditRecyclerAdapter mSkillItemEditRecyclerAdapter = new SkillItemEditRecyclerAdapter();
 
     //viewmodel
     private UserViewModel mUserViewModel;
@@ -311,15 +310,15 @@ public class MyProfileEditFragment extends Fragment {
                     ((TextView) view).setTextColor(Color.GRAY);
                 } else if (currentItemName.equals("Workout")) {
                     List<Skill> workoutSkills = new ArrayList<>();
-                    workoutSkills.add(new Skill("Pull-ups", 1));
-                    workoutSkills.add(new Skill("Push-ups", 1));
+                    workoutSkills.add(new Skill("Pull-ups", 0)); //
+                    workoutSkills.add(new Skill("Push-ups", 0));
                     workoutSkills.add(new Skill("Planche", 0));
                     workoutSkills.add(new Skill("Human Flag", 0));
                     spinnerSkillsList.addAll(workoutSkills);
 
                 } else if (currentItemName.equals("Football")) {
                     List<Skill> footballSkills = new ArrayList<>();
-                    footballSkills.add(new Skill("Juggling", 1));
+                    footballSkills.add(new Skill("Juggling", 0));
                     footballSkills.add(new Skill("ATM", 0));
                     footballSkills.add(new Skill("Akka", 0));
                     spinnerSkillsList.addAll(footballSkills);
@@ -352,10 +351,12 @@ public class MyProfileEditFragment extends Fragment {
                     for (Skill s : spinnerSkillsList) {
                         if (s.getSkillName().equals(currentItemName)) {
                             mSkillList.add(s);
-                            //mSkillMap = new HashMap<>();
+
                             mSkillMap.put(s.getSkillName(), s.getSkillCount());
                             mCurrentUser.setSkills(mSkillMap);
-                            initRecyclerView();
+
+                            mSkillItemEditRecyclerAdapter.addItem(s);
+//                            initRecyclerView(mSkillList);
                         }
                     }
                 }
@@ -401,24 +402,23 @@ public class MyProfileEditFragment extends Fragment {
                 setAvatar(mCurrentUser.getUserInfo().getAvatar());
             }
 
-            if (mCurrentUser.getSkills()!=null){
-                Map<String,Integer> map = mCurrentUser.getSkills();
+            if (mCurrentUser.getSkills() != null) {
+                mSkillMap = mCurrentUser.getSkills();
 
-
-                for(String currentKey : map.keySet()){
+                for (String currentKey : mSkillMap.keySet()) {
                     Skill skill = new Skill();
                     skill.setSkillName(currentKey);
-                    skill.setSkillCount(map.get(currentKey));
+                    skill.setSkillCount(mSkillMap.get(currentKey));
                     mSkillList.add(skill);
                 }
-                initRecyclerView();
+
             }
+            initRecyclerView();
         }
 
     }
 
-    public void setAvatar(String url)
-    {
+    public void setAvatar(String url) {
 
         Glide.with(this)
                 .load(url)
@@ -550,6 +550,16 @@ public class MyProfileEditFragment extends Fragment {
 
         mCurrentUser.setUsername(mUsernameView.getText().toString());
 
+        //-------------------------- skills --------------------------
+        ArrayList<Skill> list = mSkillItemEditRecyclerAdapter.getSkills();
+        mSkillMap.clear();
+        for (Skill s : list) {
+            Log.v(TAG, "setUserInformation: " + s.getSkillName() + s.getSkillCount());
+            mSkillMap.put(s.getSkillName(), s.getSkillCount());
+            mCurrentUser.setSkills(mSkillMap);
+        }
+        //-------------------------- skills ----------------------------
+
         if (mFirstNameView.getText() != null) {
             mUserInfo.setFirstName(mFirstNameView.getText().toString());
         }
@@ -575,7 +585,8 @@ public class MyProfileEditFragment extends Fragment {
             mUserInfo.setBirthDate(mDate);
         }
 
-        mCurrentUser.setId(mFirebaseUser.getUid());
+
+//        mCurrentUser.setId(mFirebaseUser.getUid());
         mCurrentUser.setUserInfo(mUserInfo);
         mUserViewModel.setUser(mCurrentUser);
 
@@ -778,21 +789,42 @@ public class MyProfileEditFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        mSkillItemEditRecyclerAdapter = new SkillItemEditRecyclerAdapter();
+
         mSkillItemEditRecyclerAdapter.setOnRvItemClickListener(new SkillItemEditRecyclerAdapter.OnRvItemClickListener() {
             @Override
             public void onItemClicked(int pos) {
+
                 Skill item = mSkillList.get(pos);
 //                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName() + ": " + item.getSkillCount(), Toast.LENGTH_SHORT).show();
                 mSkillList.remove(pos);
+
+                mDatabase = FirebaseDatabase.getInstance().getReference("users")
+                        .child(mCurrentUser.getId())
+                        .child("skills");
+//                        .child(item.getSkillName());
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChild(item.getSkillName()))
+                        {
+                            mDatabase.child(item.getSkillName()).removeValue();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
                 mSkillItemEditRecyclerAdapter.removeItem(pos);
             }
         });
 
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mSkillItemEditRecyclerAdapter);
         mSkillItemEditRecyclerAdapter.addItems(mSkillList);
+
     }
 
 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_top_charts"
@@ -23,28 +23,33 @@
             app:tabMode="scrollable">
 
             <android.support.design.widget.TabItem
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Tab1" />
+                android:layout_height="wrap_content"
+                android:id="@+id/ti_pull_ups"
+                android:text="Pull-Ups" />
 
             <android.support.design.widget.TabItem
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ti_push_ups"
                 android:text="Tab2" />
 
             <android.support.design.widget.TabItem
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ti_parallel_dips"
                 android:text="Tab3" />
 
             <android.support.design.widget.TabItem
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ti_juggling"
                 android:text="Tab4" />
 
             <android.support.design.widget.TabItem
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ti_points"
                 android:text="Tab5" />
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
@@ -60,19 +65,28 @@
             android:background="@color/lightGrey"
             tools:context=".fragment.TopChartsFragment">
 
-
-            <TextView
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_charts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryText"
-                android:elevation="4dp"
-                android:text="@string/top_charts"
-                android:textAlignment="center"
-                android:textSize="@dimen/test_title_text_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/colorPrimaryText"-->
+            <!--android:elevation="4dp"-->
+            <!--android:text="@string/top_charts"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textSize="@dimen/test_title_text_size"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

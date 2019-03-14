@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.User;
@@ -61,6 +62,7 @@ public class SignUpFragment extends Fragment {
 
     //Firebase
     private FirebaseAuth mFirebaseAuth;
+    FirebaseUser mFirebaseUser;
 
     //Bundle
     private Bundle bundle;
@@ -91,6 +93,7 @@ public class SignUpFragment extends Fragment {
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+
         onClickNavigate(mSuggestionSignUp, R.id.action_fragment_sign_up_to_fragment_sign_in);
 
 
@@ -120,6 +123,7 @@ public class SignUpFragment extends Fragment {
                         mCurrentUser = new User();
                         mCurrentUser.setUsername(mUsernameView.getText().toString());
                         mCurrentUser.setEmail(mEmailView.getText().toString());
+
                         mUserList.add(mCurrentUser);
                         registerUserToFirebase(mCurrentUser);//add user to firebase
                         mUserViewModel.setUser(mCurrentUser);
@@ -255,6 +259,9 @@ public class SignUpFragment extends Fragment {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+                                                addUidToUser();
+//                                                mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
 
                                                 //Toast.makeText(getContext(), "User Added To Firebase",Toast.LENGTH_SHORT).show();
 
@@ -271,6 +278,15 @@ public class SignUpFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    private void addUidToUser()
+    {
+        mCurrentUser.setId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        FirebaseDatabase.getInstance()
+                .getReference(DATABASE_PATH_NAME)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .setValue(mCurrentUser);
     }
 
 }
