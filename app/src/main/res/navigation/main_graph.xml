@@ -132,5 +132,5 @@
         android:id="@+id/tasks_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.TasksFragment"
         android:label="fragment_tasks"
-        tools:layout="@layout/fragment_tasks" />
+        tools:layout="@layout/fragment_tasks" /><action android:id="@+id/action_global_map_fragment" app:destination="@id/map_fragment"/>
 </navigation>

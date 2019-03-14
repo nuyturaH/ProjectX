@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -16,13 +18,18 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -41,6 +48,9 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
@@ -54,6 +64,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -127,10 +138,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private AutoCompleteTextView mSearchView;
     private FloatingActionButton mLocationButton;
     private FloatingActionButton mTasksButton;
-
+    private ConstraintLayout mSearchLayout;
+    private ConstraintLayout mTaskInfoLayout;
     private MapView mapView;
     private ImageView mMagnifyView;
-    private ImageView mCurrentPlace;
+    private ImageView mCurrentLocationView;
+    private Button mExitButton;
+    private Button mDoneButton;
 
     //tasks
     private TaskViewModel mTaskViewModel;
@@ -147,6 +161,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private List<Marker> mMarkerList = new ArrayList<>();
     LatLng destinationPosition;
     List<LatLng> path;
+
+    LocationRequest mLocationRequest;
+    Location mLastLocation;
+    Marker mCurrLocationMarker;
+
+
 
 
     //navigation
@@ -195,6 +215,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+//        getDeviceLocation();
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
@@ -216,36 +238,56 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mTaskViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
-//        mTaskViewModel.getTask().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                if (s != null) {
-//                    //TODO call task methods
-//                    switch (s) {
-//                        case LOOSE_WEIGHT:
-//                            looseWeight();
-//                            break;
-//                        case DEVELOP_STAMINA:
-//                            //developStamina();
-//                            break;
-//                        case BUILD_MUSCLES:
-//                            //buildMuscles();
-//                            break;
-//                    }
-//                }
-//            }
-//        });
-//
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTaskViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
+        mTaskViewModel.getTask().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                if (s != null) {
+                    //TODO call task methods
+                    switch (s) {
+                        case LOOSE_WEIGHT:
+                            if (mDeviceLocation != null) {
+                                mGoogleMap.clear();
+
+                                changeMapDesign();
+                                looseWeight();
+
+                                MapAnimator.getInstance().setPrimaryLineColor(getResources().getColor(R.color.colorPrimary));
+                                MapAnimator.getInstance().setSecondaryLineColor(getResources().getColor(R.color.colorPrimaryLight));
+                                MapAnimator.getInstance().animateRoute(mGoogleMap, path);
+                                mGoogleMap.addMarker(new MarkerOptions().position(destinationPosition).title("Destination"));
+
+                                //.icon(convertToBitmap(getResources().getDrawable(R.drawable.ic_map_marker_check),130,130)));
+                            }
+                            mTaskViewModel.setTask(null);
+                            break;
+                        case DEVELOP_STAMINA:
+                            //developStamina();
+                            changeMapDesign();
+                            mTaskViewModel.setTask(null);
+                            break;
+                        case BUILD_MUSCLES:
+                            //buildMuscles();
+                            mTaskViewModel.setTask(null);
+                            break;
+                    }
+                }
+            }
+        });
+
+    }
 
 
     @Override
     public void onPause() {
         super.onPause();
+
+        if (mFusedLocationProviderClient != null) {
+            mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
+        }
         mGoogleApiClient.stopAutoManage(getActivity());
         mGoogleApiClient.disconnect();
     }
@@ -264,9 +306,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mSearchView = v.findViewById(R.id.et_search_map_fragment);
         mMagnifyView = v.findViewById(R.id.iv_magnify_map_fragment);
         mTasksButton = v.findViewById(R.id.fab_tasks_map);
-
-        mCurrentPlace = v.findViewById(R.id.iv_current_location_map);
+        mExitButton = v.findViewById(R.id.btn_exit_map);
+        mDoneButton = v.findViewById(R.id.btn_done_map);
+        mSearchLayout = v.findViewById(R.id.layout_search_map);
+        mTaskInfoLayout = v.findViewById(R.id.layout_task_info_map);
+        mCurrentLocationView = v.findViewById(R.id.iv_current_location_map);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
 
         mapView = v.findViewById(R.id.mv_map);
         if (mapView != null) {
@@ -286,26 +332,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 //                FragmentTransaction ft = fm.beginTransaction();
 //                ft.add(R.id.nav_host_fragment, tasksFragment);
 //                ft.commit();
-//                tasksFragment.show(fm,null);
+                tasksFragment.show(fm, null);
 //                getDialog().getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog);
-                if (mDeviceLocation != null) {
-                    mGoogleMap.clear();
-                    looseWeight();
-                    Drawable myDrawable = getResources().getDrawable(R.drawable.ic_map_marker_check);
-//                    Bitmap anImage      = ((BitmapDrawable) myDrawable).getBitmap();
-                    Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),
-                            R.drawable.ic_add_location_red);
-//                   setAnimation(mGoogleMap,path,convertToBitmap(myDrawable,130,130));
-
-                    MapAnimator.getInstance().setPrimaryLineColor(getResources().getColor(R.color.colorPrimary));
-                    MapAnimator.getInstance().setSecondaryLineColor(getResources().getColor(R.color.colorPrimaryLight));
-                    MapAnimator.getInstance().animateRoute(mGoogleMap, path);
-                    mGoogleMap.addMarker(new MarkerOptions().position(destinationPosition).title("Destination"));
-                    //.icon(convertToBitmap(getResources().getDrawable(R.drawable.ic_map_marker_check),130,130)));
-
-                }
 
 
+            }
+        });
+
+        mExitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGoogleApiClient.stopAutoManage(getActivity());
+                mGoogleApiClient.disconnect();
+                NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_global_map_fragment);
+                mTaskViewModel.setTask(null);
             }
         });
 
@@ -390,15 +430,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mEventList.clear();
 
-                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                    Event mEvent = eventSnapshot.getValue(Event.class);
-                    Log.d(TAG, "onDataChange: " + mEvent.getPosition());
-                    mEventList.add(mEvent);
-                    LatLng latLng = new LatLng(mEvent.getPosition().getLatitude(), mEvent.getPosition().getLongitude());
-
-                    MarkerOptions markerOptions = new MarkerOptions().position(latLng);
-                    mGoogleMap.addMarker(markerOptions);
-                }
+//                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+//                    Event mEvent = eventSnapshot.getValue(Event.class);
+//                    Log.d(TAG, "onDataChange: " + mEvent.getPosition());
+//                    mEventList.add(mEvent);
+//                    LatLng latLng = new LatLng(mEvent.getPosition().getLatitude(), mEvent.getPosition().getLongitude());
+//
+//                    MarkerOptions markerOptions = new MarkerOptions().position(latLng);
+//                    mGoogleMap.addMarker(markerOptions);
+//                }
             }
 
             @Override
@@ -464,23 +504,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        Log.d(TAG, "onRequestPermissionsResult: MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
-        switch (requestCode) {
-            case REQUEST_LOCATION_PERMISSION_CODE:
-                if (grantResults.length > 0) {
-                    for (int i = 0; i < grantResults.length; i++) {
-                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
-                    }
-                    getDeviceLocation();
-                    Log.d(TAG, "onRequestPermissionsResult: AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//
+//        Log.d(TAG, "onRequestPermissionsResult: MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+//        switch (requestCode) {
+//            case REQUEST_LOCATION_PERMISSION_CODE:
+//                if (grantResults.length > 0) {
+//                    for (int i = 0; i < grantResults.length; i++) {
+//                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+//                            return;
+//                        }
+//                    }
+//                    getDeviceLocation();
+//                    Log.d(TAG, "onRequestPermissionsResult: AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+//                }
+//        }
+//    }
 
 
     private void getDeviceLocation() {
@@ -514,10 +554,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private void moveCamera(LatLng latLng, float zoom, String title) {
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
-        MarkerOptions mMarkerOptions = new MarkerOptions()
-                .position(latLng)
-                .title(title);
-        mGoogleMap.addMarker(mMarkerOptions);
+//        MarkerOptions mMarkerOptions = new MarkerOptions()
+//                .position(latLng)
+//                .title(title);
+//        mGoogleMap.addMarker(mMarkerOptions);
     }
 
     private void initSearch() {
@@ -572,7 +612,42 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
 
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                //Location Permission already granted
+                mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+                mGoogleMap.setMyLocationEnabled(true);
+            } else {
+                //Request Location Permission
+                checkLocationPermission();
+            }
+        }
+        else {
+            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+            mGoogleMap.setMyLocationEnabled(true);
+        }
+
+
+
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getContext(), R.raw.map_style));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
+
+//        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         setEventsOnMap();
 
@@ -706,7 +781,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         String destination = destinationPosition.latitude + "," + destinationPosition.longitude;
 
         mGoogleMap.addMarker(new MarkerOptions().position(sourcePosition).title("Origin")
-                .icon(convertToBitmap(getResources().getDrawable(R.drawable.map_marker_radius), 130, 130)));
+//                .icon(convertToBitmap(getResources().getDrawable(R.drawable.map_marker_radius), 130, 130)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
 //        mGoogleMap.addMarker(new MarkerOptions().position(destinationPosition).title("Destination"));
 
@@ -817,6 +893,143 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
         return BitmapDescriptorFactory.fromBitmap(mutableBitmap);
     }
+
+    private void changeMapDesign() {
+        if (mSearchLayout.getVisibility() == View.VISIBLE){
+
+            mSearchLayout.setVisibility(View.INVISIBLE);
+            mTasksButton.hide();
+            mAddEventButton.hide();
+            //mLocationButton.hide();
+            mBottomNavigationView.setVisibility(View.GONE);
+            mExitButton.setVisibility(View.VISIBLE);
+            mDoneButton.setVisibility(View.VISIBLE);
+            mCurrentLocationView.setVisibility(View.GONE);
+            mTaskInfoLayout.setVisibility(View.VISIBLE);
+
+        }else {
+            mSearchLayout.setVisibility(View.VISIBLE);
+            mTasksButton.show();
+            mAddEventButton.show();
+            //mLocationButton.show();
+            mBottomNavigationView.setVisibility(View.VISIBLE);
+            mExitButton.setVisibility(View.GONE);
+            mDoneButton.setVisibility(View.GONE);
+            mCurrentLocationView.setVisibility(View.VISIBLE);
+            mTaskInfoLayout.setVisibility(View.GONE);
+        }
+    }
+
+
+
+    LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            List<Location> locationList = locationResult.getLocations();
+            if (locationList.size() > 0) {
+                //The last location in the list is the newest
+                Location location = locationList.get(locationList.size() - 1);
+                Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
+                mLastLocation = location;
+                if (mCurrLocationMarker != null) {
+                    mCurrLocationMarker.remove();
+                }
+
+                //Place current location marker
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title("Current Position");
+//                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.);
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+
+                //move map camera
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+            }
+        }
+    };
+
+
+
+
+
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Location Permission Needed")
+                        .setMessage("This app needs the Location permission, please accept to use location functionality")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION );
+            }
+        }
+    }
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+                        mGoogleMap.setMyLocationEnabled(true);
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+
+
+
 
 
     @Override
