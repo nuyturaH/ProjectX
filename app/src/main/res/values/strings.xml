@@ -114,6 +114,8 @@
     </string-array>
 
     <string name="Camera">Camera</string>
+    <string name="your_weight">Your Weight</string>
+    <string name="your_height">Your Height</string>
 
 
 </resources>

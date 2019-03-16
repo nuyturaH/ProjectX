@@ -55,6 +55,7 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartsAdapter.ChartsView
     }
 
     public void addItems(List<User> items,String key) {
+        mData.clear();
         kkk = key;
         mData.addAll(items);
         notifyDataSetChanged();

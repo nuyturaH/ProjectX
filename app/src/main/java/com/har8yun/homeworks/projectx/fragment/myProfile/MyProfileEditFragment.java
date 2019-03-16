@@ -188,6 +188,7 @@ public class MyProfileEditFragment extends Fragment {
         initViews(view);
         setMyProfileEditToolbar();
         setNavigationComponent();
+        initRecyclerView();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this.getContext());
@@ -350,12 +351,13 @@ public class MyProfileEditFragment extends Fragment {
                 } else {
                     for (Skill s : spinnerSkillsList) {
                         if (s.getSkillName().equals(currentItemName)) {
-                            mSkillList.add(s);
+//                            mSkillList.add(s);////
 
                             mSkillMap.put(s.getSkillName(), s.getSkillCount());
                             mCurrentUser.setSkills(mSkillMap);
 
                             mSkillItemEditRecyclerAdapter.addItem(s);
+                            Log.d(TAG, "onItemSelected: " + mSkillItemEditRecyclerAdapter.getItemCount());
 //                            initRecyclerView(mSkillList);
                         }
                     }
@@ -401,20 +403,21 @@ public class MyProfileEditFragment extends Fragment {
             if (mCurrentUser.getUserInfo().getAvatar() != null) {
                 setAvatar(mCurrentUser.getUserInfo().getAvatar());
             }
-
-            if (mCurrentUser.getSkills() != null) {
-                mSkillMap = mCurrentUser.getSkills();
-
-                for (String currentKey : mSkillMap.keySet()) {
-                    Skill skill = new Skill();
-                    skill.setSkillName(currentKey);
-                    skill.setSkillCount(mSkillMap.get(currentKey));
-                    mSkillList.add(skill);
-                }
-
-            }
-            initRecyclerView();
         }
+
+        if (mCurrentUser.getSkills() != null) {
+            mSkillMap = mCurrentUser.getSkills();
+
+            for (String currentKey : mSkillMap.keySet()) {
+                Skill skill = new Skill();
+                skill.setSkillName(currentKey);
+                skill.setSkillCount(mSkillMap.get(currentKey));
+                mSkillItemEditRecyclerAdapter.addItem(skill);
+//                mSkillList.add(skill);
+            }
+
+        }
+//        initRecyclerView();
 
     }
 
@@ -790,11 +793,14 @@ public class MyProfileEditFragment extends Fragment {
 
     private void initRecyclerView() {
 
+
         mSkillItemEditRecyclerAdapter.setOnRvItemClickListener(new SkillItemEditRecyclerAdapter.OnRvItemClickListener() {
             @Override
             public void onItemClicked(int pos) {
+                mSkillList = mSkillItemEditRecyclerAdapter.getSkills();
 
                 Skill item = mSkillList.get(pos);
+
 //                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName() + ": " + item.getSkillCount(), Toast.LENGTH_SHORT).show();
                 mSkillList.remove(pos);
 
@@ -805,8 +811,7 @@ public class MyProfileEditFragment extends Fragment {
                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild(item.getSkillName()))
-                        {
+                        if (dataSnapshot.hasChild(item.getSkillName())) {
                             mDatabase.child(item.getSkillName()).removeValue();
                         }
                     }
@@ -823,7 +828,7 @@ public class MyProfileEditFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mSkillItemEditRecyclerAdapter);
-        mSkillItemEditRecyclerAdapter.addItems(mSkillList);
+//
 
     }
 

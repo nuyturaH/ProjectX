@@ -32,27 +32,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_push_ups"
-                android:text="Tab2" />
+                android:text="Push-Ups" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_parallel_dips"
-                android:text="Tab3" />
+                android:text="Parallel Dips"
+                />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_juggling"
-                android:text="Tab4" />
+                android:text="Juggling" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_points"
-                android:text="Tab5" />
+                android:text="Points" />
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/loadingPanel"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center">-->
+
+        <!--<ProgressBar-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:indeterminate="true" />-->
+    <!--</RelativeLayout>-->
+
+
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -73,6 +88,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/pb_charts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
 
             <!--<TextView-->

@@ -12,8 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.PointerIcon;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,6 +44,7 @@ import static com.har8yun.homeworks.projectx.fragment.launch.SignInFragment.DATA
 public class TopChartsFragment extends Fragment {
 
     //final Strings
+    private static final String TAG = "TopChartsFragment";
     public static final String PULL_UPS = "Pull-ups";
     public static final String PUSH_UPS = "Push-ups";
     public static final String PARALLEL_DIPS = "Parellel Dips"; //TODO check this one!!!!
@@ -54,7 +57,7 @@ public class TopChartsFragment extends Fragment {
     //views
     private Toolbar mToolbarTopCharts;
     private TabLayout mTabLayout;
-    private TabItem mTabPullUps;
+    private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
 
     //adapter
@@ -68,6 +71,9 @@ public class TopChartsFragment extends Fragment {
 
     List<User> mPullUpsList = new ArrayList<>();
     List<User> mPushUpsList = new ArrayList<>();
+    List<User> mParallelDipsList = new ArrayList<>();
+    List<User> mJugglingList = new ArrayList<>();
+    List<User> mPointsList = new ArrayList<>();
 
     //constructor
     public TopChartsFragment() {
@@ -91,14 +97,31 @@ public class TopChartsFragment extends Fragment {
     private void initViews(View view) {
         mToolbarTopCharts = view.findViewById(R.id.toolbar_top_charts);
         mTabLayout = view.findViewById(R.id.tabs);
-        mTabPullUps = view.findViewById(R.id.ti_pull_ups);
+        mProgressBar = view.findViewById(R.id.pb_charts);
         mRecyclerView = view.findViewById(R.id.rv_charts);
+
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                mProgressBar.setVisibility(View.VISIBLE);
                 if(tab.getPosition() == 0)
                     initRecyclerView(mPullUpsList,PULL_UPS);
+                else if(tab.getPosition() == 1)
+                {
+                    initRecyclerView(mPushUpsList,PUSH_UPS);
+                    Log.d(TAG, "onTabSelected: "+ PUSH_UPS);
+                }else if(tab.getPosition() == 2)
+                {
+                    initRecyclerView(mParallelDipsList,PARALLEL_DIPS);
+                }else if(tab.getPosition() == 3)
+                {
+                    initRecyclerView(mJugglingList,JUGGLING);
+                    Log.d(TAG, "onTabSelected: " + JUGGLING);
+                }else if(tab.getPosition() == 4)
+                {
+                    initRecyclerView(mPointsList, POINTS);
+                }
             }
 
             @Override
@@ -111,13 +134,6 @@ public class TopChartsFragment extends Fragment {
 
             }
         });
-//        mTabPullUps.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                initRecyclerView(mPullUpsList,PULL_UPS);
-//            }
-//        });
-
 
     }
 
@@ -130,6 +146,8 @@ public class TopChartsFragment extends Fragment {
         sortItems(listToPass,key);
 
         mChartsAdapter.addItems(listToPass,key);
+
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private void getUsersFromFirebase() {
@@ -138,15 +156,28 @@ public class TopChartsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUserList.clear();
+                mPushUpsList.clear();
+                mPullUpsList.clear();
+                mParallelDipsList.clear();
+                mJugglingList.clear();
+                mPointsList.clear();
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User user = userSnapshot.getValue(User.class);
                     mUserList.add(user);
                     if (user.getSkills() != null) {
                         if (user.getSkills().containsKey(PULL_UPS)) {
                             mPullUpsList.add(user);
-                        } else if (user.getSkills().containsKey(PUSH_UPS)) {
+                            Log.d(TAG, "onDataChange: " + user.getUsername());
+                        }if (user.getSkills().containsKey(PUSH_UPS)) {
                             mPushUpsList.add(user);
-                        } //...TODO for other skills
+                        }if (user.getSkills().containsKey(PARALLEL_DIPS)) {
+                            mParallelDipsList.add(user);
+                        }if (user.getSkills().containsKey(JUGGLING)) {
+                            mJugglingList.add(user);
+                            Log.d(TAG, "onDataChange: " +user.getUsername());
+                        }if (user.getPoints() != null) {
+                            mPointsList.add(user);
+                        }
                     }
                 }
             }
@@ -162,7 +193,12 @@ public class TopChartsFragment extends Fragment {
         Collections.sort(listToSort, new Comparator<User>() {
             @Override
             public int compare(User t1, User t2) {
-                return t2.getSkills().get(key).compareTo(t1.getSkills().get(key));
+                if(!key.equals(POINTS)) {
+                    return t2.getSkills().get(key).compareTo(t1.getSkills().get(key));
+                }
+                else{
+                    return t2.getPoints().compareTo(t1.getPoints());
+                }
             }
         });
     }

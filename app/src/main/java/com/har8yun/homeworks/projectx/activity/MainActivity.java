@@ -88,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
 //            Log.d("MainActivity", mUser.toString());
         }
 
-
-//        FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
-//        Log.d("Main",u.getUid());
     }
 
     //************************************** OVERRIDE METHODS ********************************************
