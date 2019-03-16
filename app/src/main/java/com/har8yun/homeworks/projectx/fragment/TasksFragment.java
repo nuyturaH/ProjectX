@@ -3,26 +3,23 @@ package com.har8yun.homeworks.projectx.fragment;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatDialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.TaskInfoFragment;
 import com.har8yun.homeworks.projectx.model.TaskViewModel;
-import com.har8yun.homeworks.projectx.model.UserViewModel;
 
 
 public class TasksFragment extends DialogFragment {
     //public static vars
-    public static final String LOOSE_WEIGHT = "Loose Weight";
-    public static final String DEVELOP_STAMINA = "Develop Stamina";
-    public static final String BUILD_MUSCLES = "Build Muscles";
+    public static final String LOOSE_WEIGHT_INFO = "Loose Weight Info";
+    public static final String DEVELOP_STAMINA_INFO = "Develop Stamina Info";
+    public static final String BUILD_MUSCLES_INFO = "Build Muscles Info";
 
     //views
     private Button mLooseWeightButton;
@@ -31,6 +28,8 @@ public class TasksFragment extends DialogFragment {
 
     //viewModel
     private TaskViewModel mTaskViewModel;
+
+
 
     //constructor
     public TasksFragment() {
@@ -45,28 +44,34 @@ public class TasksFragment extends DialogFragment {
         initViews(view);
         mTaskViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
 
-
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        TaskInfoFragment taskInfoFragment = new TaskInfoFragment();
         mLooseWeightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTaskViewModel.setTask(LOOSE_WEIGHT);
+                mTaskViewModel.setTask(LOOSE_WEIGHT_INFO);
                 getDialog().dismiss();
+
+
+                taskInfoFragment.show(fm, null);
             }
         });
 
         mDevelopStaminaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTaskViewModel.setTask(DEVELOP_STAMINA);
+                mTaskViewModel.setTask(DEVELOP_STAMINA_INFO);
                 getDialog().dismiss();
+                taskInfoFragment.show(fm, null);
             }
         });
 
         mBuildMusclesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTaskViewModel.setTask(BUILD_MUSCLES);
+                mTaskViewModel.setTask(BUILD_MUSCLES_INFO);
                 getDialog().dismiss();
+                taskInfoFragment.show(fm, null);
             }
         });
 
@@ -77,7 +82,7 @@ public class TasksFragment extends DialogFragment {
     private void initViews(View view) {
         mLooseWeightButton = view.findViewById(R.id.btn_loose_weight_tasks);
         mDevelopStaminaButton = view.findViewById(R.id.btn_develop_stamina_tasks);
-        mBuildMusclesButton = view.findViewById(R.id.btn_build_muscles_tasks);
+        mBuildMusclesButton = view.findViewById(R.id.btn_ok_task_info);
     }
 
 

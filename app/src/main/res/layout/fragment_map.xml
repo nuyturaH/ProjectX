@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main_map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGrey"
@@ -130,14 +131,13 @@
         android:id="@+id/btn_done_map"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/bg_rounded_corners_green"
-        android:minHeight="40dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bg_rounded_corners_layout_btn"
         android:text="Done"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="14sp"
+        android:textColor="#009624"
+        android:textSize="18sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/mv_map"
         app:layout_constraintEnd_toEndOf="parent"
@@ -158,13 +158,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_corners_dialog"
+            android:elevation="8dp"
             android:minWidth="50dp"
             android:minHeight="30dp"
             android:text="Exit"
             android:textColor="@color/colorPrimary"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/tv_task_info_map"
-            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/tv_distance_map"
             app:layout_constraintTop_toTopOf="@+id/tv_task_info_map" />
 
         <TextView
@@ -185,7 +186,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_calories_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -193,15 +194,15 @@
             android:paddingStart="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="2dp"
-            android:text=" • 50 calories are burned"
+            android:text=" • 0 calories are burned"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintStart_toStartOf="@+id/tv_distance_map"
+            app:layout_constraintTop_toBottomOf="@+id/tv_distance_map" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_distance_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -210,7 +211,7 @@
             android:paddingStart="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="2dp"
-            android:text=" • 614m to destination"
+            android:text=" • 2 km to destination"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="18sp"
             android:textStyle="bold"

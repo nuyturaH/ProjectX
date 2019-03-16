@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.content.pm.PackageManager;
@@ -15,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +23,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -86,6 +87,7 @@ import com.google.maps.model.EncodedPolyline;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.model.TravelMode;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.TaskInfoFragment;
 import com.har8yun.homeworks.projectx.adapter.PlaceAutocompleteAdapter;
 //import com.har8yun.homeworks.projectx.directionhelpers.FetchURL;
 //import com.har8yun.homeworks.projectx.directionhelpers.TaskLoadedCallback;
@@ -103,19 +105,23 @@ import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.util.PermissionChecker;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import androidx.navigation.fragment.NavHostFragment;
 
-import static com.har8yun.homeworks.projectx.fragment.TasksFragment.BUILD_MUSCLES;
-import static com.har8yun.homeworks.projectx.fragment.TasksFragment.DEVELOP_STAMINA;
-import static com.har8yun.homeworks.projectx.fragment.TasksFragment.LOOSE_WEIGHT;
+
+import static com.har8yun.homeworks.projectx.TaskInfoFragment.BUILD_MUSCLES;
+import static com.har8yun.homeworks.projectx.TaskInfoFragment.DEVELOP_STAMINA;
+import static com.har8yun.homeworks.projectx.TaskInfoFragment.LOOSE_WEIGHT;
 import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
+import static java.lang.String.*;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, TaskLoadedCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,
+        TaskLoadedCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraIdleListener {
 
 
 //    public static final String DATABASE_PATH_EVENTS = "Events";
@@ -133,6 +139,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     String[] mPermissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
     //views
+    private ConstraintLayout mMainLayout;
     private BottomNavigationView mBottomNavigationView;
     private FloatingActionButton mAddEventButton;
     private AutoCompleteTextView mSearchView;
@@ -145,6 +152,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private ImageView mCurrentLocationView;
     private Button mExitButton;
     private Button mDoneButton;
+    private TextView mDistanceView;
+    private TextView mCaloriesView;
+
+    ConstraintSet constraintSet = new ConstraintSet();
+
 
     //tasks
     private TaskViewModel mTaskViewModel;
@@ -166,7 +178,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     Location mLastLocation;
     Marker mCurrLocationMarker;
 
-
+    private LocationManager locationManager;
+    private static final long MIN_TIME = 400;
+    private static final float MIN_DISTANCE = 1000;
 
 
     //navigation
@@ -204,6 +218,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         initViews(view);
         initSearch();
         showBotNavBar();
+        constraintSet.clone(getActivity(), R.layout.fragment_map);
         //getDeviceLocation();
 
 
@@ -215,8 +230,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        getDeviceLocation();
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        getDeviceLocation();
+//        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
@@ -246,7 +261,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             @Override
             public void onChanged(@Nullable String s) {
                 if (s != null) {
-                    //TODO call task methods
                     switch (s) {
                         case LOOSE_WEIGHT:
                             if (mDeviceLocation != null) {
@@ -255,6 +269,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                                 changeMapDesign();
                                 looseWeight();
 
+                                startUserLocationsRunnable();
+
                                 MapAnimator.getInstance().setPrimaryLineColor(getResources().getColor(R.color.colorPrimary));
                                 MapAnimator.getInstance().setSecondaryLineColor(getResources().getColor(R.color.colorPrimaryLight));
                                 MapAnimator.getInstance().animateRoute(mGoogleMap, path);
@@ -262,7 +278,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
                                 //.icon(convertToBitmap(getResources().getDrawable(R.drawable.ic_map_marker_check),130,130)));
                             }
-                            mTaskViewModel.setTask(null);
+
                             break;
                         case DEVELOP_STAMINA:
                             //developStamina();
@@ -302,6 +318,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private void initViews(View v) {
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
         mAddEventButton = v.findViewById(R.id.fab_add_event_map);
+        mMainLayout = v.findViewById(R.id.layout_main_map);
         mLocationButton = v.findViewById(R.id.fab_my_location_map);
         mSearchView = v.findViewById(R.id.et_search_map_fragment);
         mMagnifyView = v.findViewById(R.id.iv_magnify_map_fragment);
@@ -311,6 +328,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mSearchLayout = v.findViewById(R.id.layout_search_map);
         mTaskInfoLayout = v.findViewById(R.id.layout_task_info_map);
         mCurrentLocationView = v.findViewById(R.id.iv_current_location_map);
+        mDistanceView = v.findViewById(R.id.tv_distance_map);
+        mCaloriesView = v.findViewById(R.id.tv_calories_map);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
 
@@ -326,16 +345,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mTasksButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 TasksFragment tasksFragment = new TasksFragment();
-//                FragmentTransaction ft = fm.beginTransaction();
-//                ft.add(R.id.nav_host_fragment, tasksFragment);
-//                ft.commit();
                 tasksFragment.show(fm, null);
-//                getDialog().getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog);
-
-
             }
         });
 
@@ -346,6 +358,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 mGoogleApiClient.disconnect();
                 NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_global_map_fragment);
                 mTaskViewModel.setTask(null);
+                stopLocationUpdates();
             }
         });
 
@@ -366,8 +379,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             public void onClick(View v) {
                 if (PermissionChecker.hasLocationPermission(getContext())) {
                     getDeviceLocation();
+                    moveCamera(new LatLng(mDeviceLocation.getLatitude(), mDeviceLocation.getLongitude()), DEFAULT_ZOOM, MY_LOCATION);
                 } else {
                     requestLocationPermissions();
+                    checkLocationPermission();
                     Log.d(TAG, "onClick: PERFSDFSDFSDFSDFSDFSDFS");
                     //PermissionChecker.createLocationRequest(); //TODO
                 }
@@ -409,16 +424,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_map_fragment_to_create_event_fragment);
             }
         });
-//        mTaskButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new AlertDialog.Builder(getContext())
-//                        .setTitle("Title")
-//                        .setMessage("Message")
-//                        .setPositiveButton("Ok", null)
-//                        .show();
-//            }
-//        });
 
     }
 
@@ -430,68 +435,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mEventList.clear();
 
-//                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-//                    Event mEvent = eventSnapshot.getValue(Event.class);
-//                    Log.d(TAG, "onDataChange: " + mEvent.getPosition());
-//                    mEventList.add(mEvent);
-//                    LatLng latLng = new LatLng(mEvent.getPosition().getLatitude(), mEvent.getPosition().getLongitude());
-//
-//                    MarkerOptions markerOptions = new MarkerOptions().position(latLng);
-//                    mGoogleMap.addMarker(markerOptions);
-//                }
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    Event mEvent = eventSnapshot.getValue(Event.class);
+                    Log.d(TAG, "onDataChange: " + mEvent.getPosition());
+                    mEventList.add(mEvent);
+                    LatLng latLng = new LatLng(mEvent.getPosition().getLatitude(), mEvent.getPosition().getLongitude());
+
+                    MarkerOptions markerOptions = new MarkerOptions().position(latLng);
+                    mGoogleMap.addMarker(markerOptions);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        Toast.makeText(getContext(), String.valueOf(mEventList.size()), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), valueOf(mEventList.size()), Toast.LENGTH_LONG).show();
 
     }
 
-//    private void startPicking(Intent data) {
-//        mPlace = PlacePicker.getPosition(getContext(), data);
-//
-//        PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-//                .getPlaceById(mGoogleApiClient, mPlace.getId());
-//        placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-//
-//    }
-//
-//    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
-//
-//        @Override
-//        public void onResult(@NonNull PlaceBuffer places) {
-//            if (!places.getStatus().isSuccess()) {
-//                Log.d(TAG, "onResult: Place query did not complete successfully: " + places.getStatus().toString());
-//                places.release();
-//                return;
-//            }
-//
-//            final Place place = places.get(0);
-//
-//            try {
-//                mPlaceInfo = new PlaceInfo();
-//                mPlaceInfo.setName(place.getName().toString());
-//                Log.d(TAG, "onResult: name: " + place.getName());
-//                mPlaceInfo.setAddress(place.getAddress().toString());
-//                Log.d(TAG, "onResult: address: " + place.getAddress());
-//                mPlaceInfo.setId(place.getId());
-//                Log.d(TAG, "onResult: id:" + place.getId());
-//                mPlaceInfo.setLatlng(place.getLatLng());
-//                Log.d(TAG, "onResult: latlng: " + place.getLatLng());
-//                mPlaceInfo.setPhoneNumber(place.getPhoneNumber().toString());
-//                Log.d(TAG, "onResult: phone number: " + place.getPhoneNumber());
-//                Log.d(TAG, "onResult: place: " + mPlaceInfo.toString());
-//            } catch (NullPointerException e) {
-//                Log.e(TAG, "onResult: NullPointerException: " + e.getMessage());
-//            }
-//            moveCamera(new LatLng(place.getViewport().getCenter().latitude,
-//
-//                    place.getViewport().getCenter().longitude), DEFAULT_ZOOM, mPlaceInfo);
-//            places.release();
-//        }
-//    };
 
     protected void requestLocationPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -504,24 +466,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//
-//        Log.d(TAG, "onRequestPermissionsResult: MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
-//        switch (requestCode) {
-//            case REQUEST_LOCATION_PERMISSION_CODE:
-//                if (grantResults.length > 0) {
-//                    for (int i = 0; i < grantResults.length; i++) {
-//                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-//                            return;
-//                        }
-//                    }
-//                    getDeviceLocation();
-//                    Log.d(TAG, "onRequestPermissionsResult: AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-//                }
-//        }
-//    }
-
 
     private void getDeviceLocation() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
@@ -532,9 +476,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful() && task.getResult() != null) {
-                        Toast.makeText(getContext(), "Location Found", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "Location Found", Toast.LENGTH_SHORT).show();
                         mDeviceLocation = (Location) task.getResult();
-                        moveCamera(new LatLng(mDeviceLocation.getLatitude(), mDeviceLocation.getLongitude()), DEFAULT_ZOOM, MY_LOCATION);
+//                        moveCamera(new LatLng(mDeviceLocation.getLatitude(), mDeviceLocation.getLongitude()), DEFAULT_ZOOM, MY_LOCATION);
 
                     } else {
 //                        Log.d("Map", task.getException().getMessage());
@@ -612,30 +556,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
 
+        mGoogleMap.setOnCameraIdleListener(this);
+        mGoogleMap.setOnCameraMoveListener(this);
 
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
                 mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
                 mGoogleMap.setMyLocationEnabled(true);
+                mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
             } else {
                 //Request Location Permission
                 checkLocationPermission();
             }
-        }
-        else {
+        } else {
             mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
             mGoogleMap.setMyLocationEnabled(true);
+            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
-
 
 
         try {
-            // Customise the styling of the base map using a JSON object defined
-            // in a raw resource file.
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             getContext(), R.raw.map_style));
@@ -646,8 +588,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
-
-//        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         setEventsOnMap();
 
@@ -704,9 +644,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                             }
                         });
 
-                        for(String id : event.getParticipants())      //TODO
+                        for (String id : event.getParticipants())      //TODO
                         {
-                            if(id.equals(mCurrentUser.getId())) {
+                            if (id.equals(mCurrentUser.getId())) {
                                 goingToEvent = true;
                                 goingButton.setText("Not Going");
                             }
@@ -745,7 +685,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 return true;
             }
         });
-        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
 
     }
 
@@ -847,7 +786,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 .flat(true));
 
         myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(directionPoint.get(0), DEFAULT_ZOOM));
-
         animateMarker(myMap, marker, directionPoint, false);
     }
 
@@ -894,24 +832,47 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         return BitmapDescriptorFactory.fromBitmap(mutableBitmap);
     }
 
+    public double calculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+
+        return Radius * c;
+    }
+
     private void changeMapDesign() {
-        if (mSearchLayout.getVisibility() == View.VISIBLE){
+        if (mSearchLayout.getVisibility() == View.VISIBLE) {
 
             mSearchLayout.setVisibility(View.INVISIBLE);
             mTasksButton.hide();
             mAddEventButton.hide();
-            //mLocationButton.hide();
             mBottomNavigationView.setVisibility(View.GONE);
             mExitButton.setVisibility(View.VISIBLE);
             mDoneButton.setVisibility(View.VISIBLE);
             mCurrentLocationView.setVisibility(View.GONE);
             mTaskInfoLayout.setVisibility(View.VISIBLE);
 
-        }else {
+        } else {
             mSearchLayout.setVisibility(View.VISIBLE);
             mTasksButton.show();
             mAddEventButton.show();
-            //mLocationButton.show();
             mBottomNavigationView.setVisibility(View.VISIBLE);
             mExitButton.setVisibility(View.GONE);
             mDoneButton.setVisibility(View.GONE);
@@ -921,7 +882,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     }
 
 
-
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -929,7 +889,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             if (locationList.size() > 0) {
                 //The last location in the list is the newest
                 Location location = locationList.get(locationList.size() - 1);
-                Log.i("MapsActivity", "Location: " + location.getLatitude() + " " + location.getLongitude());
+                Log.e("hhhh", "Location: " + location.getLatitude() + " " + location.getLongitude());
                 mLastLocation = location;
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
@@ -951,10 +911,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     };
 
 
-
-
-
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -964,7 +922,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
                 // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
+                // this thread waiting for the user'mPastDistance response! After the user
                 // sees the explanation, try again to request the permission.
                 new AlertDialog.Builder(getContext())
                         .setTitle("Location Permission Needed")
@@ -975,28 +933,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(getActivity(),
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
                         .create()
                         .show();
-
-
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION );
+                        MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
     }
 
 
-
-
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -1011,33 +964,80 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
                         mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
                         mGoogleMap.setMyLocationEnabled(true);
+                        Log.e("hhhh", "changing");
                     }
 
                 } else {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(getContext(), "permission denied", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request
         }
     }
 
+    private Handler mHandler = new Handler();
+    private Runnable mRunnable;
+    private static final int LOCATION_UPDATE_INTERVAL = 3000;
+    double mPastDistance;
+    double mStep;
+    LatLng mPreviousStep;
+
+    private void startUserLocationsRunnable() {
+        mHandler.postDelayed(mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                getDeviceLocation();
+                double d = calculationByDistance(new LatLng(mDeviceLocation.getLatitude(), mDeviceLocation.getLongitude()), destinationPosition);
+                if (mPreviousStep != null) {
+                    if (mDeviceLocation.getLatitude() != mPreviousStep.latitude || mDeviceLocation.getLongitude() != mPreviousStep.longitude) {
+                        mStep = calculationByDistance(new LatLng(mDeviceLocation.getLatitude(), mDeviceLocation.getLongitude()), mPreviousStep);
+                        mPastDistance = mPastDistance + mStep * 1000;
+                        int burnedCalories = (int)(mPastDistance * 0.055);
+                        mCaloriesView.setText(" • " + String.valueOf(burnedCalories) + " calories are burned");
+                    }
+                }
+                mPreviousStep = new LatLng(mDeviceLocation.getLatitude(), mDeviceLocation.getLongitude());
+                DecimalFormat df2 = new DecimalFormat("#.##");
+                mDistanceView.setText(" • " + df2.format(d) + " km to destination");
+                mHandler.postDelayed(mRunnable, LOCATION_UPDATE_INTERVAL);
+            }
+        }, LOCATION_UPDATE_INTERVAL);
+    }
+
+    private void stopLocationUpdates() {
+        mHandler.removeCallbacks(mRunnable);
+    }
 
 
+    @Override
+    public void onCameraMove() {
+        if (mTaskViewModel.getTask().getValue() == null) {
+            float biasedValue = 0.435f;
+            constraintSet.setVerticalBias(mCurrentLocationView.getId(), biasedValue);
+            constraintSet.applyTo(mMainLayout);
+        }
+    }
 
+
+    @Override
+    public void onCameraIdle() {
+        if (mTaskViewModel.getTask().getValue() == null) {
+            float biasedValue = 0.45f;
+            constraintSet.setVerticalBias(mCurrentLocationView.getId(), biasedValue);
+            constraintSet.applyTo(mMainLayout);
+        }
+
+    }
 
 
     @Override
     public void onTaskDone(Object... values) {
-        if (currentPolyline != null)
+        if (currentPolyline != null) {
             currentPolyline.remove();
+        }
         currentPolyline = mGoogleMap.addPolyline((PolylineOptions) values[0]);
     }
-
-
 }
