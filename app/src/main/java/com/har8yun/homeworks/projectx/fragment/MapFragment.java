@@ -86,6 +86,7 @@ import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.EncodedPolyline;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.model.TravelMode;
+import com.har8yun.homeworks.projectx.Application;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.TaskInfoFragment;
 import com.har8yun.homeworks.projectx.adapter.PlaceAutocompleteAdapter;
@@ -97,6 +98,7 @@ import com.har8yun.homeworks.projectx.mapAnim.MapAnimator;
 import com.har8yun.homeworks.projectx.mapHelper.TaskLoadedCallback;
 import com.har8yun.homeworks.projectx.model.Event;
 import com.har8yun.homeworks.projectx.model.EventViewModel;
+import com.har8yun.homeworks.projectx.model.SettingsViewModel;
 import com.har8yun.homeworks.projectx.model.TaskViewModel;
 import com.har8yun.homeworks.projectx.model.MyLatLng;
 import com.har8yun.homeworks.projectx.model.User;
@@ -108,6 +110,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
 import androidx.navigation.fragment.NavHostFragment;
@@ -131,9 +134,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     public static final int REQUEST_LOCATION_PERMISSION_CODE = 1234;
     public static final String MY_LOCATION = "My Location";
     public static final float DEFAULT_ZOOM = 15f;
+    public static final float START_ZOOM = 10f;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
 
             new LatLng(-40, -168), new LatLng(71, 136));
+    public static final LatLng START_POINT_MAP = new LatLng(40.183414, 44.514807);
 
 
     String[] mPermissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -199,6 +204,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private Event mCurrentEvent;
     private EventViewModel mEventViewModel;
 
+    //settings
+    SettingsViewModel mSettingsViewModel;
+
     //Firebase
     DatabaseReference mFirebaseDatabse;
     DatabaseReference mFirebaseDatabseUser;
@@ -250,6 +258,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             }
         });
         mCurrentEvent = mEventViewModel.getEvent().getValue();
+
+        mSettingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
+
 
     }
 
@@ -384,7 +395,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                     requestLocationPermissions();
                     checkLocationPermission();
                     Log.d(TAG, "onClick: PERFSDFSDFSDFSDFSDFSDFS");
-                    //PermissionChecker.createLocationRequest(); //TODO
                 }
             }
         });
@@ -417,7 +427,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 Event event = new Event();
                 MyLatLng myLatLng = new MyLatLng(mEventMarker.getPosition().latitude, mEventMarker.getPosition().longitude);
                 event.setPosition(myLatLng);
-                event.setPlace(mEventMarker.getTitle());
+                event.setPlace(getAddress(myLatLng.getLatitude(),myLatLng.getLongitude()));
                 mEventViewModel.setEvent(event);
                 mEventViewModel.setToEdit(false);
 
@@ -548,6 +558,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     }
 
+    public String getAddress(double lat, double lng) {
+        String add="";
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+            add = obj.getAddressLine(0);
+//            add = add + "\n" + obj.getCountryName();
+//            add = add + "\n" + obj.getCountryCode();
+//            add = add + "\n" + obj.getAdminArea();
+//            add = add + "\n" + obj.getPostalCode();
+//            add = add + "\n" + obj.getSubAdminArea();
+//            add = add + "\n" + obj.getLocality();
+//            add = add + "\n" + obj.getSubThoroughfare();
+            Log.e(TAG, "getAddress: "+add );
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return add;
+    }
+
 
     private boolean goingToEvent;
 
@@ -558,6 +590,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
         mGoogleMap.setOnCameraIdleListener(this);
         mGoogleMap.setOnCameraMoveListener(this);
+
+        moveCamera(START_POINT_MAP,START_ZOOM,null);
+
+        setSettings();
 
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -605,6 +641,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         TextView titleView = dialog.findViewById(R.id.tv_title_dialog);
                         TextView descriptionView = dialog.findViewById(R.id.tv_description_dialog);
                         TextView dateLocationView = dialog.findViewById(R.id.tv_date_location_dialog);
+                        TextView creatorView = dialog.findViewById(R.id.tv_creator_username_dialog);
                         ImageView editView = dialog.findViewById(R.id.iv_to_change_event_dialog);
                         Button goingButton = dialog.findViewById(R.id.btn_going_dialog);
                         Button cancelButton = dialog.findViewById(R.id.btn_cancel_dialog);
@@ -612,6 +649,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         titleView.setText(event.getTitle());
                         descriptionView.setText(event.getDescription());
                         dateLocationView.setText("AAAA");
+                        creatorView.setText(event.getCreator().getUsername());
 
                         //checking if current user is the creator of event ------------------------------------------
                         if (event.getCreator().getId().equals(mCurrentUser.getId())) {
@@ -644,7 +682,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                             }
                         });
 
-                        for (String id : event.getParticipants())      //TODO
+                        for (String id : event.getParticipants())
                         {
                             if (id.equals(mCurrentUser.getId())) {
                                 goingToEvent = true;
@@ -688,6 +726,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     }
 
+    private void setSettings()
+    {
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(mSettingsViewModel.isZoomButtons());
+    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

@@ -1,5 +1,6 @@
 package com.har8yun.homeworks.projectx.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,8 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.adapter.ChartsAdapter;
+import com.har8yun.homeworks.projectx.model.SettingsViewModel;
 import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
+import com.har8yun.homeworks.projectx.model.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +37,7 @@ import java.util.List;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -53,6 +57,7 @@ public class TopChartsFragment extends Fragment {
 
     //navigation
     private NavController mNavController;
+    private Fragment mNavHostFragment;
 
     //views
     private Toolbar mToolbarTopCharts;
@@ -66,8 +71,12 @@ public class TopChartsFragment extends Fragment {
     //Firebase
     private DatabaseReference mFirebaseDatabse;
 
+    //viewmodel
+    private UserViewModel mUserViewModel;
+
     //user
     List<User> mUserList = new ArrayList<>();
+    User otherUser;
 
     List<User> mPullUpsList = new ArrayList<>();
     List<User> mPushUpsList = new ArrayList<>();
@@ -84,6 +93,10 @@ public class TopChartsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_top_charts, container, false);
 
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+//        otherUser = mUserViewModel.getOtherUser().getValue();
+
+        mFirebaseDatabse = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_NAME);
         getUsersFromFirebase();
         initViews(view);
         setTopChartsToolbar();
@@ -99,6 +112,9 @@ public class TopChartsFragment extends Fragment {
         mTabLayout = view.findViewById(R.id.tabs);
         mProgressBar = view.findViewById(R.id.pb_charts);
         mRecyclerView = view.findViewById(R.id.rv_charts);
+        mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
+        mTabLayout.getTabAt(0).select();
 
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -148,10 +164,26 @@ public class TopChartsFragment extends Fragment {
         mChartsAdapter.addItems(listToPass,key);
 
         mProgressBar.setVisibility(View.GONE);
+
+        mChartsAdapter.setOnRvItemClickListener(new ChartsAdapter.OnRvItemClickListener() {
+            @Override
+            public void onItemClicked(String uid) {
+                for(User user: mUserList)
+                {
+                    if(user.getId().equals(uid))
+                    {
+                        mUserViewModel.setOtherUser(user);
+                        //TODO navigate to OtherProfileFragment
+                        NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_top_charts_fragment_to_other_profile_fragment);
+                    }
+                }
+
+            }
+        });
     }
 
     private void getUsersFromFirebase() {
-        mFirebaseDatabse = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_NAME);
+
         mFirebaseDatabse.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

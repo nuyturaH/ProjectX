@@ -62,5 +62,24 @@
         android:src="@drawable/ic_edit_event"
         android:visibility="invisible"/>
 
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_creator_dialog"
+        android:text="Creator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_creator_username_dialog"
+        android:layout_marginTop="300dp"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_creator_username_dialog"
+        app:layout_constraintStart_toEndOf="@id/tv_creator_dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="300dp"/>
+
 
 </android.support.constraint.ConstraintLayout>

@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
+    <!--<ImageView-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/iv_avatar_chart"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintEnd_toStartOf="@id/tv_username_chart"-->
+
+        <!--/>-->
+
     <TextView
         android:id="@+id/tv_username_chart"
         android:layout_width="wrap_content"

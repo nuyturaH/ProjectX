@@ -50,11 +50,26 @@
             app:popExitAnim="@anim/exit_to_right"
             />
         </fragment>
+
+    <!--______________________________________________________________ -->
     <fragment
         android:id="@+id/top_charts_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.TopChartsFragment"
         android:label="Top charts"
-        tools:layout="@layout/fragment_top_charts" />
+        tools:layout="@layout/fragment_top_charts" >
+
+        <action
+        android:id="@+id/action_top_charts_fragment_to_other_profile_fragment"
+        app:destination="@id/other_profile_fragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/other_profile_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.OtherProfileFragment"
+        android:label="Other Profile"
+        tools:layout="@layout/fragment_other_profile"
+        />
+    <!--______________________________________________________________ -->
     <fragment
         android:id="@+id/settings_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.SettingsFragment"

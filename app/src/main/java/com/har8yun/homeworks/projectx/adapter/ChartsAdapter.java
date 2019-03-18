@@ -1,5 +1,6 @@
 package com.har8yun.homeworks.projectx.adapter;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.model.SettingsViewModel;
 import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
+import com.har8yun.homeworks.projectx.model.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,11 +29,15 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartsAdapter.ChartsView
     private List<User> mData = new ArrayList<>();
 
 
+    private static ChartsAdapter.OnRvItemClickListener mOnRvItemClickListener;
+
+
     @NonNull
     @Override
     public ChartsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_chart_item, parent, false);
+
         return new ChartsViewHolder(view);
     }
 
@@ -38,12 +45,14 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartsAdapter.ChartsView
     public void onBindViewHolder(@NonNull ChartsViewHolder holder, final int position) {
         User user = mData.get(position);
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnRvItemClickListener.onItemClicked(user.getId());
+
+
+            }
+        });
 
         holder.username.setText(user.getUsername());
         holder.skillCount.setText(String.valueOf(user.getSkills().get(kkk)));
@@ -73,5 +82,13 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartsAdapter.ChartsView
             username = itemView.findViewById(R.id.tv_username_chart);
             skillCount = itemView.findViewById(R.id.tv_skill_count_chart);
         }
+    }
+
+    public void setOnRvItemClickListener(ChartsAdapter.OnRvItemClickListener mOnRvItemClickListener) {
+        this.mOnRvItemClickListener = mOnRvItemClickListener;
+    }
+
+    public interface OnRvItemClickListener {
+        void onItemClicked(String uid);
     }
 }

@@ -12,7 +12,7 @@ import java.math.BigInteger;
 
 public class DBUtil {
 
-    private static final String REF_STORAGE = "gs://projectx-c62f5.appspot.com/";
+    private static final String REF_STORAGE = "gs://projectx-c62f5.appspot.com";
     private static final String REF_STORAGE_CHAT = "/chat";
     private static final String REF_STORAGE_AVATARS = "/avatars";
     private static final String REF_ANDROID = "Android";
@@ -23,7 +23,7 @@ public class DBUtil {
         return FirebaseDatabase.getInstance();
     }
 
-    private static StorageReference getStorageReference() {
+    public static StorageReference getStorageReference() {
         return FirebaseStorage.getInstance().getReferenceFromUrl(REF_STORAGE);
     }
 

@@ -423,6 +423,12 @@ public class MyProfileEditFragment extends Fragment {
 
     public void setAvatar(String url) {
 
+
+//        StorageReference storageReference = DBUtil.getStorageReference().child("avatars").child("1552239524124");
+//        Glide.with(this /* context */)
+//                .load(storageReference)
+//                .into(mAvatarView);
+
         Glide.with(this)
                 .load(url)
                 .listener(new RequestListener<Drawable>() {
@@ -538,7 +544,6 @@ public class MyProfileEditFragment extends Fragment {
 //                Navigation.findNavController(v).navigate(R.id.action_my_profile_edit_fragment_to_my_profile_fragment);
                 Fragment mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 //                NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_my_profile_edit_fragment_to_my_profile_fragment);
-                //updateUserInFirebase(mCurrentUser); //add user to firebase
             }
         }
     }
@@ -589,7 +594,6 @@ public class MyProfileEditFragment extends Fragment {
         }
 
 
-//        mCurrentUser.setId(mFirebaseUser.getUid());
         mCurrentUser.setUserInfo(mUserInfo);
         mUserViewModel.setUser(mCurrentUser);
 
@@ -674,7 +678,6 @@ public class MyProfileEditFragment extends Fragment {
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        //showMessage(getString(R.string.message_try_again));
                         Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("EDIT PROFILE", e.getMessage());
                         return false;
@@ -705,11 +708,11 @@ public class MyProfileEditFragment extends Fragment {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //switchToPhotoMessageView(false);
                 Task<Uri> downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
                 if (null != downloadUrl) {
                     DBUtil.addAvatarToFirebase(downloadUrl.getResult().toString());
                     mCurrentUser.getUserInfo().setAvatar(downloadUrl.getResult().toString());
+                    Log.d(TAG, "onSuccess: " + downloadUrl.getResult().toString());
                 } else {
 
                 }

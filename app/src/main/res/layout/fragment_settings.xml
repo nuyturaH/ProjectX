@@ -7,19 +7,92 @@
     android:background="@color/lightGrey"
     tools:context=".fragment.SettingsFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_change_theme_settings"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_settings"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:text="Change App Theme"
+        />
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sw_notifications_settings"
+        app:layout_constraintTop_toBottomOf="@id/tv_change_theme_settings"
+        app:layout_constraintStart_toStartOf="@id/tv_change_theme_settings"
+        android:text="Notifications    "
+        android:layout_marginTop="10dp"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sw_zoom_buttons_settings"
+        app:layout_constraintTop_toBottomOf="@id/sw_notifications_settings"
+        app:layout_constraintStart_toStartOf="@id/sw_notifications_settings"
+        android:text="Map Zoom Buttons    "
+        android:layout_marginTop="10dp"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sw_user_info_settings"
+        app:layout_constraintTop_toBottomOf="@id/sw_zoom_buttons_settings"
+        app:layout_constraintStart_toStartOf="@id/sw_zoom_buttons_settings"
+        android:text="Hide User Info    "
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryText"
-        android:elevation="4dp"
-        android:text="@string/settings"
-        android:textAlignment="center"
-        android:textSize="@dimen/test_title_text_size"
+        android:id="@+id/tv_change_app_font_size_settings"
+        app:layout_constraintTop_toBottomOf="@id/sw_user_info_settings"
+        app:layout_constraintStart_toStartOf="@id/sw_user_info_settings"
+        android:text="Change App Font Size"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_change_app_language_settings"
+        app:layout_constraintTop_toBottomOf="@id/tv_change_app_font_size_settings"
+        app:layout_constraintStart_toStartOf="@id/tv_change_app_font_size_settings"
+        android:text="Change App Language"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_delete_account_settings"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Delete Account"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="80dp"
+        />
+
+
+
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/colorPrimaryText"-->
+        <!--android:elevation="4dp"-->
+        <!--android:text="@string/settings"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textSize="@dimen/test_title_text_size"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_settings"
