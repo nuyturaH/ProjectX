@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -92,6 +93,9 @@ public class MyProfileFragment extends Fragment {
     private ImageView mAvatarView;
     private ProgressBar mProgressBar;
 
+    private BottomNavigationView mBottomNavigationView;
+
+
     private Fragment mNavHostFragment;
 
     //user
@@ -110,6 +114,7 @@ public class MyProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
         initViews(view);
+        showBotNavBar();
         setMyProfileToolbar();
 
         onClickNavigate(mEditButton, R.id.action_my_profile_fragment_to_my_profile_edit_fragment);
@@ -188,6 +193,8 @@ public class MyProfileFragment extends Fragment {
         mAvatarView = view.findViewById(R.id.app_bar_image);
         mProgressBar = view.findViewById(R.id.pb_avatar_my_profile);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
+
 
 
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
@@ -329,6 +336,10 @@ public class MyProfileFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(skillItemRecyclerAdapter);
         skillItemRecyclerAdapter.addItems(list);
+    }
+
+    private void showBotNavBar() {
+        mBottomNavigationView.setVisibility(View.VISIBLE);
     }
 
     @Override

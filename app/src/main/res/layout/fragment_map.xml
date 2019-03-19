@@ -136,7 +136,7 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/bg_rounded_corners_layout_btn"
         android:text="Done"
-        android:textColor="#009624"
+        android:textColor="@color/green"
         android:textSize="18sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/mv_map"

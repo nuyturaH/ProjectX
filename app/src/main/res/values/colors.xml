@@ -5,6 +5,8 @@
   <color name="colorPrimaryDark">#7F0000</color>
   <color name="colorPrimaryText">#FFFFFF</color>
   <color name="lightGrey">#E0E0E0</color>
+  <color name="notWhite">#F7F7F7</color>
+  <color name="green">#009624</color>
 
   <color name="colorRouteLine">#FF4081</color>
 
