@@ -21,7 +21,6 @@ public class UserInfo implements Parcelable {
     private UserInfo(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
-//        avatar = in.readParcelable(Uri.class.getClassLoader());
         avatar = in.readString();
         gender = in.readInt();
         weight = in.readFloat();
@@ -56,13 +55,6 @@ public class UserInfo implements Parcelable {
         dest.writeFloat(height);
     }
 
-//    public Uri getAvatar() {
-//        return avatar;
-//    }
-//
-//    public void setAvatar(Uri avatar) {
-//        this.avatar = avatar;
-//    }
 
     public String getFirstName() {
         return firstName;

@@ -1,23 +1,16 @@
 package com.har8yun.homeworks.projectx.adapter;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.har8yun.homeworks.projectx.R;
-import com.har8yun.homeworks.projectx.model.SettingsViewModel;
-import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
-import com.har8yun.homeworks.projectx.model.UserViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ChartsAdapter extends RecyclerView.Adapter<ChartsAdapter.ChartsViewHolder> {

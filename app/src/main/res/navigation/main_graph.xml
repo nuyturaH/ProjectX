@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_my_profile">
         <action
             android:id="@+id/action_my_profile_fragment_to_fragment_launch"
-            app:destination="@id/menu_item_log_out" />
+            app:destination="@id/menu_item_log_out"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
         <action
             android:id="@+id/action_my_profile_fragment_to_my_profile_edit_fragment"
             app:destination="@id/my_profile_edit_fragment"
@@ -59,8 +61,15 @@
         tools:layout="@layout/fragment_top_charts" >
 
         <action
-        android:id="@+id/action_top_charts_fragment_to_other_profile_fragment"
-        app:destination="@id/other_profile_fragment"/>
+            android:id="@+id/action_top_charts_fragment_to_other_profile_fragment"
+            app:destination="@id/other_profile_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+        <action
+            android:id="@+id/action_top_charts_fragment_to_my_profile_fragment"
+            app:destination="@id/my_profile_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
 
     <fragment

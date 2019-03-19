@@ -12,6 +12,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 
+import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +33,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.activity.MainActivity;
@@ -40,6 +45,7 @@ import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
+import com.har8yun.homeworks.projectx.util.DBUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,6 +68,8 @@ import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNaviga
 
 public class MyProfileFragment extends Fragment {
 
+    private static final String TAG = "MyProfileFragment";
+
 
     //shared preferences
     private SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
@@ -82,6 +90,7 @@ public class MyProfileFragment extends Fragment {
     private TextView mGenderView;
     private TextView mAgeView;
     private ImageView mAvatarView;
+    private ProgressBar mProgressBar;
 
     private Fragment mNavHostFragment;
 
@@ -177,6 +186,7 @@ public class MyProfileFragment extends Fragment {
         mGenderView = view.findViewById(R.id.tv_gender_my_profile);
         mAgeView = view.findViewById(R.id.tv_age_my_profile);
         mAvatarView = view.findViewById(R.id.app_bar_image);
+        mProgressBar = view.findViewById(R.id.pb_avatar_my_profile);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
 
@@ -231,8 +241,7 @@ public class MyProfileFragment extends Fragment {
                 mHeightView.setText(String.valueOf((mCurrentUser.getUserInfo().getHeight())) + " m");
             }
             if (mCurrentUser.getUserInfo().getAvatar() != null) {
-                //TODO set avatar
-                setAvatar();
+                setAvatar(mCurrentUser.getUserInfo().getAvatar());
             }
 
             if (mCurrentUser.getUsername() != null) {
@@ -245,8 +254,41 @@ public class MyProfileFragment extends Fragment {
 
     }
 
-    private void setAvatar()
-    {
+    String res;
+
+    public void setAvatar(String url) {
+
+        DBUtil.getRefAvatars(url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                res =  uri.toString();
+                //getContext != null lifecycle architecture component TODO
+                Glide.with(getContext())
+                        .load(res)
+                        .apply(RequestOptions.circleCropTransform())
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                mProgressBar.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("EDIT PROFILE", e.getMessage());
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                mProgressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .into(mAvatarView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "onFailure: Failed AGAIN" );
+            }
+        });
 
     }
 

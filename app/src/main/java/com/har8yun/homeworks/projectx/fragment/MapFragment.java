@@ -86,9 +86,7 @@ import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.EncodedPolyline;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.model.TravelMode;
-import com.har8yun.homeworks.projectx.Application;
 import com.har8yun.homeworks.projectx.R;
-import com.har8yun.homeworks.projectx.TaskInfoFragment;
 import com.har8yun.homeworks.projectx.adapter.PlaceAutocompleteAdapter;
 //import com.har8yun.homeworks.projectx.directionhelpers.FetchURL;
 //import com.har8yun.homeworks.projectx.directionhelpers.TaskLoadedCallback;
@@ -98,7 +96,6 @@ import com.har8yun.homeworks.projectx.mapAnim.MapAnimator;
 import com.har8yun.homeworks.projectx.mapHelper.TaskLoadedCallback;
 import com.har8yun.homeworks.projectx.model.Event;
 import com.har8yun.homeworks.projectx.model.EventViewModel;
-import com.har8yun.homeworks.projectx.model.SettingsViewModel;
 import com.har8yun.homeworks.projectx.model.TaskViewModel;
 import com.har8yun.homeworks.projectx.model.MyLatLng;
 import com.har8yun.homeworks.projectx.model.User;
@@ -204,8 +201,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private Event mCurrentEvent;
     private EventViewModel mEventViewModel;
 
-    //settings
-    SettingsViewModel mSettingsViewModel;
 
     //Firebase
     DatabaseReference mFirebaseDatabse;
@@ -259,7 +254,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         });
         mCurrentEvent = mEventViewModel.getEvent().getValue();
 
-        mSettingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
 
 
     }
@@ -728,7 +722,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     private void setSettings()
     {
-        mGoogleMap.getUiSettings().setZoomControlsEnabled(mSettingsViewModel.isZoomButtons());
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(sharedPreferences.getZoom(getContext()));
     }
 
     @Override

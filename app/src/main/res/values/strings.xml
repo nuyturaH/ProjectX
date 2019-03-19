@@ -11,6 +11,8 @@
     <string name="email">Email</string>
     <string name="email_enter">Please, enter your email</string>
     <string name="email_wrong">There is not such email </string>
+    <string name="email_badly_formatted">The email address is badly formatted. </string>
+
 
     <string name="password">Password</string>
     <string name="password_enter">Please, enter your password</string>

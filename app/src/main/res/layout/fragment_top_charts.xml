@@ -26,7 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_pull_ups"
-                android:text="Pull-Ups" />
+                android:text="Pull-Ups"
+                />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
@@ -89,29 +90,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ProgressBar
-                android:id="@+id/pb_charts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-
-            <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/colorPrimaryText"-->
-            <!--android:elevation="4dp"-->
-            <!--android:text="@string/top_charts"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textSize="@dimen/test_title_text_size"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -3,7 +3,10 @@ package com.har8yun.homeworks.projectx.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -15,14 +18,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.adapter.SkillItemRecyclerAdapter;
 import com.har8yun.homeworks.projectx.model.Event;
 import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
+import com.har8yun.homeworks.projectx.util.DBUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,6 +48,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 
 public class OtherProfileFragment extends Fragment {
+
+    private static final String TAG = "OtherProfileFragment";
 
     //views
     private Toolbar mToolbar;
@@ -47,6 +63,8 @@ public class OtherProfileFragment extends Fragment {
     private TextView mLastNameView;
     private TextView mGenderView;
     private TextView mAgeView;
+    private ImageView mAvatarView;
+    private ProgressBar mProgressBar;
 
 
     //viewmodel
@@ -95,6 +113,8 @@ public class OtherProfileFragment extends Fragment {
         mLastNameView = view.findViewById(R.id.tv_last_name_other_profile);
         mGenderView = view.findViewById(R.id.tv_gender_other_profile);
         mAgeView = view.findViewById(R.id.tv_age_other_profile);
+        mAvatarView = view.findViewById(R.id.other_app_bar_image);
+        mProgressBar = view.findViewById(R.id.pb_avatar_other_profile);
 
     }
 
@@ -136,8 +156,7 @@ public class OtherProfileFragment extends Fragment {
                 mHeightView.setText(String.valueOf((otherUser.getUserInfo().getHeight())) + " m");
             }
             if (otherUser.getUserInfo().getAvatar() != null) {
-                //TODO set avatar
-                setAvatar();
+                setAvatar(otherUser.getUserInfo().getAvatar());
             }
 
             if (otherUser.getUsername() != null) {
@@ -150,8 +169,43 @@ public class OtherProfileFragment extends Fragment {
 
     }
 
-    private void setAvatar()
-    {
+    String res;
+
+    public void setAvatar(String url) {
+
+
+        DBUtil.getRefAvatars(url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                res =  uri.toString();
+                Glide.with(getContext())
+                        .load(res)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                //showMessage(getString(R.string.message_try_again));
+                                mProgressBar.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("EDIT PROFILE", e.getMessage());
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                mProgressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .into(mAvatarView);
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "onFailure: Failed AGAIN" );
+            }
+        });
 
     }
 

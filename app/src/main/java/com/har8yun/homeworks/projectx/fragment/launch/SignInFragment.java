@@ -142,9 +142,12 @@ public class SignInFragment extends Fragment {
                             getCurrentUserFromDatabase();
                             openAccount(view);
                         } else {
+                            Log.e("Look", "onComplete: "+ task.getException().getMessage());
                             if (task.getException().getMessage().equals(getResources().getString(R.string.task_error_password))) {
                                 mPasswordView.setError(getResources().getString(R.string.password_wrong));
-                            } else if (task.getException().getMessage().equals(getResources().getString(R.string.task_error_username))) {
+                            } else if (task.getException().getMessage().equals(getResources().getString(R.string.task_error_username))
+                                    || task.getException().getMessage().equals(getResources().getString(R.string.email_badly_formatted))) {
+
                                 mUsernameView.setError(getResources().getString(R.string.username_availability));
                             }
                         }

@@ -13,6 +13,7 @@ public class SaveSharedPreferences {
 
     public static final String TAG = SaveSharedPreferences.class.getSimpleName();
     public static final String USER_KEY = "user_key";
+    public static final String ZOOM_BUTTONS = "zoom_buttons";
 
     User mUser;
 
@@ -29,6 +30,16 @@ public class SaveSharedPreferences {
 
     public boolean getLoggedStatus(Context context) {
         return getPreferences(context).getBoolean(TAG, false);
+    }
+
+    public void setZoom(Context context, boolean isZoom) {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putBoolean(ZOOM_BUTTONS, isZoom);
+        editor.apply();
+    }
+
+    public boolean getZoom(Context context) {
+        return getPreferences(context).getBoolean(ZOOM_BUTTONS, false);
     }
 
     public void setCurrentUser(Context context,User mUser)

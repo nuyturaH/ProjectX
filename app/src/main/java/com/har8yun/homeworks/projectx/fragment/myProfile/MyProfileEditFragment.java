@@ -39,6 +39,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -49,6 +50,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -106,6 +108,7 @@ public class MyProfileEditFragment extends Fragment {
 
     //views
     private ImageView mAvatarView;
+    private ProgressBar mProgressBar;
 
     private EditText mUsernameView;
     private EditText mFirstNameView;
@@ -268,6 +271,7 @@ public class MyProfileEditFragment extends Fragment {
             });*/
         } else if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
             loadSelectedImage(data.getData().toString());
+            Log.d(TAG, "onActivityResult: " + data.getData().toString());
         }
     }
 
@@ -275,6 +279,7 @@ public class MyProfileEditFragment extends Fragment {
     //************************************** METHODS ********************************************
     private void initViews(View view) {
         mAvatarView = view.findViewById(R.id.iv_avatar_my_profile_edit);
+        mProgressBar = view.findViewById(R.id.pb_avatar_my_profile_edit);
         mUsernameView = view.findViewById(R.id.etv_username_my_profile_edit);
         mFirstNameView = view.findViewById(R.id.etv_first_name_my_profile_edit);
         mLastNameView = view.findViewById(R.id.etv_last_name_my_profile_edit);
@@ -294,6 +299,7 @@ public class MyProfileEditFragment extends Fragment {
         mSkillsSpinner = view.findViewById(R.id.spinner_skills_my_profile_edit);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         recyclerView = view.findViewById(R.id.rv_skills_my_profile_edit);
+
 
 
         mSportsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -421,32 +427,44 @@ public class MyProfileEditFragment extends Fragment {
 
     }
 
+    String res;
+
     public void setAvatar(String url) {
 
 
-//        StorageReference storageReference = DBUtil.getStorageReference().child("avatars").child("1552239524124");
-//        Glide.with(this /* context */)
-//                .load(storageReference)
-//                .into(mAvatarView);
+        DBUtil.getRefAvatars(url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                res =  uri.toString();
+                Log.e(TAG, "onSuccess: " + uri);
+                Glide.with(getContext())
+                        .load(res)
+                        .apply(RequestOptions.circleCropTransform())
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                mProgressBar.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("EDIT PROFILE", e.getMessage());
+                                return false;
+                            }
 
-        Glide.with(this)
-                .load(url)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        //showMessage(getString(R.string.message_try_again));
-                        Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.d("EDIT PROFILE", e.getMessage());
-                        return false;
-                    }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                mProgressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .into(mAvatarView);
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
 
-                        return false;
-                    }
-                })
-                .into(mAvatarView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "onFailure: Failed AGAIN" );
+            }
+        });
 
     }
 
@@ -673,8 +691,11 @@ public class MyProfileEditFragment extends Fragment {
 
 
     private void loadSelectedImage(String uri) {
+
+        Log.d(TAG, "loadSelectedImage: " + uri);
         Glide.with(this)
                 .load(uri)
+                .apply(RequestOptions.circleCropTransform())
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -699,23 +720,16 @@ public class MyProfileEditFragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = DBUtil.getRefAvatars().putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
+        String imageName = mCurrentUser.getId() + System.currentTimeMillis();
 
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                if (null != downloadUrl) {
-                    DBUtil.addAvatarToFirebase(downloadUrl.getResult().toString());
-                    mCurrentUser.getUserInfo().setAvatar(downloadUrl.getResult().toString());
-                    Log.d(TAG, "onSuccess: " + downloadUrl.getResult().toString());
-                } else {
-
-                }
+        UploadTask uploadTask = DBUtil.getRefAvatars(imageName).putBytes(data);
+        uploadTask.addOnCompleteListener(taskSnapshot -> {
+            if (taskSnapshot.isSuccessful()) {
+                DBUtil.addAvatarToFirebase(imageName);
+                mCurrentUser.getUserInfo().setAvatar(imageName);
+                Log.d(TAG, "uploadImageToFirebase: " + uploadTask.getResult());
+            } else {
+                Toast.makeText(getActivity(), "SOMETHING WENT WRONG, TRY AGAIN", Toast.LENGTH_SHORT).show();
             }
         });
     }

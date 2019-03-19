@@ -1,10 +1,10 @@
 package com.har8yun.homeworks.projectx.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabItem;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.PointerIcon;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -25,8 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.adapter.ChartsAdapter;
-import com.har8yun.homeworks.projectx.model.SettingsViewModel;
-import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 
@@ -62,7 +59,6 @@ public class TopChartsFragment extends Fragment {
     //views
     private Toolbar mToolbarTopCharts;
     private TabLayout mTabLayout;
-    private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
 
     //adapter
@@ -77,6 +73,7 @@ public class TopChartsFragment extends Fragment {
     //user
     List<User> mUserList = new ArrayList<>();
     User otherUser;
+    User currentUser;
 
     List<User> mPullUpsList = new ArrayList<>();
     List<User> mPushUpsList = new ArrayList<>();
@@ -94,7 +91,14 @@ public class TopChartsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_top_charts, container, false);
 
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
-//        otherUser = mUserViewModel.getOtherUser().getValue();
+        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User user) {
+                currentUser = user;
+                Log.e("hhhh", "ViewModel " + user.toString());
+            }
+        });
+        currentUser = mUserViewModel.getUser().getValue();
 
         mFirebaseDatabse = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_NAME);
         getUsersFromFirebase();
@@ -110,32 +114,25 @@ public class TopChartsFragment extends Fragment {
     private void initViews(View view) {
         mToolbarTopCharts = view.findViewById(R.id.toolbar_top_charts);
         mTabLayout = view.findViewById(R.id.tabs);
-        mProgressBar = view.findViewById(R.id.pb_charts);
         mRecyclerView = view.findViewById(R.id.rv_charts);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
-        mTabLayout.getTabAt(0).select();
+
+//        initRecyclerView(mPullUpsList,PULL_UPS);
 
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mProgressBar.setVisibility(View.VISIBLE);
-                if(tab.getPosition() == 0)
-                    initRecyclerView(mPullUpsList,PULL_UPS);
-                else if(tab.getPosition() == 1)
-                {
-                    initRecyclerView(mPushUpsList,PUSH_UPS);
-                    Log.d(TAG, "onTabSelected: "+ PUSH_UPS);
-                }else if(tab.getPosition() == 2)
-                {
-                    initRecyclerView(mParallelDipsList,PARALLEL_DIPS);
-                }else if(tab.getPosition() == 3)
-                {
-                    initRecyclerView(mJugglingList,JUGGLING);
-                    Log.d(TAG, "onTabSelected: " + JUGGLING);
-                }else if(tab.getPosition() == 4)
-                {
+                if (tab.getPosition() == 0)
+                    initRecyclerView(mPullUpsList, PULL_UPS);
+                else if (tab.getPosition() == 1) {
+                    initRecyclerView(mPushUpsList, PUSH_UPS);
+                } else if (tab.getPosition() == 2) {
+                    initRecyclerView(mParallelDipsList, PARALLEL_DIPS);
+                } else if (tab.getPosition() == 3) {
+                    initRecyclerView(mJugglingList, JUGGLING);
+                } else if (tab.getPosition() == 4) {
                     initRecyclerView(mPointsList, POINTS);
                 }
             }
@@ -153,34 +150,40 @@ public class TopChartsFragment extends Fragment {
 
     }
 
-    private void initRecyclerView(List<User> listToPass,String key) {
+    private void initRecyclerView(List<User> listToPass, String key) {
         mChartsAdapter = new ChartsAdapter();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mRecyclerView.setAdapter(mChartsAdapter);
 
-        sortItems(listToPass,key);
+        sortItems(listToPass, key);
 
-        mChartsAdapter.addItems(listToPass,key);
+        List<User> tenList = new ArrayList<>();
+        for (int i = 0; i < 10 && i < listToPass.size(); i++) {
+            tenList.add(listToPass.get(i));
+        }
 
-        mProgressBar.setVisibility(View.GONE);
+        mChartsAdapter.addItems(tenList, key);
+
 
         mChartsAdapter.setOnRvItemClickListener(new ChartsAdapter.OnRvItemClickListener() {
             @Override
             public void onItemClicked(String uid) {
-                for(User user: mUserList)
-                {
-                    if(user.getId().equals(uid))
-                    {
-                        mUserViewModel.setOtherUser(user);
-                        //TODO navigate to OtherProfileFragment
-                        NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_top_charts_fragment_to_other_profile_fragment);
+                for (User user : mUserList) {
+                    if (user.getId().equals(uid)) {
+                        if (currentUser.getId().equals(uid)) {
+                            NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_top_charts_fragment_to_my_profile_fragment);
+                        } else {
+                            mUserViewModel.setOtherUser(user);
+                            NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_top_charts_fragment_to_other_profile_fragment);
+                        }
                     }
                 }
 
             }
         });
     }
+
 
     private void getUsersFromFirebase() {
 
@@ -200,14 +203,18 @@ public class TopChartsFragment extends Fragment {
                         if (user.getSkills().containsKey(PULL_UPS)) {
                             mPullUpsList.add(user);
                             Log.d(TAG, "onDataChange: " + user.getUsername());
-                        }if (user.getSkills().containsKey(PUSH_UPS)) {
+                        }
+                        if (user.getSkills().containsKey(PUSH_UPS)) {
                             mPushUpsList.add(user);
-                        }if (user.getSkills().containsKey(PARALLEL_DIPS)) {
+                        }
+                        if (user.getSkills().containsKey(PARALLEL_DIPS)) {
                             mParallelDipsList.add(user);
-                        }if (user.getSkills().containsKey(JUGGLING)) {
+                        }
+                        if (user.getSkills().containsKey(JUGGLING)) {
                             mJugglingList.add(user);
-                            Log.d(TAG, "onDataChange: " +user.getUsername());
-                        }if (user.getPoints() != null) {
+                            Log.d(TAG, "onDataChange: " + user.getUsername());
+                        }
+                        if (user.getPoints() != null) {
                             mPointsList.add(user);
                         }
                     }
@@ -220,15 +227,14 @@ public class TopChartsFragment extends Fragment {
         });
     }
 
-    private void sortItems(List<User> listToSort,String key) {
+    private void sortItems(List<User> listToSort, String key) {
 
         Collections.sort(listToSort, new Comparator<User>() {
             @Override
             public int compare(User t1, User t2) {
-                if(!key.equals(POINTS)) {
+                if (!key.equals(POINTS)) {
                     return t2.getSkills().get(key).compareTo(t1.getSkills().get(key));
-                }
-                else{
+                } else {
                     return t2.getPoints().compareTo(t1.getPoints());
                 }
             }

@@ -2,19 +2,15 @@ package com.har8yun.homeworks.projectx.fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -22,15 +18,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
-import com.har8yun.homeworks.projectx.model.SettingsViewModel;
-import com.har8yun.homeworks.projectx.model.UserViewModel;
+import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -63,8 +57,9 @@ public class SettingsFragment extends Fragment {
     //Dialog
     ProgressDialog mProgressDialog;
 
-    //viewmodel
-    SettingsViewModel mSettingsViewModel = new SettingsViewModel();
+
+    //preferences
+    SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
 
 
 
@@ -81,7 +76,6 @@ public class SettingsFragment extends Fragment {
         mProgressDialog = new ProgressDialog(getContext());
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mSettingsViewModel = ViewModelProviders.of(getActivity()).get(SettingsViewModel.class);
 
 
         initViews(view);
@@ -155,18 +149,17 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        mMapZoomSwitch.setChecked(mSettingsViewModel.isZoomButtons());
+        mMapZoomSwitch.setChecked(sharedPreferences.getZoom(getContext()));
         mMapZoomSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // do something, the isChecked will be
                 // true if the switch is in the On position
                 if(isChecked)
                 {
-                    mSettingsViewModel.setZoomButtons(true);
-                    //TODO turn on zoom buttons on Map
+                    sharedPreferences.setZoom(getContext(),true);
                 }
                 else{
-                    mSettingsViewModel.setZoomButtons(false);
+                    sharedPreferences.setZoom(getContext(),false);
                 }
             }
         });
