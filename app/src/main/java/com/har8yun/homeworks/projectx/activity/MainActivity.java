@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.har8yun.homeworks.projectx.Application;
 import com.har8yun.homeworks.projectx.R;
-import com.har8yun.homeworks.projectx.fragment.myProfile.MyProfileEditFragment;
+import com.har8yun.homeworks.projectx.fragment.profile.MyProfileEditFragment;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.PreferencesHelper;

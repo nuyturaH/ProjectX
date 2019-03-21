@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/my_profile_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.myProfile.MyProfileFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.profile.MyProfileFragment"
         android:label="nickname"
         tools:layout="@layout/fragment_my_profile">
         <action
@@ -74,7 +74,7 @@
 
     <fragment
         android:id="@+id/other_profile_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.OtherProfileFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.profile.OtherProfileFragment"
         android:label="Other Profile"
         tools:layout="@layout/fragment_other_profile"
         />
@@ -141,7 +141,7 @@
         tools:layout="@layout/fragment_chats" />
     <fragment
         android:id="@+id/my_profile_edit_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.myProfile.MyProfileEditFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.profile.MyProfileEditFragment"
         android:label="Edit"
         tools:layout="@layout/fragment_my_profile_edit" >
         <action
@@ -154,7 +154,7 @@
     </fragment>
     <fragment
         android:id="@+id/tasks_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.TasksFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.Tasks.TasksFragment"
         android:label="fragment_tasks"
         tools:layout="@layout/fragment_tasks" /><action android:id="@+id/action_global_map_fragment" app:destination="@id/map_fragment"/>
 </navigation>
