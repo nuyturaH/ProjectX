@@ -13,6 +13,9 @@ public class User {
     private Integer mPoints;
     private String mStatus;
     private Map<String, Integer> mSkills;
+    private List<String> mImages = new ArrayList<>();
+
+
 
     public String getId() {
         return id;
@@ -68,6 +71,14 @@ public class User {
 
     public void setSkills(Map<String, Integer> skills) {
         mSkills = skills;
+    }
+
+    public List<String> getImages() {
+        return mImages;
+    }
+
+    public void setImages(List<String> mImages) {
+        this.mImages = mImages;
     }
 
     @Override

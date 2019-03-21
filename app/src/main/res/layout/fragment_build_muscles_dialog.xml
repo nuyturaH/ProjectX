@@ -2,21 +2,23 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main_muscles_dialog"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/lightGrey"
-    tools:context=".BuildMusclesDialogFragment">
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    tools:context=".fragment.Tasks.BuildMusclesDialogFragment">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout9"
+        android:id="@+id/layout_title_muscles_dialog"
         android:layout_width="294dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:background="@color/colorPrimaryText"
         android:elevation="4dp"
         android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout10"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout10"
+        app:layout_constraintEnd_toEndOf="@+id/layout_title_muscles_dialog_title_muscles_dialog"
+        app:layout_constraintStart_toStartOf="@+id/layout_title_muscles_dialog_title_muscles_dialog"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -32,7 +34,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout10"
+        android:id="@+id/layout_title_muscles_dialog_title_muscles_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -41,7 +43,7 @@
         android:background="@color/colorPrimaryText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
+        app:layout_constraintTop_toBottomOf="@+id/layout_title_muscles_dialog">
 
         <TextView
             android:id="@+id/tv_description_muscles_dialog"
@@ -61,82 +63,49 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout11"
+        android:id="@+id/layout_sets_muscles_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimaryText"
         android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout10"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout10"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
-
-        <ImageView
-            android:id="@+id/iv_tick4_muscles_dialog"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_done_green"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/button5"
-            app:layout_constraintEnd_toEndOf="@+id/button5"
-            app:layout_constraintStart_toStartOf="@+id/button5"
-            app:layout_constraintTop_toTopOf="@+id/button5" />
-
-        <Button
-            android:id="@+id/btn_done1_muscles_dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
-            android:text="@string/done"
-            android:textColor="@color/green"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/textView8"
-            app:layout_constraintEnd_toEndOf="@+id/button3"
-            app:layout_constraintTop_toTopOf="@+id/textView8" />
+        app:layout_constraintEnd_toEndOf="@+id/layout_title_muscles_dialog_title_muscles_dialog"
+        app:layout_constraintStart_toStartOf="@+id/layout_title_muscles_dialog_title_muscles_dialog"
+        app:layout_constraintTop_toBottomOf="@+id/layout_title_muscles_dialog_title_muscles_dialog">
 
         <View
-            android:id="@+id/line8"
+            android:id="@+id/line1_mucles_dialog"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="@+id/btn_done1_muscles_dialog"
+            app:layout_constraintStart_toStartOf="@+id/tv_set1_mucles_dialog"
+            app:layout_constraintTop_toBottomOf="@+id/tv_set1_mucles_dialog" />
+
+        <View
+            android:id="@+id/line2_mucles_dialog"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="@+id/btn_done2_muscles_dialog"
+            app:layout_constraintStart_toStartOf="@+id/tv_set2_mucles_dialog"
+            app:layout_constraintTop_toBottomOf="@+id/tv_set2_mucles_dialog" />
+
+        <View
+            android:id="@+id/line3_mucles_dialog"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
             android:background="@color/lightGrey"
             android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="@+id/button4"
-            app:layout_constraintStart_toStartOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-        <View
-            android:id="@+id/line7"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/lightGrey"
-            app:layout_constraintEnd_toEndOf="@+id/button3"
-            app:layout_constraintStart_toStartOf="@+id/textView9"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-        <View
-            android:id="@+id/line5"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/lightGrey"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintEnd_toEndOf="@+id/btn_done3_muscles_dialog"
+            app:layout_constraintStart_toStartOf="@+id/tv_set3_mucles_dialog"
+            app:layout_constraintTop_toBottomOf="@+id/tv_set3_mucles_dialog" />
 
         <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="2nd set"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="22sp"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/line5" />
-
-        <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/tv_set1_mucles_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -148,18 +117,29 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/tv_set2_mucles_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="2nd set"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_set1_mucles_dialog"
+            app:layout_constraintTop_toBottomOf="@+id/line1_mucles_dialog" />
+
+        <TextView
+            android:id="@+id/tv_set3_mucles_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="3rd set"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="22sp"
-            app:layout_constraintStart_toStartOf="@+id/textView9"
-            app:layout_constraintTop_toBottomOf="@+id/line7" />
+            app:layout_constraintStart_toStartOf="@+id/tv_set2_mucles_dialog"
+            app:layout_constraintTop_toBottomOf="@+id/line2_mucles_dialog" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/tv_set4_mucles_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -169,50 +149,67 @@
             android:textSize="22sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/line8" />
+            app:layout_constraintStart_toStartOf="@+id/tv_set3_mucles_dialog"
+            app:layout_constraintTop_toBottomOf="@+id/line3_mucles_dialog" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/btn_done1_muscles_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
             android:text="@string/done"
             android:textColor="@color/green"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/textView12"
-            app:layout_constraintEnd_toEndOf="@+id/button4"
-            app:layout_constraintTop_toTopOf="@+id/textView12" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_set1_mucles_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/btn_done2_muscles_dialog"
+            app:layout_constraintTop_toTopOf="@+id/tv_set1_mucles_dialog" />
 
         <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
-            android:text="@string/done"
-            android:textColor="@color/green"
-            app:layout_constraintBottom_toBottomOf="@+id/textView10"
-            app:layout_constraintEnd_toEndOf="@+id/button3"
-            app:layout_constraintTop_toTopOf="@+id/textView10" />
-
-        <Button
-            android:id="@+id/button3"
+            android:id="@+id/btn_done2_muscles_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:enabled="false"
             android:text="@string/done"
-            android:textColor="@color/green"
+            android:textColor="@color/place_autocomplete_search_hint"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/textView9"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_set2_mucles_dialog"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView9" />
+            app:layout_constraintTop_toTopOf="@+id/tv_set2_mucles_dialog" />
+
+        <Button
+            android:id="@+id/btn_done3_muscles_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:enabled="false"
+            android:text="@string/done"
+            android:textColor="@color/place_autocomplete_search_hint"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_set3_mucles_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/btn_done2_muscles_dialog"
+            app:layout_constraintTop_toTopOf="@+id/tv_set3_mucles_dialog" />
+
+        <Button
+            android:id="@+id/btn_done4_muscles_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:enabled="false"
+            android:text="@string/done"
+            android:textColor="@color/place_autocomplete_search_hint"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_set4_mucles_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/btn_done3_muscles_dialog"
+            app:layout_constraintTop_toTopOf="@+id/tv_set4_mucles_dialog" />
 
         <ImageView
             android:id="@+id/iv_tick1_muscles_dialog"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_done_green"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/btn_done1_muscles_dialog"
             app:layout_constraintEnd_toEndOf="@+id/btn_done1_muscles_dialog"
             app:layout_constraintStart_toStartOf="@+id/btn_done1_muscles_dialog"
@@ -223,48 +220,86 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_done_green"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/button3"
-            app:layout_constraintEnd_toEndOf="@+id/button3"
-            app:layout_constraintStart_toStartOf="@+id/button3"
-            app:layout_constraintTop_toTopOf="@+id/button3" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_done2_muscles_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/btn_done2_muscles_dialog"
+            app:layout_constraintStart_toStartOf="@+id/btn_done2_muscles_dialog"
+            app:layout_constraintTop_toTopOf="@+id/btn_done2_muscles_dialog" />
 
         <ImageView
             android:id="@+id/iv_tick3_muscles_dialog"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_done_green"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/button4"
-            app:layout_constraintEnd_toEndOf="@+id/button4"
-            app:layout_constraintStart_toStartOf="@+id/button4"
-            app:layout_constraintTop_toTopOf="@+id/button4" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_done3_muscles_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/btn_done3_muscles_dialog"
+            app:layout_constraintStart_toStartOf="@+id/btn_done3_muscles_dialog"
+            app:layout_constraintTop_toTopOf="@+id/btn_done3_muscles_dialog" />
+
+        <ImageView
+            android:id="@+id/iv_tick4_muscles_dialog"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_done_green"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_done4_muscles_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/btn_done4_muscles_dialog"
+            app:layout_constraintStart_toStartOf="@+id/btn_done4_muscles_dialog"
+            app:layout_constraintTop_toTopOf="@+id/btn_done4_muscles_dialog" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_timer_muscles_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"
         android:background="@color/colorPrimaryText"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout11"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout11"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
+        app:layout_constraintEnd_toEndOf="@+id/layout_sets_muscles_dialog"
+        app:layout_constraintStart_toStartOf="@+id/layout_sets_muscles_dialog"
+        app:layout_constraintTop_toBottomOf="@+id/layout_sets_muscles_dialog">
+
+        <TextView
+            android:id="@+id/tv_rest_muscles_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="Rest"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_timer_muscles_dialog"
+            app:layout_constraintEnd_toStartOf="@+id/tv_timer_muscles_dialog"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_timer_muscles_dialog" />
+
+        <Button
+            android:id="@+id/btn_stop_timer_muscles_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:text="Stop"
+            android:textColor="@android:color/holo_red_dark"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_timer_muscles_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Timer"
+            android:text="2:30"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/btn_stop_timer_muscles_dialog"
+            app:layout_constraintStart_toEndOf="@+id/tv_rest_muscles_dialog"
+            app:layout_constraintTop_toTopOf="@+id/btn_stop_timer_muscles_dialog" />
         android:layout_width="wrap_content"
         android:layout_marginStart="40dp"
         android:text="Timer"

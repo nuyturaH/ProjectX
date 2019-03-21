@@ -23,6 +23,7 @@ public class DBUtil {
     private static final String REF_STORAGE = "gs://projectx-c62f5.appspot.com";
     private static final String REF_STORAGE_CHAT = "/chat";
     private static final String REF_STORAGE_AVATARS = "/avatars";
+    private static final String REF_STORAGE_IMAGES = "/images";
     private static final String REF_ANDROID = "Android";
     private static final String REF_USERS = "Users";
     private static final String REF_MESSAGES = "Messages";
@@ -37,6 +38,10 @@ public class DBUtil {
 
     public static StorageReference getRefAvatars(String s) {
         return getStorageReference().child(REF_STORAGE_AVATARS).child(s);
+    }
+
+    public static StorageReference getRefImages(String s) {
+        return getStorageReference().child(REF_STORAGE_IMAGES).child(s);
     }
 
     public static StorageReference getRefChatImages() {
@@ -55,30 +60,9 @@ public class DBUtil {
         getAndroidReference().child(REF_STORAGE_AVATARS).push().setValue(path);
     }
 
-//    public static String getAvatarFromFirebase(String path) {
-//        getDatabase().getReference("events");
-//        mFirebaseDatabse.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                mEventList.clear();
-//
-//                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-//                    Event mEvent = eventSnapshot.getValue(Event.class);
-//                    Log.d(TAG, "onDataChange: " + mEvent.getPosition());
-//                    mEventList.add(mEvent);
-//                    LatLng latLng = new LatLng(mEvent.getPosition().getLatitude(), mEvent.getPosition().getLongitude());
-//
-//                    MarkerOptions markerOptions = new MarkerOptions().position(latLng);
-//                    mGoogleMap.addMarker(markerOptions);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
-//        getAndroidReference().child(REF_STORAGE_AVATARS).c
-//    }
+    public static void addImageToFirebase(String path) {
+        getAndroidReference().child(REF_STORAGE_IMAGES).push().setValue(path);
+    }
 
 
 

@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx;
+package com.har8yun.homeworks.projectx.fragment.Tasks;
 
 
 import android.arch.lifecycle.Observer;
@@ -6,23 +6,17 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.har8yun.homeworks.projectx.fragment.BuildMusclesFragment;
+import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.TaskViewModel;
 
-import androidx.navigation.Navigation;
-
-import static com.har8yun.homeworks.projectx.fragment.TasksFragment.BUILD_MUSCLES_INFO;
-import static com.har8yun.homeworks.projectx.fragment.TasksFragment.DEVELOP_STAMINA_INFO;
-import static com.har8yun.homeworks.projectx.fragment.TasksFragment.LOOSE_WEIGHT_INFO;
-import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
+import static com.har8yun.homeworks.projectx.fragment.Tasks.TasksFragment.BUILD_MUSCLES_INFO;
+import static com.har8yun.homeworks.projectx.fragment.Tasks.TasksFragment.LOOSE_WEIGHT_INFO;
 
 
 public class TaskInfoFragment extends DialogFragment {
