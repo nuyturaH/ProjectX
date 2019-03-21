@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +41,8 @@ public class CreateEventFragment extends Fragment {
     private TextView mTimeView;
     private Button mSaveButton;
     private TextView mLocationView;
+    private BottomNavigationView mBottomNavigationView;
+
 
     //navigation
     private NavController mNavController;
@@ -74,6 +77,7 @@ public class CreateEventFragment extends Fragment {
         });
         mEvent = mEventViewModel.getEvent().getValue();
         initViews(view);
+        hideBotNavBar();
 
 
         if (mEventViewModel.isToEdit()) {
@@ -116,6 +120,8 @@ public class CreateEventFragment extends Fragment {
         mTimeView = v.findViewById(R.id.tv_time_create_event);
         mSaveButton = v.findViewById(R.id.btn_save_create_event);
         mLocationView = v.findViewById(R.id.tv_location_create_event);
+        mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
+
 
         mLocationView.setText(mEvent.getPlace());
 
@@ -174,6 +180,11 @@ public class CreateEventFragment extends Fragment {
         mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(mToolbarCreateEvent, mNavController);
     }
+
+    private void hideBotNavBar() {
+        mBottomNavigationView.setVisibility(View.GONE);
+    }
+
 
 
 }

@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -136,6 +137,9 @@ public class MyProfileEditFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
+    private BottomNavigationView mBottomNavigationView;
+
+
     //Firebase
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
@@ -176,7 +180,6 @@ public class MyProfileEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_profile_edit, container, false);
 
-
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mCurrentUser = mUserViewModel.getUser().getValue();
         mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
@@ -189,6 +192,7 @@ public class MyProfileEditFragment extends Fragment {
 
 
         initViews(view);
+        hideBotNavBar();
         setMyProfileEditToolbar();
         setNavigationComponent();
         initRecyclerView();
@@ -299,6 +303,7 @@ public class MyProfileEditFragment extends Fragment {
         mSkillsSpinner = view.findViewById(R.id.spinner_skills_my_profile_edit);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         recyclerView = view.findViewById(R.id.rv_skills_my_profile_edit);
+        mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
 
 
 
@@ -847,6 +852,10 @@ public class MyProfileEditFragment extends Fragment {
         recyclerView.setAdapter(mSkillItemEditRecyclerAdapter);
 //
 
+    }
+
+    private void hideBotNavBar() {
+        mBottomNavigationView.setVisibility(View.GONE);
     }
 
 

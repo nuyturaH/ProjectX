@@ -110,6 +110,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 
@@ -280,18 +281,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                                 MapAnimator.getInstance().setSecondaryLineColor(getResources().getColor(R.color.colorPrimaryLight));
                                 MapAnimator.getInstance().animateRoute(mGoogleMap, path);
                                 mGoogleMap.addMarker(new MarkerOptions().position(destinationPosition).title("Destination"));
-
                                 //.icon(convertToBitmap(getResources().getDrawable(R.drawable.ic_map_marker_check),130,130)));
+                                mTaskViewModel.setTask(null);
                             }
-
-                            break;
-                        case DEVELOP_STAMINA:
-                            //developStamina();
-                            changeMapDesign();
-                            mTaskViewModel.setTask(null);
-                            break;
                         case BUILD_MUSCLES:
-                            //buildMuscles();
+                            Navigation.findNavController(getView()).navigate(R.id.action_map_fragment_to_build_muscles_fragment);
                             mTaskViewModel.setTask(null);
                             break;
                     }
@@ -705,12 +699,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
                             }
                         });
-                        cancelButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                goingToEvent = false;
-                                dialog.dismiss();
-                            }
+                        cancelButton.setOnClickListener(v -> {
+                            goingToEvent = false;
+                            dialog.dismiss();
                         });
                     }
                 }

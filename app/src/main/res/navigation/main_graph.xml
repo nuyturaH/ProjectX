@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/my_profile_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.profile.MyProfileFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.myProfile.MyProfileFragment"
         android:label="nickname"
         tools:layout="@layout/fragment_my_profile">
         <action
@@ -33,9 +33,12 @@
             app:popExitAnim="@anim/exit_to_right" />
         <action
             android:id="@+id/action_map_fragment_to_tasks_fragment"
-            app:destination="@id/tasks_fragment"
+            app:destination="@id/task_info_fragment"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right" />
+        <action
+            android:id="@+id/action_map_fragment_to_build_muscles_fragment"
+            app:destination="@id/build_muscles_fragment" />
 
     </fragment>
 
@@ -74,7 +77,7 @@
 
     <fragment
         android:id="@+id/other_profile_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.profile.OtherProfileFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.OtherProfileFragment"
         android:label="Other Profile"
         tools:layout="@layout/fragment_other_profile"
         />
@@ -141,7 +144,7 @@
         tools:layout="@layout/fragment_chats" />
     <fragment
         android:id="@+id/my_profile_edit_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.profile.MyProfileEditFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.myProfile.MyProfileEditFragment"
         android:label="Edit"
         tools:layout="@layout/fragment_my_profile_edit" >
         <action
@@ -153,8 +156,18 @@
             app:popExitAnim="@anim/exit_to_right"/>
     </fragment>
     <fragment
-        android:id="@+id/tasks_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.Tasks.TasksFragment"
+        android:id="@+id/task_info_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.TasksFragment"
         android:label="fragment_tasks"
         tools:layout="@layout/fragment_tasks" /><action android:id="@+id/action_global_map_fragment" app:destination="@id/map_fragment"/>
+    <fragment
+        android:id="@+id/build_muscles_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.BuildMusclesFragment"
+        android:label="Build Muscles"
+        tools:layout="@layout/fragment_build_muscles" />
+    <fragment
+        android:id="@+id/task_info_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.TasksFragment"
+        android:label="fragment_task_info"
+        tools:layout="@layout/fragment_task_info" />
 </navigation>

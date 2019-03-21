@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/lightGrey"
+    tools:context=".BuildMusclesDialogFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout9"
+        android:layout_width="294dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorPrimaryText"
+        android:elevation="4dp"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout10"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout10"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title_muscles_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Excersice Name"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/colorPrimaryText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
+
+        <TextView
+            android:id="@+id/tv_description_muscles_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:paddingStart="18dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="10dp"
+            android:text="Lay prone on the ground with arms supporting your body. Keep your body straight while raising and lowering your body with your arms."
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout11"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryText"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout10"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout10"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
+
+        <ImageView
+            android:id="@+id/iv_tick4_muscles_dialog"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_done_green"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/button5"
+            app:layout_constraintEnd_toEndOf="@+id/button5"
+            app:layout_constraintStart_toStartOf="@+id/button5"
+            app:layout_constraintTop_toTopOf="@+id/button5" />
+
+        <Button
+            android:id="@+id/btn_done1_muscles_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:text="@string/done"
+            android:textColor="@color/green"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="@+id/button3"
+            app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+        <View
+            android:id="@+id/line8"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/lightGrey"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/button4"
+            app:layout_constraintStart_toStartOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <View
+            android:id="@+id/line7"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="@+id/button3"
+            app:layout_constraintStart_toStartOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        <View
+            android:id="@+id/line5"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="2nd set"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/line5" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="1st set"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="3rd set"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/line7" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="4th set"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="22sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/line8" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:text="@string/done"
+            android:textColor="@color/green"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/textView12"
+            app:layout_constraintEnd_toEndOf="@+id/button4"
+            app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:text="@string/done"
+            android:textColor="@color/green"
+            app:layout_constraintBottom_toBottomOf="@+id/textView10"
+            app:layout_constraintEnd_toEndOf="@+id/button3"
+            app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:text="@string/done"
+            android:textColor="@color/green"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/textView9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+        <ImageView
+            android:id="@+id/iv_tick1_muscles_dialog"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_done_green"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_done1_muscles_dialog"
+            app:layout_constraintEnd_toEndOf="@+id/btn_done1_muscles_dialog"
+            app:layout_constraintStart_toStartOf="@+id/btn_done1_muscles_dialog"
+            app:layout_constraintTop_toTopOf="@+id/btn_done1_muscles_dialog" />
+
+        <ImageView
+            android:id="@+id/iv_tick2_muscles_dialog"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_done_green"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/button3"
+            app:layout_constraintEnd_toEndOf="@+id/button3"
+            app:layout_constraintStart_toStartOf="@+id/button3"
+            app:layout_constraintTop_toTopOf="@+id/button3" />
+
+        <ImageView
+            android:id="@+id/iv_tick3_muscles_dialog"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_done_green"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/button4"
+            app:layout_constraintEnd_toEndOf="@+id/button4"
+            app:layout_constraintStart_toStartOf="@+id/button4"
+            app:layout_constraintTop_toTopOf="@+id/button4" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/colorPrimaryText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout11"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout11"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
+
+        <TextView
+            android:id="@+id/tv_timer_muscles_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Timer"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="wrap_content"
+        android:layout_marginStart="40dp"
+        android:text="Timer"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

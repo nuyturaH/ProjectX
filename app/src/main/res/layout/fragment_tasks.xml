@@ -11,68 +11,37 @@
     <View
         android:id="@+id/line6"
         android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/lightGrey"
+        android:layout_height="8dp"
+        android:background="@color/colorPrimary"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_ok_task_info" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_build_muscles_tasks" />
 
     <Button
-        android:id="@+id/btn_ok_task_info"
+        android:id="@+id/btn_build_muscles_tasks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_light_red_layout_button"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_light_red_layout_button2"
         android:text="Build Muscles"
-        android:textAllCaps="false"
         android:textColor="@color/colorPrimaryText"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line2" />
-
-    <View
-        android:id="@+id/line5"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/lightGrey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_header_tasks" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_loose_weight_tasks" />
 
     <View
         android:id="@+id/line2"
         android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/lightGrey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_develop_stamina_tasks" />
-
-    <Button
-        android:id="@+id/btn_develop_stamina_tasks"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_light_red_layout_button"
-        android:text="Develop Stamina"
-        android:textAllCaps="false"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp"
+        android:layout_height="4dp"
+        android:background="@drawable/bg_gradient_layout2"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/btn_build_muscles_tasks"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line" />
-
-    <View
-        android:id="@+id/line"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/lightGrey"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_loose_weight_tasks" />
 
@@ -80,24 +49,30 @@
         android:id="@+id/btn_loose_weight_tasks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_light_red_layout_button"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_light_red_layout_button2"
         android:text="Loose Weight"
         android:textAlignment="center"
-        android:textAllCaps="false"
         android:textColor="@color/colorPrimaryText"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line5" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_header_tasks" />
 
     <TextView
         android:id="@+id/tv_header_tasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_red_rounded_corners_layout"
+        android:paddingStart="16dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
         android:text="Choose your aim"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +81,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/bg_red_rounded_corners_layout"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -136,9 +111,9 @@
         android:id="@+id/constraintLayout6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
         android:background="@drawable/bg_red_rounded_corners_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
