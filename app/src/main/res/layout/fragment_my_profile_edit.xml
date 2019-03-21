@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGrey"
-    tools:context=".fragment.myProfile.MyProfileEditFragment">
+    tools:context=".fragment.profile.MyProfileEditFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_my_profile_edit"

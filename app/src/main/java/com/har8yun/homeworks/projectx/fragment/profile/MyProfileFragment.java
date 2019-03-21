@@ -1,8 +1,7 @@
-package com.har8yun.homeworks.projectx.fragment.myProfile;
+package com.har8yun.homeworks.projectx.fragment.profile;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 
-import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,7 +38,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.har8yun.homeworks.projectx.R;
-import com.har8yun.homeworks.projectx.activity.MainActivity;
 import com.har8yun.homeworks.projectx.adapter.SkillItemRecyclerAdapter;
 import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
@@ -51,7 +48,6 @@ import com.har8yun.homeworks.projectx.util.DBUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

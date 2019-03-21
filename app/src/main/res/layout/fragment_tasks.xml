@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryLight"
-    tools:context=".fragment.TasksFragment">
+    tools:context=".fragment.Tasks.TasksFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <View

@@ -1,18 +1,16 @@
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.Tasks;
 
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.har8yun.homeworks.projectx.R;
-import com.har8yun.homeworks.projectx.TaskInfoFragment;
 import com.har8yun.homeworks.projectx.model.TaskViewModel;
 
 

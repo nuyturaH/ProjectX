@@ -117,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/lightGrey"
-            tools:context=".fragment.OtherProfileFragment">
+            tools:context=".fragment.profile.OtherProfileFragment">
 
             <TextView
                 android:id="@+id/tv_suggestion_other_profile"

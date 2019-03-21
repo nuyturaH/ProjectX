@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGrey"
-    tools:context=".fragment.BuildMusclesFragment">
+    tools:context=".fragment.Tasks.BuildMusclesFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_build_muscles"
@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_title_build_muscles">
 
         <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/gifImageView"
+            android:id="@+id/giv_push_ups_build_muscles"
             android:layout_width="185dp"
             android:layout_height="91dp"
             android:layout_marginTop="8dp"
@@ -94,12 +94,12 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="Push-Ups"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/place_autocomplete_search_text"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/gifImageView"
-            app:layout_constraintStart_toStartOf="@+id/gifImageView"
-            app:layout_constraintTop_toBottomOf="@+id/gifImageView" />
+            app:layout_constraintEnd_toEndOf="@+id/giv_push_ups_build_muscles"
+            app:layout_constraintStart_toStartOf="@+id/giv_push_ups_build_muscles"
+            app:layout_constraintTop_toBottomOf="@+id/giv_push_ups_build_muscles" />
 
         <Button
             android:id="@+id/btn_push_ups_build_muscles"
@@ -123,44 +123,47 @@
         app:layout_constraintTop_toTopOf="@+id/push_ups_build_muscles">
 
         <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/gifImageView2"
+            android:id="@+id/giv_pull_ups_build_muscles"
             android:layout_width="186dp"
             android:layout_height="154dp"
-            android:src="@drawable/pull_ups_gif"
+            android:src="@drawable/pull_ups_gif_14px"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tv_pull_ups_build_muscles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Pull-Ups"
+            android:text=" Pull-Ups "
             android:textAlignment="center"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/place_autocomplete_search_text"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/gifImageView2"
-            app:layout_constraintStart_toStartOf="@+id/gifImageView2"
-            app:layout_constraintTop_toBottomOf="@+id/gifImageView2" />
+            app:layout_constraintEnd_toEndOf="@+id/giv_pull_ups_build_muscles"
+            app:layout_constraintStart_toStartOf="@+id/giv_pull_ups_build_muscles"
+            app:layout_constraintTop_toBottomOf="@+id/giv_pull_ups_build_muscles" />
 
         <Button
             android:id="@+id/btn_pull_ups_build_muscles"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/bg_build_muscles_button"
+            android:enabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout_lock_pull_ups_build_muscles"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/gifImageView2">
+            app:layout_constraintTop_toTopOf="@+id/giv_pull_ups_build_muscles">
 
             <ImageView
                 android:id="@+id/iv_transparent_build_muscles2"
@@ -196,7 +199,7 @@
         app:layout_constraintTop_toBottomOf="@+id/push_ups_build_muscles">
 
         <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/gifImageView3"
+            android:id="@+id/giv_squats_build_muscles"
             android:layout_width="171dp"
             android:layout_height="156dp"
             android:src="@drawable/squats_14px"
@@ -205,30 +208,33 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/Squats"
+            android:id="@+id/tv_squats_ups_build_muscles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="xxxxx"
+            android:text=" Squats "
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/gifImageView3"
-            app:layout_constraintStart_toStartOf="@+id/gifImageView3"
-            app:layout_constraintTop_toBottomOf="@+id/gifImageView3" />
+            app:layout_constraintEnd_toEndOf="@+id/giv_squats_build_muscles"
+            app:layout_constraintStart_toStartOf="@+id/giv_squats_build_muscles"
+            app:layout_constraintTop_toBottomOf="@+id/giv_squats_build_muscles" />
 
         <Button
             android:id="@+id/btn_squats_build_muscles"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/bg_build_muscles_button"
+            android:enabled="false"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout_lock_squats_build_muscles"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -264,21 +270,11 @@
         app:layout_constraintStart_toStartOf="@+id/pull_ups_build_muscles">
 
         <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/gifImageView4"
+            android:id="@+id/giv_sit_ups_build_muscles"
             android:layout_width="184dp"
             android:layout_height="87dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/seat_ups_gif"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btn_sit_ups_build_muscles"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@drawable/bg_build_muscles_button"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/sit_ups_gif_14px"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -289,15 +285,27 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Sit-Ups"
+            android:text=" Sit-Ups "
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/gifImageView4"
-            app:layout_constraintStart_toStartOf="@+id/gifImageView4"
-            app:layout_constraintTop_toBottomOf="@+id/gifImageView4" />
+            app:layout_constraintEnd_toEndOf="@+id/giv_sit_ups_build_muscles"
+            app:layout_constraintStart_toStartOf="@+id/giv_sit_ups_build_muscles"
+            app:layout_constraintTop_toBottomOf="@+id/giv_sit_ups_build_muscles" />
+
+        <Button
+            android:id="@+id/btn_sit_ups_build_muscles"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_build_muscles_button"
+            android:enabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout_lock_sit_ups_build_muscles"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

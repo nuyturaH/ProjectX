@@ -91,6 +91,7 @@ import com.har8yun.homeworks.projectx.adapter.PlaceAutocompleteAdapter;
 //import com.har8yun.homeworks.projectx.directionhelpers.FetchURL;
 //import com.har8yun.homeworks.projectx.directionhelpers.TaskLoadedCallback;
 
+import com.har8yun.homeworks.projectx.fragment.Tasks.TasksFragment;
 import com.har8yun.homeworks.projectx.fragment.event.CreateEventFragment;
 import com.har8yun.homeworks.projectx.mapAnim.MapAnimator;
 import com.har8yun.homeworks.projectx.mapHelper.TaskLoadedCallback;
@@ -114,9 +115,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 
-import static com.har8yun.homeworks.projectx.TaskInfoFragment.BUILD_MUSCLES;
-import static com.har8yun.homeworks.projectx.TaskInfoFragment.DEVELOP_STAMINA;
-import static com.har8yun.homeworks.projectx.TaskInfoFragment.LOOSE_WEIGHT;
+import static com.har8yun.homeworks.projectx.fragment.Tasks.TaskInfoFragment.BUILD_MUSCLES;
+import static com.har8yun.homeworks.projectx.fragment.Tasks.TaskInfoFragment.LOOSE_WEIGHT;
 import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
 import static java.lang.String.*;
 

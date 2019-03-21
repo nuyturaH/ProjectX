@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment.myProfile;
+package com.har8yun.homeworks.projectx.fragment.profile;
 
 
 import android.Manifest;
