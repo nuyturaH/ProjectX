@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import com.har8yun.homeworks.projectx.Application;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.fragment.profile.MyProfileEditFragment;
+import com.har8yun.homeworks.projectx.fragment.profile.MyProfileFragment;
+
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.PreferencesHelper;
@@ -114,6 +116,16 @@ public class MainActivity extends AppCompatActivity {
                             (MyProfileEditFragment) mNavHostFragment.getChildFragmentManager().getFragments().get(0);
                     if (myProfileEditFragment != null && myProfileEditFragment.isVisible()) {
                         (myProfileEditFragment).onUploadFileCreated(fileUrl);
+                    }
+                }
+            }
+            else if(requestCode == MyProfileFragment.CAMERA_REQUEST_CODE)
+            {
+                if (null != fileUrl) {
+                    MyProfileFragment myProfileFragment =
+                            (MyProfileFragment) mNavHostFragment.getChildFragmentManager().getFragments().get(0);
+                    if (myProfileFragment != null && myProfileFragment.isVisible()) {
+                        (myProfileFragment).onUploadFileCreated(fileUrl);
                     }
                 }
             }

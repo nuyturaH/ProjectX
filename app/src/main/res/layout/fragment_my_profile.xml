@@ -50,7 +50,7 @@
                 app:layout_collapseParallaxMultiplier="1.7"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:indeterminateTint="@color/colorPrimaryText"/>
 
             <TextView
@@ -255,53 +255,30 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/iv_photo1_my_profile"
+                    android:id="@+id/iv_add_photo_my_profile"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_photo2_my_profile"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_photo1_my_profile"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_all_photos_my_profile"
-                    app:srcCompat="@drawable/ic_launcher_background"
+                    app:srcCompat="@drawable/ic_add_a_photo"
                     tools:src="@tools:sample/avatars[3]" />
 
                 <ImageView
-                    android:id="@+id/iv_photo2_my_profile"
+                    android:id="@+id/iv_photo1_my_profile"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_photo1_my_profile"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_photo3_my_profile"
-                    app:layout_constraintStart_toEndOf="@+id/iv_photo1_my_profile"
-                    app:layout_constraintTop_toTopOf="@+id/iv_photo1_my_profile"
-                    app:srcCompat="@drawable/ic_launcher_background" />
-
-                <ImageView
-                    android:id="@+id/iv_photo3_my_profile"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_photo2_my_profile"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_photo4_my_profile"
-                    app:layout_constraintStart_toEndOf="@+id/iv_photo2_my_profile"
-                    app:layout_constraintTop_toTopOf="@+id/iv_photo2_my_profile"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/ic_launcher_background"
-                    tools:src="@tools:sample/avatars[4]" />
-
-                <ImageView
-                    android:id="@+id/iv_photo4_my_profile"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_photo3_my_profile"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_add_photo_my_profile"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_photo3_my_profile"
-                    app:layout_constraintTop_toTopOf="@+id/iv_photo3_my_profile"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/ic_launcher_background"
-                    tools:src="@tools:sample/avatars[1]" />
+                    app:layout_constraintStart_toEndOf="@+id/iv_add_photo_my_profile"
+                    app:layout_constraintTop_toTopOf="@+id/iv_add_photo_my_profile"
+                    app:srcCompat="@drawable/ic_photo_library" />
+
+
 
             </android.support.constraint.ConstraintLayout>
 

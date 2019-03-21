@@ -412,7 +412,12 @@ public class MyProfileEditFragment extends Fragment {
                 }
             }
             if (mCurrentUser.getUserInfo().getAvatar() != null) {
+                mProgressBar.setVisibility(View.VISIBLE);
                 setAvatar(mCurrentUser.getUserInfo().getAvatar());
+            }
+            else{
+                mAvatarView.setImageResource(R.drawable.ic_add_a_photo);
+                mProgressBar.setVisibility(View.GONE);
             }
         }
 
@@ -615,6 +620,10 @@ public class MyProfileEditFragment extends Fragment {
         if (mBirthDateView.getText() != null) {
             mUserInfo.setBirthDate(mDate);
         }
+        if(!imageName.isEmpty())
+        {
+            mUserInfo.setAvatar(imageName);
+        }
 
 
         mCurrentUser.setUserInfo(mUserInfo);
@@ -719,19 +728,21 @@ public class MyProfileEditFragment extends Fragment {
 //        mCurrentUser.getUserInfo().setAvatar(uri);
     }
 
+    String imageName;
+
     private void uploadImageToFirebase(Drawable resource) {
         Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        String imageName = mCurrentUser.getId() + System.currentTimeMillis();
+        imageName = mCurrentUser.getId() + System.currentTimeMillis();
 
         UploadTask uploadTask = DBUtil.getRefAvatars(imageName).putBytes(data);
         uploadTask.addOnCompleteListener(taskSnapshot -> {
             if (taskSnapshot.isSuccessful()) {
                 DBUtil.addAvatarToFirebase(imageName);
-                mCurrentUser.getUserInfo().setAvatar(imageName);
+//                mCurrentUser.getUserInfo().setAvatar(imageName);
                 Log.d(TAG, "uploadImageToFirebase: " + uploadTask.getResult());
             } else {
                 Toast.makeText(getActivity(), "SOMETHING WENT WRONG, TRY AGAIN", Toast.LENGTH_SHORT).show();

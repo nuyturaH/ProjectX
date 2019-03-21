@@ -20,7 +20,22 @@
             app:destination="@id/my_profile_edit_fragment"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right" />
+
+        <action
+            android:id="@+id/action_my_profile_fragment_to_photos_fragment"
+            app:destination="@id/photos_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
+
+    <fragment
+        android:id="@+id/photos_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.PhotosFragment"
+        tools:layout="@layout/fragment_photos"
+        >
+    </fragment>
+
+
     <fragment
         android:id="@+id/map_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.MapFragment"
@@ -159,15 +174,12 @@
         android:id="@+id/task_info_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.Tasks.TasksFragment"
         android:label="fragment_tasks"
-        tools:layout="@layout/fragment_tasks" /><action android:id="@+id/action_global_map_fragment" app:destination="@id/map_fragment"/>
+        tools:layout="@layout/fragment_tasks" />
+    <action android:id="@+id/action_global_map_fragment"
+        app:destination="@id/map_fragment"/>
     <fragment
         android:id="@+id/build_muscles_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.Tasks.BuildMusclesFragment"
         android:label="Build Muscles"
         tools:layout="@layout/fragment_build_muscles" />
-    <fragment
-        android:id="@+id/task_info_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.Tasks.TasksFragment"
-        android:label="fragment_task_info"
-        tools:layout="@layout/fragment_task_info" />
 </navigation>

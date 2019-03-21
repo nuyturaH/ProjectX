@@ -1,17 +1,26 @@
 package com.har8yun.homeworks.projectx.fragment.profile;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,17 +47,24 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.UploadTask;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.activity.MainActivity;
 import com.har8yun.homeworks.projectx.adapter.SkillItemRecyclerAdapter;
 import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 import com.har8yun.homeworks.projectx.util.DBUtil;
+import com.har8yun.homeworks.projectx.util.PermissionChecker;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +76,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import static android.app.Activity.RESULT_OK;
 import static com.google.android.gms.common.util.CollectionUtils.setOf;
 import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
 
@@ -66,6 +84,11 @@ import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNaviga
 public class MyProfileFragment extends Fragment {
 
     private static final String TAG = "MyProfileFragment";
+    public static final int PERMISSION_STORAGE = 10;
+    public static final int PERMISSION_CAMERA = 11;
+
+    private static final int GALLERY_REQUEST_CODE = 1;
+    public static final int CAMERA_REQUEST_CODE = 221;
 
 
     //shared preferences
@@ -88,15 +111,24 @@ public class MyProfileFragment extends Fragment {
     private TextView mAgeView;
     private ImageView mAvatarView;
     private ProgressBar mProgressBar;
+    private ImageView mAddImageView;
+    private ImageView mPhoto1View;
+    private TextView mAllPhotosView;
+    private ImageView appBarImageView;
 
+    //navigation
     private BottomNavigationView mBottomNavigationView;
-
-
     private Fragment mNavHostFragment;
 
     //user
     private User mCurrentUser;
     private UserViewModel mUserViewModel;
+
+    //firebase
+    private DatabaseReference mDatebaseReference = FirebaseDatabase.getInstance().getReference("users");
+
+    //variables
+    boolean isImageFitToScreen = false;
 
 
     //constructor
@@ -177,6 +209,7 @@ public class MyProfileFragment extends Fragment {
     private void initViews(View view) {
         mToolbar = view.findViewById(R.id.toolbar_my_profile);
         mCollapsingToolbarLayout = view.findViewById(R.id.ctl_my_profile);
+        appBarImageView = view.findViewById(R.id.app_bar_image);
         mEditButton = view.findViewById(R.id.fab_edit_my_profile);
         mPointsView = view.findViewById(R.id.tv_points_my_profile);
         mStatusView = view.findViewById(R.id.tv_status_my_profile);
@@ -188,9 +221,11 @@ public class MyProfileFragment extends Fragment {
         mAgeView = view.findViewById(R.id.tv_age_my_profile);
         mAvatarView = view.findViewById(R.id.app_bar_image);
         mProgressBar = view.findViewById(R.id.pb_avatar_my_profile);
+        mAddImageView = view.findViewById(R.id.iv_add_photo_my_profile);
+        mPhoto1View = view.findViewById(R.id.iv_photo1_my_profile);
+        mAllPhotosView = view.findViewById(R.id.tv_all_photos_my_profile);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
-
 
 
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
@@ -204,7 +239,167 @@ public class MyProfileFragment extends Fragment {
 
         mCurrentUser = mUserViewModel.getUser().getValue();
 
+        mAddImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPictureDialog();
+            }
+        });
 
+
+        mPhoto1View.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (isImageFitToScreen) {
+                    isImageFitToScreen = false;
+                    mPhoto1View.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
+                    mPhoto1View.setAdjustViewBounds(true);
+                } else {
+                    isImageFitToScreen = true;
+                    mPhoto1View.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
+                    mPhoto1View.setScaleType(ImageView.ScaleType.FIT_XY);
+                }
+            }
+
+        });
+
+        onClickNavigate(mAllPhotosView, R.id.action_my_profile_fragment_to_photos_fragment);
+
+    }
+
+    private void showPictureDialog() {
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this.getContext());
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Capture photo from camera"};
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                if (PermissionChecker.hasStoragePermission(getContext())) {
+                                    choosePhotoFromGallery();
+                                } else {
+                                    requestStoragePermission();
+                                }
+                                break;
+                            case 1:
+                                if (PermissionChecker.hasCameraPermission(getContext())) {
+                                    takePhotoFromCamera();
+                                } else {
+                                    requestCameraPermission();
+                                }
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+
+    public void choosePhotoFromGallery() {
+        Intent galleryAction = new Intent();
+        galleryAction.setType("image/*");
+        galleryAction.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(galleryAction, "Select Picture"), GALLERY_REQUEST_CODE);
+    }
+
+
+    private void takePhotoFromCamera() {
+        ((MainActivity) getActivity()).takePicture(CAMERA_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+        } else if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
+            loadSelectedImage(data.getData().toString());
+            Log.d(TAG, "onActivityResult: " + data.getData().toString());
+        }
+    }
+
+
+    private void loadSelectedImage(String uri) {
+
+        Log.d(TAG, "loadSelectedImage: " + uri);
+        Glide.with(this)
+                .load(uri)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("EDIT PROFILE", e.getMessage());
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        uploadImageToFirebase(resource);
+                        return false;
+                    }
+                })
+                .into(mPhoto1View);
+    }
+
+    private void uploadImageToFirebase(Drawable resource) {
+        Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        String imageName = mCurrentUser.getId() + System.currentTimeMillis();
+
+        UploadTask uploadTask = DBUtil.getRefImages(imageName).putBytes(data);
+        uploadTask.addOnCompleteListener(taskSnapshot -> {
+            if (taskSnapshot.isSuccessful()) {
+                DBUtil.addImageToFirebase(imageName);
+                mCurrentUser.getImages().add(imageName);
+                Log.d(TAG, "uploadImageToFirebase: " + mCurrentUser.getImages().get(0));
+                Log.d(TAG, "uploadImageToFirebase: " + uploadTask.getResult());
+                mDatebaseReference.child(mCurrentUser.getId()).setValue(mCurrentUser);
+
+            } else {
+                Toast.makeText(getActivity(), "SOMETHING WENT WRONG, TRY AGAIN", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    protected void requestStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_STORAGE);
+        }
+    }
+
+    protected void requestCameraPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_CAMERA);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                choosePhotoFromGallery();
+            }
+        } else if (requestCode == PERMISSION_CAMERA) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                takePhotoFromCamera();
+            }
+        }
+    }
+
+    public void onUploadFileCreated(String path) {
+        loadSelectedImage(path);
     }
 
     private void fillViews() {
@@ -244,7 +439,13 @@ public class MyProfileFragment extends Fragment {
                 mHeightView.setText(String.valueOf((mCurrentUser.getUserInfo().getHeight())) + " m");
             }
             if (mCurrentUser.getUserInfo().getAvatar() != null) {
+                mProgressBar.setVisibility(View.VISIBLE);
                 setAvatar(mCurrentUser.getUserInfo().getAvatar());
+            }
+            else
+            {
+                appBarImageView.setImageResource(R.drawable.ic_add_a_photo);
+                mProgressBar.setVisibility(View.GONE);
             }
 
             if (mCurrentUser.getUsername() != null) {
@@ -252,6 +453,10 @@ public class MyProfileFragment extends Fragment {
             }
             if (mCurrentUser.getSkills() != null) {
                 initRecyclerView();
+            }
+            if (mCurrentUser.getImages() != null && mCurrentUser.getImages().size() > 0) {
+                Log.d(TAG, "fillViews: " + mCurrentUser.getImages().size());
+                setImage(mCurrentUser.getImages().get(mCurrentUser.getImages().size() - 1));
             }
         }
 
@@ -285,6 +490,44 @@ public class MyProfileFragment extends Fragment {
                             }
                         })
                         .into(mAvatarView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "onFailure: Failed AGAIN");
+            }
+        });
+
+
+    }
+
+    public void setImage(String url) {
+
+        DBUtil.getRefImages(url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                res = uri.toString();
+                //getContext != null lifecycle architecture component TODO
+                if (getContext() != null) {
+                    Glide.with(getContext())
+                            .load(res)
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    mProgressBar.setVisibility(View.GONE);
+                                    Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.d("EDIT PROFILE", e.getMessage());
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    mProgressBar.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            })
+                            .into(mPhoto1View);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
