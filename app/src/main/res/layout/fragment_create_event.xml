@@ -86,11 +86,11 @@
             android:text="========== Location =========="
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_location_create_event"
-            app:layout_constraintStart_toStartOf="@+id/tv_time_create_event"
+            app:layout_constraintStart_toStartOf="@+id/tv_date_create_event"
             app:layout_constraintTop_toTopOf="@+id/iv_location_create_event" />
 
         <TextView
-            android:id="@+id/tv_time_create_event"
+            android:id="@+id/tv_date_create_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

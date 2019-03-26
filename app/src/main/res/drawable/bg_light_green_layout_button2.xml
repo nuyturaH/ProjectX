@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/common_google_signin_btn_text_dark_focused">
+
+    <item>
+        <shape android:shape="rectangle">
+
+        </shape>
+    </item>
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle">
+
+
+            <gradient
+                android:angle="-90"
+                android:endColor="#009624"
+                android:centerColor="#00c853"
+                android:startColor="#009624"
+                android:type="linear" />
+
+            <corners android:radius="0dp" />
+
+        </shape>
+    </item>
+</ripple>

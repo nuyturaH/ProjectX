@@ -1,6 +1,8 @@
 package com.har8yun.homeworks.projectx.fragment.event;
 
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
@@ -18,8 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +33,10 @@ import com.har8yun.homeworks.projectx.model.Event;
 import com.har8yun.homeworks.projectx.model.EventViewModel;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -43,11 +51,13 @@ public class CreateEventFragment extends Fragment {
     private Toolbar mToolbarCreateEvent;
     private EditText mTitleView;
     private EditText mDescriptionView;
-    private TextView mTimeView;
+    private TextView mDateView;
     private Button mSaveButton;
     private TextView mLocationView;
     private BottomNavigationView mBottomNavigationView;
 
+    //calendar
+    private Calendar cal = Calendar.getInstance();
 
     //navigation
     private NavController mNavController;
@@ -69,8 +79,7 @@ public class CreateEventFragment extends Fragment {
 
     //************************************** METHODS ********************************************
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_event, container, false);
 
 
@@ -110,7 +119,13 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
+        mDateView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseDate();
 
+            }
+        });
         return view;
     }
 
@@ -155,18 +170,55 @@ public class CreateEventFragment extends Fragment {
 
     }
 
+    private void chooseDate() {
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                mEvent.setDate(new Date());
+                cal.setTime(mEvent.getDate());
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, monthOfYear);
+                cal.set(Calendar.DATE, dayOfMonth);
+                mEvent.setDate(cal.getTime());
+                chooseTime();
+            }
+        }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+
+    }
+
+    private void chooseTime() {
+        Calendar mCurrentTime = Calendar.getInstance();
+        int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mCurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                cal.setTime(mEvent.getDate());
+                cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                cal.set(Calendar.MINUTE, minute);
+                mEvent.setDate(cal.getTime());
+                mEventViewModel.setEvent(mEvent);
+                SimpleDateFormat simpleDateformat2 = new SimpleDateFormat("MMM dd, hh:mm");
+                mDateView.setText(simpleDateformat2.format(mEvent.getDate()));
+            }
+        }, hour, minute, true);
+        timePickerDialog.show();
+    }
+
     private void initViews(View v) {
         mToolbarCreateEvent = v.findViewById(R.id.toolbar_create_event);
         mTitleView = v.findViewById(R.id.etv_title_create_event);
         mDescriptionView = v.findViewById(R.id.etv_description_create_event);
-        mTimeView = v.findViewById(R.id.tv_time_create_event);
+        mDateView = v.findViewById(R.id.tv_date_create_event);
         mSaveButton = v.findViewById(R.id.btn_save_create_event);
         mLocationView = v.findViewById(R.id.tv_location_create_event);
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
-
-
         mLocationView.setText(mEvent.getPlace());
-
     }
 
 
@@ -174,16 +226,14 @@ public class CreateEventFragment extends Fragment {
         mEvent.setCreator(mCurrentUser);
         mEvent.setTitle(mTitleView.getText().toString());
         mEvent.setDescription(mDescriptionView.getText().toString());
-
         mEventViewModel.setEvent(mEvent);
         addEventToFirebase();
-
     }
 
     private void initEditViews() {
         mTitleView.setText(mEvent.getTitle());
         mDescriptionView.setText(mEvent.getDescription());
-        //mTimeView.setText(mEvent.getDate().toString());
+        //mDateView.setText(mEvent.getDate().toString());
         mSaveButton.setText("Save Changes");
 
     }
