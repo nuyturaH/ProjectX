@@ -95,7 +95,6 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
     //user
     private User mOtherUser;
 
-
     public OtherProfileFragment() {
         // Required empty public constructor
     }
