@@ -511,11 +511,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     private void moveCamera(LatLng latLng, float zoom, String title) {
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
-//        MarkerOptions mMarkerOptions = new MarkerOptions()
-//                .position(latLng)
-//                .title(title);
-//        mGoogleMap.addMarker(mMarkerOptions);
     }
 
     private void initSearch() {
