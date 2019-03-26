@@ -94,14 +94,52 @@
         android:id="@+id/other_profile_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.profile.OtherProfileFragment"
         android:label="Other Profile"
-        tools:layout="@layout/fragment_other_profile"
-        />
+        tools:layout="@layout/fragment_other_profile">
+        <action
+            android:id="@+id/action_other_profile_fragment_to_other_photos_fragment"
+            app:destination="@id/other_photos_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/other_photos_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.Tasks.OtherPhotosFragment"
+        tools:layout="@layout/fragment_other_photos"
+        >
+        <action
+            android:id="@+id/action_other_photos_fragment_to_other_profile_fragment"
+            app:destination="@id/other_profile_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/image_gallery_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.ImageGalleryFragment"
+        tools:layout="@layout/fragment_image_gallery">
+        <action
+            android:id="@+id/action_image_gallery_fragment_to_other_photos_fragment"
+            app:destination="@id/other_photos_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
     <!--______________________________________________________________ -->
     <fragment
         android:id="@+id/settings_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.SettingsFragment"
         android:label="Settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settings_fragment_to_launch_fragment"
+            app:destination="@id/launch_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/launch_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.launch.LaunchFragment"
+        tools:layout="@layout/fragment_launch"
+        />
     <fragment
         android:id="@+id/menu_item_log_out"
         android:name="com.har8yun.homeworks.projectx.fragment.launch.LaunchFragment"

@@ -118,6 +118,9 @@
     <string name="Camera">Camera</string>
     <string name="your_weight">Your Weight</string>
     <string name="your_height">Your Height</string>
+    <string name="delete_event">Delete Event</string>
+    <string name="going">Going</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>

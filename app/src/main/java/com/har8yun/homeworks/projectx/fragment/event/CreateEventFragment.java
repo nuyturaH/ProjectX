@@ -3,13 +3,18 @@ package com.har8yun.homeworks.projectx.fragment.event;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -54,7 +59,7 @@ public class CreateEventFragment extends Fragment {
     private User mCurrentUser;
 
     //Firebase
-    DatabaseReference mDatabaseReference= FirebaseDatabase.getInstance().getReference("events");
+    DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
 
 
     //constructor
@@ -62,6 +67,7 @@ public class CreateEventFragment extends Fragment {
     }
 
 
+    //************************************** METHODS ********************************************
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,21 +94,16 @@ public class CreateEventFragment extends Fragment {
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mCurrentUser = mUserViewModel.getUser().getValue();
 
-//        mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
-
 
         setCreateEventToolbar();
         setNavigationComponent();
-        //onClickNavigate(mSaveButton, R.id.action_map_fragment_to_create_event_fragment);
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mEventViewModel.isToEdit())
-                {
+                if (mEventViewModel.isToEdit()) {
                     editEvent();
-                }
-                else {
+                } else {
                     initEvent();
                 }
                 Navigation.findNavController(v).navigate(R.id.action_create_event_fragment_to_map_fragment);
@@ -111,6 +112,47 @@ public class CreateEventFragment extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_create_event, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_delete_event:
+                removeEventDialog();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void removeEventDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                //set message, title, and icon
+                .setTitle("Delete")
+                .setMessage("Are you sure you want to delete this event")
+
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        removeEventFromFirebase();
+                        dialog.dismiss();
+                    }
+
+                })
+
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dialog.show();
+
     }
 
     private void initViews(View v) {
@@ -138,8 +180,7 @@ public class CreateEventFragment extends Fragment {
 
     }
 
-    private void initEditViews()
-    {
+    private void initEditViews() {
         mTitleView.setText(mEvent.getTitle());
         mDescriptionView.setText(mEvent.getDescription());
         //mTimeView.setText(mEvent.getDate().toString());
@@ -147,8 +188,7 @@ public class CreateEventFragment extends Fragment {
 
     }
 
-    private void editEvent()
-    {
+    private void editEvent() {
         mEvent.setTitle(mTitleView.getText().toString());
         mEvent.setDescription(mDescriptionView.getText().toString());
 
@@ -161,13 +201,18 @@ public class CreateEventFragment extends Fragment {
         mDatabaseReference.child(mEvent.getUid()).setValue(mEvent);
     }
 
-    private void updateEventInFirebase()
-    {
+    private void updateEventInFirebase() {
         mDatabaseReference.child(mEvent.getUid()).setValue(mEvent);
     }
-    public void updateEventInFirebase(Event event)
-    {
+
+    public void updateEventInFirebase(Event event) {
         mDatabaseReference.child(event.getUid()).setValue(event);
+    }
+
+    public void removeEventFromFirebase() {
+        mDatabaseReference.child(mEvent.getUid()).removeValue();
+        Navigation.findNavController(getView()).navigate(R.id.action_create_event_fragment_to_map_fragment);
+
     }
 
     private void setCreateEventToolbar() {
@@ -184,7 +229,6 @@ public class CreateEventFragment extends Fragment {
     private void hideBotNavBar() {
         mBottomNavigationView.setVisibility(View.GONE);
     }
-
 
 
 }

@@ -2,6 +2,7 @@ package com.har8yun.homeworks.projectx.fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,10 +25,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -57,6 +60,12 @@ public class SettingsFragment extends Fragment {
     //Dialog
     ProgressDialog mProgressDialog;
 
+    //navigation
+    private Fragment mNavHostFragment;
+
+    //viewmodel
+    private UserViewModel mUserViewModel;
+
 
     //preferences
     SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
@@ -76,6 +85,8 @@ public class SettingsFragment extends Fragment {
         mProgressDialog = new ProgressDialog(getContext());
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
 
 
         initViews(view);
@@ -103,6 +114,7 @@ public class SettingsFragment extends Fragment {
         mFontSizeView = view.findViewById(R.id.tv_change_app_font_size_settings);
         mLanguageView = view.findViewById(R.id.tv_change_app_language_settings);
         mDeleteAccountView = view.findViewById(R.id.tv_delete_account_settings);
+        mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
         mDeleteAccountView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,8 +138,13 @@ public class SettingsFragment extends Fragment {
                                                 .getReference(DATABASE_PATH_NAME)
                                                 .child(mFirebaseUser.getUid())
                                                 .removeValue();
+                                        mUserViewModel.setUser(null);
+                                        mUserViewModel.setOtherUser(null);
+                                        sharedPreferences.setLoggedIn(getContext(),false);
+
                                         Toast.makeText(getContext(),"Account was successfully deleted",Toast.LENGTH_LONG);
-                                        //TODO navigate to LaunchFragment
+                                        //TODO fix error Harut
+                                        NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_settings_fragment_to_launch_fragment);
 
                                     }
                                     else {

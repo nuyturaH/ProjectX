@@ -26,24 +26,26 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mv_launch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_appLogo3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/logo_margin_top"
-        android:fontFamily="@font/faster_one"
-        android:text="@string/app_logo"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimaryLight"
-        android:textSize="@dimen/test_logo_text_size"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/tv_description_launch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_appLogo3"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="@dimen/logo_margin_top"-->
+    <!--android:fontFamily="@font/faster_one"-->
+    <!--android:text="@string/app_logo"-->
+    <!--android:textAlignment="center"-->
+    <!--android:textColor="@color/colorPrimaryLight"-->
+    <!--android:textSize="@dimen/test_logo_text_size"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:id="@+id/tv_description_launch"

@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_cancel_dialog"
         android:background="@android:color/white"
         android:clickable="true"
-        android:text="Going"
+        android:text="@string/going"
         android:textColor="#5DBCD2"
         android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
         android:layout_marginLeft="5dp"
         android:background="@android:color/white"
         android:clickable="true"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:textColor="#5DBCD2"
         android:textStyle="bold" />
 

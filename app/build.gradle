@@ -73,6 +73,9 @@ dependencies {
     //Work Manager
     implementation "android.arch.work:work-runtime:1.0.0"
 
+    //view pager
+    implementation 'me.relex:circleindicator:1.2.2@aar'
+
 
 }
 
