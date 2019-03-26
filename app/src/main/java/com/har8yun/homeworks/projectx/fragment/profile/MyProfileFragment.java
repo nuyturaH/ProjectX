@@ -1,6 +1,7 @@
 package com.har8yun.homeworks.projectx.fragment.profile;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
@@ -14,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -33,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,7 +63,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -127,8 +125,6 @@ public class MyProfileFragment extends Fragment {
     //firebase
     private DatabaseReference mDatebaseReference = FirebaseDatabase.getInstance().getReference("users");
 
-    //variables
-    boolean isImageFitToScreen = false;
 
 
     //constructor
@@ -206,6 +202,8 @@ public class MyProfileFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    Drawable imageDrawable;
+
     private void initViews(View view) {
         mToolbar = view.findViewById(R.id.toolbar_my_profile);
         mCollapsingToolbarLayout = view.findViewById(R.id.ctl_my_profile);
@@ -250,16 +248,19 @@ public class MyProfileFragment extends Fragment {
         mPhoto1View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (isImageFitToScreen) {
-                    isImageFitToScreen = false;
-                    mPhoto1View.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    mPhoto1View.setAdjustViewBounds(true);
-                } else {
-                    isImageFitToScreen = true;
-                    mPhoto1View.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT));
-                    mPhoto1View.setScaleType(ImageView.ScaleType.FIT_XY);
-                }
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.fragment_image_gallery);
+                imageDrawable = mPhoto1View.getDrawable();
+                ImageView image = dialog.findViewById(R.id.iv_image_gallery);
+                ImageView closeImage = dialog.findViewById(R.id.iv_close_photo_gallery);
+                image.setImageDrawable(imageDrawable);
+                closeImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
 
         });
@@ -424,7 +425,7 @@ public class MyProfileFragment extends Fragment {
                 int y = Calendar.getInstance().get(Calendar.YEAR);
                 int m = Calendar.getInstance().get(Calendar.MONTH);
                 int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                int ss = (y - b)%100;
+                int ss = (y - b) % 100;
                 if (date.getMonth() < m && date.getDay() < d) {
                     mAgeView.setText(String.valueOf(ss));
                 } else {
@@ -441,9 +442,7 @@ public class MyProfileFragment extends Fragment {
             if (mCurrentUser.getUserInfo().getAvatar() != null) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 setAvatar(mCurrentUser.getUserInfo().getAvatar());
-            }
-            else
-            {
+            } else {
                 appBarImageView.setImageResource(R.drawable.ic_add_a_photo);
                 mProgressBar.setVisibility(View.GONE);
             }
@@ -462,6 +461,7 @@ public class MyProfileFragment extends Fragment {
 
     }
 
+
     String res;
 
     public void setAvatar(String url) {
@@ -469,27 +469,29 @@ public class MyProfileFragment extends Fragment {
         DBUtil.getRefAvatars(url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                res =  uri.toString();
+                res = uri.toString();
                 //getContext != null lifecycle architecture component TODO
-                Glide.with(getContext())
-                        .load(res)
-                        .apply(RequestOptions.circleCropTransform())
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                mProgressBar.setVisibility(View.GONE);
-                                Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                Log.d("EDIT PROFILE", e.getMessage());
-                                return false;
-                            }
+                if (getContext() != null) {
+                    Glide.with(getContext())
+                            .load(res)
+                            .apply(RequestOptions.circleCropTransform())
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    mProgressBar.setVisibility(View.GONE);
+                                    Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.d("EDIT PROFILE", e.getMessage());
+                                    return false;
+                                }
 
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                mProgressBar.setVisibility(View.GONE);
-                                return false;
-                            }
-                        })
-                        .into(mAvatarView);
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    mProgressBar.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            })
+                            .into(mAvatarView);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -532,7 +534,7 @@ public class MyProfileFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.e(TAG, "onFailure: Failed AGAIN" );
+                Log.e(TAG, "onFailure: Failed AGAIN");
             }
         });
 
@@ -560,11 +562,11 @@ public class MyProfileFragment extends Fragment {
 //                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName() + ": " + item.getSkillCount(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
-        Map<String,Integer> map = mCurrentUser.getSkills();
+        Map<String, Integer> map = mCurrentUser.getSkills();
         List<Skill> list = new ArrayList<>();
 
 
-        for(String currentKey : map.keySet()){
+        for (String currentKey : map.keySet()) {
             Skill skill = new Skill();
             skill.setSkillName(currentKey);
             skill.setSkillCount(map.get(currentKey));
@@ -580,6 +582,7 @@ public class MyProfileFragment extends Fragment {
     private void showBotNavBar() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
     }
+
 
     @Override
     public void onPause() {

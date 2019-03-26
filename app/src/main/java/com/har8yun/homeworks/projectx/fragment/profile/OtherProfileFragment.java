@@ -1,6 +1,7 @@
 package com.har8yun.homeworks.projectx.fragment.profile;
 
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.Drawable;
@@ -27,12 +28,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.adapter.SkillItemRecyclerAdapter;
-import com.har8yun.homeworks.projectx.model.Event;
 import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
@@ -44,10 +45,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import androidx.navigation.fragment.NavHostFragment;
+import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
 
 
-public class OtherProfileFragment extends Fragment {
+public class OtherProfileFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "OtherProfileFragment";
 
@@ -65,6 +66,13 @@ public class OtherProfileFragment extends Fragment {
     private TextView mAgeView;
     private ImageView mAvatarView;
     private ProgressBar mProgressBar;
+    private TextView mAllPhotosView;
+    private ImageView mPhoto1View;
+    private ImageView mPhoto2View;
+    private ImageView mPhoto3View;
+    private ImageView mPhoto4View;
+
+    private List<ImageView> photos = new ArrayList<>();
 
 
     //viewmodel
@@ -95,13 +103,12 @@ public class OtherProfileFragment extends Fragment {
 
 
         initViews(view);
-        fillViews();
+        fillViews(view);
 
         return view;
     }
 
-    private void initViews(View view)
-    {
+    private void initViews(View view) {
         mToolbar = view.findViewById(R.id.toolbar_other_profile);
         mCollapsingToolbarLayout = view.findViewById(R.id.ctl_other_profile);
         mMessageButton = view.findViewById(R.id.fab_message_other_profile);
@@ -115,10 +122,27 @@ public class OtherProfileFragment extends Fragment {
         mAgeView = view.findViewById(R.id.tv_age_other_profile);
         mAvatarView = view.findViewById(R.id.other_app_bar_image);
         mProgressBar = view.findViewById(R.id.pb_avatar_other_profile);
+        mAllPhotosView = view.findViewById(R.id.tv_all_photos_other_profile);
+        mPhoto1View = view.findViewById(R.id.iv_photo1_other_profile);
+        mPhoto2View = view.findViewById(R.id.iv_photo2_other_profile);
+        mPhoto3View = view.findViewById(R.id.iv_photo3_other_profile);
+        mPhoto4View = view.findViewById(R.id.iv_photo4_other_profile);
+
+        photos.add(mPhoto1View);
+        photos.add(mPhoto2View);
+        photos.add(mPhoto3View);
+        photos.add(mPhoto4View);
+
+        mPhoto1View.setOnClickListener(this);
+        mPhoto2View.setOnClickListener(this);
+        mPhoto3View.setOnClickListener(this);
+        mPhoto4View.setOnClickListener(this);
+
+        onClickNavigate(mAllPhotosView, R.id.action_other_profile_fragment_to_other_photos_fragment);
 
     }
 
-    private void fillViews() {
+    private void fillViews(View view) {
 
         Log.e("hhhh", "fillviews");
         if (otherUser.getUserInfo() != null) {
@@ -141,7 +165,7 @@ public class OtherProfileFragment extends Fragment {
                 int y = Calendar.getInstance().get(Calendar.YEAR);
                 int m = Calendar.getInstance().get(Calendar.MONTH);
                 int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                int ss = (y - b)%100;
+                int ss = (y - b) % 100;
                 if (date.getMonth() < m && date.getDay() < d) {
                     mAgeView.setText(String.valueOf(ss));
                 } else {
@@ -156,14 +180,25 @@ public class OtherProfileFragment extends Fragment {
                 mHeightView.setText(String.valueOf((otherUser.getUserInfo().getHeight())) + " m");
             }
             if (otherUser.getUserInfo().getAvatar() != null) {
+                mProgressBar.setVisibility(View.VISIBLE);
                 setAvatar(otherUser.getUserInfo().getAvatar());
+            } else {
+                mAvatarView.setImageResource(R.drawable.ic_person_outline_grey);
+                mProgressBar.setVisibility(View.GONE);
             }
 
             if (otherUser.getUsername() != null) {
                 //username setting is in setNavigationComponent()
             }
             if (otherUser.getSkills() != null) {
-//                initRecyclerView();
+                initRecyclerView(view);
+            }
+            if (otherUser.getImages() != null && otherUser.getImages().size() > 0) {
+                Log.d(TAG, "fillViews: " + otherUser.getImages().size());
+                for (int i = 0; i < otherUser.getImages().size() && i < photos.size(); i++) {
+                    setImage(otherUser.getImages().get(otherUser.getImages().size() - 1 - i), photos.get(i));
+                    Log.d(TAG, "for: "+i);
+                }
             }
         }
 
@@ -171,15 +206,52 @@ public class OtherProfileFragment extends Fragment {
 
     String res;
 
+    public void setImage(String url, ImageView imageView) {
+
+        DBUtil.getRefImages(url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                res = uri.toString();
+                //getContext != null lifecycle architecture component TODO
+                if (getContext() != null) {
+                    Glide.with(getContext())
+                            .load(res)
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    Toast.makeText(getContext(), "FAILED " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.d("EDIT PROFILE", e.getMessage());
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    return false;
+                                }
+                            })
+                            .into(imageView);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "onFailure: Failed AGAIN");
+            }
+        });
+
+    }
+
+
     public void setAvatar(String url) {
 
 
         DBUtil.getRefAvatars(url).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                res =  uri.toString();
+                res = uri.toString();
                 Glide.with(getContext())
                         .load(res)
+                        .apply(RequestOptions.circleCropTransform())
                         .listener(new RequestListener<Drawable>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -203,30 +275,51 @@ public class OtherProfileFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.e(TAG, "onFailure: Failed AGAIN" );
+                Log.e(TAG, "onFailure: Failed AGAIN");
             }
         });
 
     }
 
-    private void initRecyclerView() {
+    private void initRecyclerView(View view) {
         SkillItemRecyclerAdapter skillItemRecyclerAdapter = new SkillItemRecyclerAdapter();
 
-        Map<String,Integer> map = otherUser.getSkills();
+        Map<String, Integer> map = otherUser.getSkills();
         List<Skill> list = new ArrayList<>();
 
 
-        for(String currentKey : map.keySet()){
+        for (String currentKey : map.keySet()) {
             Skill skill = new Skill();
             skill.setSkillName(currentKey);
             skill.setSkillCount(map.get(currentKey));
             list.add(skill);
         }
 
-        RecyclerView recyclerView = getView().findViewById(R.id.rv_skills_other_profile);
+        RecyclerView recyclerView = view.findViewById(R.id.rv_skills_other_profile);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(skillItemRecyclerAdapter);
         skillItemRecyclerAdapter.addItems(list);
     }
 
+    @Override
+    public void onClick(View v) {
+        Drawable resource;
+
+        ImageView imageView = (ImageView) v;
+        resource = imageView.getDrawable();
+
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.fragment_image_gallery);
+
+        ImageView image = dialog.findViewById(R.id.iv_image_gallery);
+        ImageView closeImage = dialog.findViewById(R.id.iv_close_photo_gallery);
+        image.setImageDrawable(resource);
+        closeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
 }

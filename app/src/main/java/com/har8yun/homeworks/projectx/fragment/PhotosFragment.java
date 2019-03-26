@@ -1,9 +1,11 @@
 package com.har8yun.homeworks.projectx.fragment;
 
 
+import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +44,7 @@ public class PhotosFragment extends Fragment {
     //view
     private RecyclerView mRecyclerView;
     private TextView textView;
+    private LinearLayout layout;
 
     //adapter
     private PhotosAdapter mPhotosAdapter;
@@ -90,6 +95,7 @@ public class PhotosFragment extends Fragment {
     {
         mRecyclerView = view.findViewById(R.id.rv_photos);
         textView = view.findViewById(R.id.tv_text_adapter);
+        layout = view.findViewById(R.id.layout_my_gallery);
 
         initRecyclerView();
     }
@@ -106,7 +112,12 @@ public class PhotosFragment extends Fragment {
 
         mPhotosAdapter.setOnRvItemClickListener(new PhotosAdapter.OnRvItemClickListener() {
             @Override
-            public void onItemClicked(String uid) {
+            public void onItemClicked(Drawable resource) {
+
+                ImageGalleryFragment imageGalleryFragment = new ImageGalleryFragment();
+                imageGalleryFragment.mPhotosList = mPhotosList;
+                layout.setVisibility(View.VISIBLE);
+                addFragment(imageGalleryFragment);
 
             }
 
@@ -228,6 +239,14 @@ public class PhotosFragment extends Fragment {
         mPhotosAdapter.showAllCheckBoxes(false);
 
     }
+    private void addFragment(Fragment fragment) {
+        android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.layout_my_gallery, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
 
 
 }

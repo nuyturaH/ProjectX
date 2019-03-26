@@ -46,6 +46,10 @@ public class SkillItemEditRecyclerAdapter extends RecyclerView.Adapter<SkillItem
             holder.skillCountView.setText(String.valueOf(skill.getSkillCount()));
             Log.d(TAG, "onBindViewHolder: " + skill.getSkillCount());
         }
+        if (skill.getSkillName().equals("Human Flag") || skill.getSkillName().equals("Planche")
+                ||skill.getSkillName().equals("ATM")|| skill.getSkillName().equals("Akka")) {
+            holder.skillCountView.setVisibility(View.INVISIBLE);
+        }
 
 //        holder.skillCountView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
@@ -117,13 +121,13 @@ public class SkillItemEditRecyclerAdapter extends RecyclerView.Adapter<SkillItem
         mData.addAll(items);
         notifyDataSetChanged();
     }
+
     public void addItem(Skill item) {
         mData.add(item);
         notifyDataSetChanged();
     }
 
-    public ArrayList<Skill> getSkills()
-    {
+    public ArrayList<Skill> getSkills() {
         return (ArrayList<Skill>) mData;
     }
 
@@ -136,6 +140,7 @@ public class SkillItemEditRecyclerAdapter extends RecyclerView.Adapter<SkillItem
             }
         }
     }
+
     public void removeItem(int position) {
         mData.remove(position);
         notifyItemRemoved(position);

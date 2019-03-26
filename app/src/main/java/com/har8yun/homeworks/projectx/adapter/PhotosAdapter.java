@@ -44,6 +44,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
 
     private static PhotosAdapter.OnRvItemClickListener mOnRvItemClickListener;
+    private static PhotosAdapter.OnOtherRvItemClickListener mOnOtherRvItemClickListener;
 
 
     @NonNull
@@ -60,11 +61,27 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     public void onBindViewHolder(@NonNull PhotosViewHolder holder, final int position) {
         String url = mData.get(position);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnRvItemClickListener !=null)
+                {
+                    mOnRvItemClickListener.onItemClicked(holder.photo.getDrawable());
+                }
+                else if(mOnOtherRvItemClickListener !=null)
+                {
+                    mOnOtherRvItemClickListener.onItemClicked(holder.photo.getDrawable());
+                }
+            }
+        });
+
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showAllCheckBoxes(true);
-                mOnRvItemClickListener.onItemLongClicked(mData.get(position));
+                if(mOnRvItemClickListener != null) {
+                    showAllCheckBoxes(true);
+                    mOnRvItemClickListener.onItemLongClicked(mData.get(position));
+                }
                 return true;
             }
         });
@@ -165,10 +182,18 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     }
 
     public interface OnRvItemClickListener {
-        void onItemClicked(String uid);
+        void onItemClicked(Drawable resource);
 
         void onItemLongClicked(String item);
 
         void onItemChecked(String item, boolean isChecked);
+    }
+
+    public void setOnOtherRvItemClickListener(PhotosAdapter.OnOtherRvItemClickListener mOnRvItemClickListener) {
+        this.mOnOtherRvItemClickListener = mOnRvItemClickListener;
+    }
+
+    public interface OnOtherRvItemClickListener {
+        void onItemClicked(Drawable resource);
     }
 }

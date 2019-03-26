@@ -620,7 +620,7 @@ public class MyProfileEditFragment extends Fragment {
         if (mBirthDateView.getText() != null) {
             mUserInfo.setBirthDate(mDate);
         }
-        if(!imageName.isEmpty())
+        if(imageName!=null)
         {
             mUserInfo.setAvatar(imageName);
         }
@@ -835,7 +835,7 @@ public class MyProfileEditFragment extends Fragment {
                 Skill item = mSkillList.get(pos);
 
 //                Toast.makeText(getActivity(), "Clicked : " + item.getSkillName() + ": " + item.getSkillCount(), Toast.LENGTH_SHORT).show();
-                mSkillList.remove(pos);
+//                mSkillList.remove(pos);
 
                 mDatabase = FirebaseDatabase.getInstance().getReference("users")
                         .child(mCurrentUser.getId())
