@@ -27,6 +27,7 @@ import android.support.constraint.ConstraintSet;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -115,6 +116,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 
+import static com.har8yun.homeworks.projectx.fragment.DoneDialogFragment.LOOSE_WEIGHT_DONE;
 import static com.har8yun.homeworks.projectx.fragment.Tasks.TaskInfoFragment.BUILD_MUSCLES;
 import static com.har8yun.homeworks.projectx.fragment.Tasks.TaskInfoFragment.LOOSE_WEIGHT;
 import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
@@ -218,12 +220,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+        if(mTaskViewModel!=null)
+        Log.e("hhhh", "Task ViewModel "+ mTaskViewModel.getTask().getValue());
+
         // mUser = sharedPreferences.getCurrentUser(getContext());
         initViews(view);
         initSearch();
         showBotNavBar();
         constraintSet.clone(getActivity(), R.layout.fragment_map);
         //getDeviceLocation();
+
+        mDoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO add points
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                DoneDialogFragment tasksFragment = new DoneDialogFragment();
+                tasksFragment.show(fm, null);
+            }
+        });
 
 
         Toast.makeText(getContext(), "Choose Location for your Event", Toast.LENGTH_LONG).show();
@@ -271,21 +287,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         case LOOSE_WEIGHT:
                             if (mDeviceLocation != null) {
                                 mGoogleMap.clear();
-
                                 changeMapDesign();
                                 looseWeight();
-
                                 startUserLocationsRunnable();
-
                                 MapAnimator.getInstance().setPrimaryLineColor(getResources().getColor(R.color.colorPrimary));
                                 MapAnimator.getInstance().setSecondaryLineColor(getResources().getColor(R.color.colorPrimaryLight));
                                 MapAnimator.getInstance().animateRoute(mGoogleMap, path);
                                 mGoogleMap.addMarker(new MarkerOptions().position(destinationPosition).title("Destination"));
-                                //.icon(convertToBitmap(getResources().getDrawable(R.drawable.ic_map_marker_check),130,130)));
-                                mTaskViewModel.setTask(null);
+                                break;
                             }
-                        case BUILD_MUSCLES:
-                            Navigation.findNavController(getView()).navigate(R.id.action_map_fragment_to_build_muscles_fragment);
+                        case LOOSE_WEIGHT_DONE:
+                            mGoogleApiClient.stopAutoManage(getActivity());
+                            mGoogleApiClient.disconnect();
+                            NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_global_map_fragment);
+                            mTaskViewModel.setTask(null);
+                            stopLocationUpdates();
+
                             mTaskViewModel.setTask(null);
                             break;
                     }
@@ -338,7 +355,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             mapView.onResume();
             mapView.getMapAsync(this);
         }
-
 
         onClickNavigate(mTasksButton, R.id.action_map_fragment_to_tasks_fragment);
         mTasksButton.setOnClickListener(new View.OnClickListener() {
@@ -495,11 +511,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     private void moveCamera(LatLng latLng, float zoom, String title) {
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
-//        MarkerOptions mMarkerOptions = new MarkerOptions()
-//                .position(latLng)
-//                .title(title);
-//        mGoogleMap.addMarker(mMarkerOptions);
     }
 
     private void initSearch() {
@@ -1042,6 +1053,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     @Override
     public void onCameraMove() {
         if (mTaskViewModel.getTask().getValue() == null) {
+            Log.e("hhhh", " " +mTaskViewModel.getTask().getValue());
             float biasedValue = 0.435f;
             constraintSet.setVerticalBias(mCurrentLocationView.getId(), biasedValue);
             constraintSet.applyTo(mMainLayout);
@@ -1052,6 +1064,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     @Override
     public void onCameraIdle() {
         if (mTaskViewModel.getTask().getValue() == null) {
+            Log.e("hhhh", " "+ mTaskViewModel.getTask().getValue());
+
             float biasedValue = 0.45f;
             constraintSet.setVerticalBias(mCurrentLocationView.getId(), biasedValue);
             constraintSet.applyTo(mMainLayout);

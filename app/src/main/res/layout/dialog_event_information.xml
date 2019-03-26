@@ -1,85 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="400dp">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:id="@+id/tv_title_dialog"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:maxLines="1"/>
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/tv_description_dialog"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_dialog"
-        app:layout_constraintStart_toStartOf="@id/tv_title_dialog"
-        android:maxLines="3"
-        android:ellipsize="end"/>
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tv_description_dialog"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        app:layout_constraintStart_toStartOf="@id/tv_title_dialog"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_dialog" />
+
+    <TextView
         android:id="@+id/tv_date_location_dialog"
-        app:layout_constraintTop_toBottomOf="@id/tv_description_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:ellipsize="end"
         app:layout_constraintStart_toStartOf="@id/tv_description_dialog"
-        android:ellipsize="end"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_description_dialog" />
 
     <Button
         android:id="@+id/btn_going_dialog"
         android:layout_width="100dp"
         android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_cancel_dialog"
         android:background="@android:color/white"
         android:clickable="true"
         android:text="@string/going"
         android:textColor="#5DBCD2"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_cancel_dialog" />
 
     <Button
         android:id="@+id/btn_cancel_dialog"
         android:layout_width="100dp"
         android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginLeft="5dp"
         android:background="@android:color/white"
         android:clickable="true"
         android:text="@string/cancel"
         android:textColor="#5DBCD2"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
+        android:id="@+id/iv_to_change_event_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/iv_to_change_event_dialog"
-        app:layout_constraintTop_toBottomOf="@id/tv_date_location_dialog"
-        app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_edit_event"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_date_location_dialog" />
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:id="@+id/tv_creator_dialog"
-        android:text="Creator"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_creator_username_dialog"
-        android:layout_marginTop="300dp"/>
-    <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:text="Creator"
+        app:layout_constraintEnd_toStartOf="@id/tv_creator_username_dialog"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/tv_creator_username_dialog"
-        app:layout_constraintStart_toEndOf="@id/tv_creator_dialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="300dp"/>
+        app:layout_constraintStart_toEndOf="@id/tv_creator_dialog"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

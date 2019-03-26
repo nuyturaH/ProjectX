@@ -17,12 +17,10 @@ import com.har8yun.homeworks.projectx.model.TaskViewModel;
 public class TasksFragment extends DialogFragment {
     //public static vars
     public static final String LOOSE_WEIGHT_INFO = "Loose Weight Info";
-    public static final String DEVELOP_STAMINA_INFO = "Develop Stamina Info";
     public static final String BUILD_MUSCLES_INFO = "Build Muscles Info";
 
     //views
     private Button mLooseWeightButton;
-    private Button mDevelopStaminaButton;
     private Button mBuildMusclesButton;
 
     //viewModel
@@ -60,7 +58,6 @@ public class TasksFragment extends DialogFragment {
         mBuildMusclesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 mTaskViewModel.setTask(BUILD_MUSCLES_INFO);
                 getDialog().dismiss();
                 taskInfoFragment.show(fm, null);
@@ -73,7 +70,7 @@ public class TasksFragment extends DialogFragment {
     //************************************** METHODS ********************************************
     private void initViews(View view) {
         mLooseWeightButton = view.findViewById(R.id.btn_loose_weight_tasks);
-        mBuildMusclesButton = view.findViewById(R.id.btn_build_muscles_tasks);
+        mBuildMusclesButton = view.findViewById(R.id.btn_ok_done);
     }
 
 

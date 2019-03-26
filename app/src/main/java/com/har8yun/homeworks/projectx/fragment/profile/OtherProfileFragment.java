@@ -45,6 +45,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
+import static com.google.android.gms.common.util.CollectionUtils.setOf;
 import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
 
 
@@ -72,15 +80,20 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
     private ImageView mPhoto3View;
     private ImageView mPhoto4View;
 
+    private Fragment mNavHostFragment;
+
     private List<ImageView> photos = new ArrayList<>();
+
+    //navigation
+    private NavController mNavController;
+
 
 
     //viewmodel
     private UserViewModel mUserViewModel;
 
     //user
-    private User otherUser;
-
+    private User mOtherUser;
 
     public OtherProfileFragment() {
         // Required empty public constructor
@@ -96,14 +109,16 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
         mUserViewModel.getOtherUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User user) {
-                otherUser = user;
+                mOtherUser = user;
+                setNavigationComponent(user);
             }
         });
-        otherUser = mUserViewModel.getOtherUser().getValue();
+        mOtherUser = mUserViewModel.getOtherUser().getValue();
 
 
         initViews(view);
         fillViews(view);
+
 
         return view;
     }
@@ -127,6 +142,8 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
         mPhoto2View = view.findViewById(R.id.iv_photo2_other_profile);
         mPhoto3View = view.findViewById(R.id.iv_photo3_other_profile);
         mPhoto4View = view.findViewById(R.id.iv_photo4_other_profile);
+        mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
 
         photos.add(mPhoto1View);
         photos.add(mPhoto2View);
@@ -145,22 +162,22 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
     private void fillViews(View view) {
 
         Log.e("hhhh", "fillviews");
-        if (otherUser.getUserInfo() != null) {
-            if (otherUser.getUserInfo().getFirstName() != null) {
-                mFirstNameView.setText(otherUser.getUserInfo().getFirstName());
+        if (mOtherUser.getUserInfo() != null) {
+            if (mOtherUser.getUserInfo().getFirstName() != null) {
+                mFirstNameView.setText(mOtherUser.getUserInfo().getFirstName());
             }
-            if (otherUser.getUserInfo().getLastName() != null) {
-                mLastNameView.setText(otherUser.getUserInfo().getLastName());
+            if (mOtherUser.getUserInfo().getLastName() != null) {
+                mLastNameView.setText(mOtherUser.getUserInfo().getLastName());
             }
-            if (otherUser.getUserInfo().getGender() != null) {
-                if (otherUser.getUserInfo().getGender() == 0) {
+            if (mOtherUser.getUserInfo().getGender() != null) {
+                if (mOtherUser.getUserInfo().getGender() == 0) {
                     mGenderView.setText("Male");
                 } else {
                     mGenderView.setText("Female");
                 }
             }
-            if (otherUser.getUserInfo().getBirthDate() != null) {
-                Date date = otherUser.getUserInfo().getBirthDate();
+            if (mOtherUser.getUserInfo().getBirthDate() != null) {
+                Date date = mOtherUser.getUserInfo().getBirthDate();
                 int b = date.getYear();
                 int y = Calendar.getInstance().get(Calendar.YEAR);
                 int m = Calendar.getInstance().get(Calendar.MONTH);
@@ -173,30 +190,30 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
                 }
 
             }
-            if (otherUser.getUserInfo().getWeight() != null) {
-                mWeightView.setText(String.valueOf(otherUser.getUserInfo().getWeight()) + " kg");
+            if (mOtherUser.getUserInfo().getWeight() != null) {
+                mWeightView.setText(String.valueOf(mOtherUser.getUserInfo().getWeight()) + " kg");
             }
-            if (otherUser.getUserInfo().getHeight() != null) {
-                mHeightView.setText(String.valueOf((otherUser.getUserInfo().getHeight())) + " m");
+            if (mOtherUser.getUserInfo().getHeight() != null) {
+                mHeightView.setText(String.valueOf((mOtherUser.getUserInfo().getHeight())) + " m");
             }
-            if (otherUser.getUserInfo().getAvatar() != null) {
+            if (mOtherUser.getUserInfo().getAvatar() != null) {
                 mProgressBar.setVisibility(View.VISIBLE);
-                setAvatar(otherUser.getUserInfo().getAvatar());
+                setAvatar(mOtherUser.getUserInfo().getAvatar());
             } else {
                 mAvatarView.setImageResource(R.drawable.ic_person_outline_grey);
                 mProgressBar.setVisibility(View.GONE);
             }
 
-            if (otherUser.getUsername() != null) {
+            if (mOtherUser.getUsername() != null) {
                 //username setting is in setNavigationComponent()
             }
-            if (otherUser.getSkills() != null) {
+            if (mOtherUser.getSkills() != null) {
                 initRecyclerView(view);
             }
-            if (otherUser.getImages() != null && otherUser.getImages().size() > 0) {
-                Log.d(TAG, "fillViews: " + otherUser.getImages().size());
-                for (int i = 0; i < otherUser.getImages().size() && i < photos.size(); i++) {
-                    setImage(otherUser.getImages().get(otherUser.getImages().size() - 1 - i), photos.get(i));
+            if (mOtherUser.getImages() != null && mOtherUser.getImages().size() > 0) {
+                Log.d(TAG, "fillViews: " + mOtherUser.getImages().size());
+                for (int i = 0; i < mOtherUser.getImages().size() && i < photos.size(); i++) {
+                    setImage(mOtherUser.getImages().get(mOtherUser.getImages().size() - 1 - i), photos.get(i));
                     Log.d(TAG, "for: "+i);
                 }
             }
@@ -284,7 +301,7 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
     private void initRecyclerView(View view) {
         SkillItemRecyclerAdapter skillItemRecyclerAdapter = new SkillItemRecyclerAdapter();
 
-        Map<String, Integer> map = otherUser.getSkills();
+        Map<String, Integer> map = mOtherUser.getSkills();
         List<Skill> list = new ArrayList<>();
 
 
@@ -299,6 +316,22 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(skillItemRecyclerAdapter);
         skillItemRecyclerAdapter.addItems(list);
+    }
+
+    private void setNavigationComponent(final User user) {
+        mNavController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        mNavController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                if (destination.getId() == R.id.other_profile_fragment) {
+                    if (mOtherUser.getUsername() != null) {
+                        NavHostFragment.findNavController(mNavHostFragment).getCurrentDestination().setLabel(user.getUsername());
+                    }
+                }
+            }
+        });
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(setOf(R.id.my_profile_fragment)).build();
+        NavigationUI.setupWithNavController(mCollapsingToolbarLayout, mToolbar, mNavController, appBarConfiguration);
     }
 
     @Override

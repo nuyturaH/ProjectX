@@ -7,8 +7,7 @@
         android:endColor="@color/colorPrimary"
         android:centerColor="@color/colorPrimary"
         android:startColor="@color/colorPrimaryLight"
-        android:type="linear"
-        />
+        android:type="linear" />
 
     <corners
         android:radius="0dp"/>

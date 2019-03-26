@@ -225,7 +225,6 @@ public class MyProfileFragment extends Fragment {
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
 
-
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
 //        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
 //            @Override
