@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#5efc82"
-    tools:context=".fragment.Tasks.TasksFragment">
+    tools:context=".fragment.tasks.TasksFragment">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout8"

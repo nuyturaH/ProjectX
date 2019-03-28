@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.tasks;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Build;

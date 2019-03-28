@@ -7,7 +7,7 @@ import android.arch.lifecycle.ViewModel;
 public class BuildMusclesViewModel extends ViewModel {
 
     private MutableLiveData<String> mBuildMusclesMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> mUnlockNextMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> mUnlockLevelMutableLiveData = new MutableLiveData<>();
 
     public void setBuildMuscles(String task){
         mBuildMusclesMutableLiveData.setValue(task);
@@ -17,12 +17,12 @@ public class BuildMusclesViewModel extends ViewModel {
         return mBuildMusclesMutableLiveData;
     }
 
-    public void setUnlockLevel(Boolean bool){
-        mUnlockNextMutableLiveData.setValue(bool);
+    public void setUnlockLevel(Integer lvl){
+        mUnlockLevelMutableLiveData.setValue(lvl);
     }
 
-    public LiveData<Boolean> isNextLevelUnlocked(){
-        return mUnlockNextMutableLiveData;
+    public LiveData<Integer> getUnlockLevel(){
+        return mUnlockLevelMutableLiveData;
     }
 
 }
