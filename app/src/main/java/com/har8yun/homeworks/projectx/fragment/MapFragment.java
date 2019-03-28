@@ -117,7 +117,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 
 import static com.har8yun.homeworks.projectx.fragment.DoneDialogFragment.LOOSE_WEIGHT_DONE;
-import static com.har8yun.homeworks.projectx.fragment.tasks.TaskInfoFragment.BUILD_MUSCLES;
 import static com.har8yun.homeworks.projectx.fragment.tasks.TaskInfoFragment.LOOSE_WEIGHT;
 import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
 import static java.lang.String.*;

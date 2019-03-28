@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#5efc82"
-    tools:context=".fragment.Tasks.TasksFragment">
+    tools:context=".fragment.tasks.TasksFragment">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout8"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
 
-            android:text="Rich red marker and you will burn 110 calories! Do this task every day and in a month you will loose 1kg!"
+            android:text="@string/rich_red_marker_and_you_will_burn_110_calories_do_this_task_every_day_and_in_a_month_you_will_loose_1kg"
             android:textColor="@color/colorPrimaryText"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/bg_light_green_layout_button2"
-        android:text="OK"
+        android:text="@string/ok"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryText"
         android:textSize="18sp"
@@ -82,7 +82,7 @@
             android:paddingTop="6dp"
             android:paddingEnd="24dp"
             android:paddingBottom="8dp"
-            android:text="Well Done!!!"
+            android:text="@string/well_done"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryText"
             android:textSize="36sp"

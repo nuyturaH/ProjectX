@@ -14,7 +14,8 @@
             android:id="@+id/toolbar_top_charts"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"></android.support.v7.widget.Toolbar>
+            app:layout_scrollFlags="scroll|enterAlways">
+        </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
@@ -26,33 +27,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_pull_ups"
-                android:text="Pull-Ups"
+                android:text="@string/pull_ups"
                 />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_push_ups"
-                android:text="Push-Ups" />
+                android:text="@string/push_ups" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_parallel_dips"
-                android:text="Parallel Dips"
+                android:text="@string/parallel_dips"
                 />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_juggling"
-                android:text="Juggling" />
+                android:text="@string/juggling" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_points"
-                android:text="Points" />
+                android:text="@string/points" />
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 

@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You don't have photos yet"
+        android:text="@string/you_don_t_have_photos_yet"
         android:textSize="@dimen/my_profile_text_size"
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"

@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
-                android:hint="Event Title"
+                android:hint="@string/event_title"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="24sp" />
@@ -63,7 +63,7 @@
                 android:paddingEnd="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
-                android:textSize="18sp" />/>
+                android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
     </android.support.constraint.ConstraintLayout>
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_tv_border"
             android:padding="8dp"
-            android:text="========== Location =========="
+            android:text="@string/location"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_location_create_event"
             app:layout_constraintStart_toStartOf="@+id/tv_date_create_event"
@@ -96,7 +96,7 @@
             android:layout_marginStart="16dp"
             android:background="@drawable/bg_tv_border"
             android:padding="8dp"
-            android:text="Set Date and Time"
+            android:text="@string/set_date_and_time"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_date_create_event"
             app:layout_constraintStart_toEndOf="@+id/iv_date_create_event"
@@ -142,7 +142,7 @@
         android:padding="20dp"
         android:paddingStart="24dp"
         android:paddingEnd="24dp"
-        android:text="Create Event"
+        android:text="@string/create_event"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout4"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout4"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />

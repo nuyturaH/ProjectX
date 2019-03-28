@@ -1,41 +1,27 @@
-package com.har8yun.homeworks.projectx.fragment.tasks;
+package com.har8yun.homeworks.projectx.fragment;
 
 
-import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.adapter.PhotosAdapter;
-import com.har8yun.homeworks.projectx.adapter.ViewPagerAdapter;
 import com.har8yun.homeworks.projectx.fragment.ImageGalleryFragment;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static android.support.v4.app.ActivityCompat.invalidateOptionsMenu;
 
 public class OtherPhotosFragment extends Fragment {
 
@@ -117,21 +103,6 @@ public class OtherPhotosFragment extends Fragment {
                 imageGalleryFragment.mPhotosList = mPhotosList;
                 layout.setVisibility(View.VISIBLE);
                 addFragment(imageGalleryFragment);
-
-
-
-//                Dialog dialog = new Dialog(getContext());
-//                dialog.setContentView(R.layout.fragment_image_gallery);
-//                ImageView image = dialog.findViewById(R.id.iv_image_gallery);
-//                ImageView closeImage = dialog.findViewById(R.id.iv_close_photo_gallery);
-//                image.setImageDrawable(resource);
-//                closeImage.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.show();
 
             }
         });
