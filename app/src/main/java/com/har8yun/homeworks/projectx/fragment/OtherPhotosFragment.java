@@ -104,21 +104,6 @@ public class OtherPhotosFragment extends Fragment {
                 layout.setVisibility(View.VISIBLE);
                 addFragment(imageGalleryFragment);
 
-
-
-//                Dialog dialog = new Dialog(getContext());
-//                dialog.setContentView(R.layout.fragment_image_gallery);
-//                ImageView image = dialog.findViewById(R.id.iv_image_gallery);
-//                ImageView closeImage = dialog.findViewById(R.id.iv_close_photo_gallery);
-//                image.setImageDrawable(resource);
-//                closeImage.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.show();
-
             }
         });
 

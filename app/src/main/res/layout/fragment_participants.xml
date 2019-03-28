@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/tv_no_participants_yet"
-        android:text="No Participants Yet!"
+        android:text="@string/no_participants_yet"
         android:textSize="@dimen/my_profile_text_size"
         android:visibility="invisible"/>
 

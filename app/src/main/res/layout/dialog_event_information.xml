@@ -68,7 +68,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="280dp"
-        android:text="Creator"
+        android:text="@string/creator"
         app:layout_constraintEnd_toStartOf="@id/tv_creator_username_dialog"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +87,7 @@
         android:id="@+id/tv_participants_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Participants"
+        android:text="@string/participants"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_creator_dialog"

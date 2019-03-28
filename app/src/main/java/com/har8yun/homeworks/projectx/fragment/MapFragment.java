@@ -27,6 +27,7 @@ import android.support.constraint.ConstraintSet;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -93,6 +94,7 @@ import com.har8yun.homeworks.projectx.adapter.PlaceAutocompleteAdapter;
 
 import com.har8yun.homeworks.projectx.fragment.tasks.DoneDialogFragment;
 import com.har8yun.homeworks.projectx.fragment.tasks.TasksFragment;
+import com.har8yun.homeworks.projectx.fragment.tasks.TasksFragment;
 import com.har8yun.homeworks.projectx.fragment.event.CreateEventFragment;
 import com.har8yun.homeworks.projectx.mapAnim.MapAnimator;
 import com.har8yun.homeworks.projectx.mapHelper.TaskLoadedCallback;
@@ -115,6 +117,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import androidx.navigation.fragment.NavHostFragment;
 
 
+import static com.har8yun.homeworks.projectx.fragment.DoneDialogFragment.LOOSE_WEIGHT_DONE;
+import static com.har8yun.homeworks.projectx.fragment.tasks.TaskInfoFragment.LOOSE_WEIGHT;
 import static com.har8yun.homeworks.projectx.fragment.tasks.DoneDialogFragment.LOOSE_WEIGHT_DONE;
 import static com.har8yun.homeworks.projectx.fragment.tasks.TaskInfoFragment.LOOSE_WEIGHT;
 import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;

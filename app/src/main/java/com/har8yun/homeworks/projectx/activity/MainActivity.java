@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.har8yun.homeworks.projectx.Application;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.fragment.profile.MyProfileEditFragment;

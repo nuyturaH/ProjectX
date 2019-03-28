@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment.Tasks;
+package com.har8yun.homeworks.projectx.fragment.tasks;
 
 
 import android.arch.lifecycle.Observer;
@@ -18,8 +18,8 @@ import com.har8yun.homeworks.projectx.model.TaskViewModel;
 
 import androidx.navigation.fragment.NavHostFragment;
 
-import static com.har8yun.homeworks.projectx.fragment.Tasks.TasksFragment.BUILD_MUSCLES_INFO;
-import static com.har8yun.homeworks.projectx.fragment.Tasks.TasksFragment.LOOSE_WEIGHT_INFO;
+import static com.har8yun.homeworks.projectx.fragment.tasks.TasksFragment.BUILD_MUSCLES_INFO;
+import static com.har8yun.homeworks.projectx.fragment.tasks.TasksFragment.LOOSE_WEIGHT_INFO;
 
 
 public class TaskInfoFragment extends DialogFragment {

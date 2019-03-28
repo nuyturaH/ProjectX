@@ -121,6 +121,61 @@
     <string name="delete_event">Delete Event</string>
     <string name="going">Going</string>
     <string name="cancel">Cancel</string>
+    <string name="no_participants_yet">No Participants Yet!</string>
+    <string name="creator">Creator</string>
+    <string name="participants">Participants</string>
+    <string name="squats">Squats</string>
+    <string name="sit_ups">Sit-Ups</string>
+    <string name="excersice_name">Excersice Name</string>
+    <string name="lay_prone_on_the_ground_with_arms_supporting_your_body_keep_your_body_straight_while_raising_and_lowering_your_body_with_your_arms">Lay prone on the ground with arms supporting your body. Keep your body straight while raising and lowering your body with your arms.</string>
+    <string name="_1st_set">1st set</string>
+    <string name="_2nd_set">2nd set</string>
+    <string name="_3rd_set">3rd set</string>
+    <string name="_4th_set">4th set</string>
+    <string name="rest">Rest</string>
+    <string name="stop">Stop</string>
+    <string name="_2_30">2:30</string>
+    <string name="event_title">Event Title</string>
+    <string name="location">========== Location ==========</string>
+    <string name="set_date_and_time">Set Date and Time</string>
+    <string name="create_event">Create Event</string>
+    <string name="ok">OK</string>
+    <string name="well_done">Well Done!!!</string>
+    <string name="exit">Exit</string>
+    <string name="loose_weight">Loose Weight</string>
+    <string name="_0_calories_burned">• 0 calories burned</string>
+    <string name="_2_km_to_destination">• 2 km to destination</string>
+    <string name="points">points:</string>
+    <string name="beginner">beginner</string>
+    <string name="click_edit_button_to_add_information_about_you">Click EDIT button to add information about you</string>
+    <string name="weight_space">Weight:</string>
+    <string name="height_space">Height:</string>
+    <string name="all_photos">All photos</string>
+    <string name="user_info">User info</string>
+    <string name="full_name">Full Name:</string>
+
+    <string name="age">Age:</string>
+    <string name="your_age">Your Age</string>
+    <string name="your_full_name">Your Full Name</string>
+    <string name="skills">Skills</string>
+    <string name="no_photos_yet">No photos yet.</string>
+    <string name="you_don_t_have_photos_yet">You don\'t have photos yet</string>
+    <string name="change_app_theme">Change App Theme</string>
+    <string name="notifications">Notifications</string>
+    <string name="map_zoom_buttons">Map Zoom Buttons</string>
+    <string name="hide_user_info">Hide User Info</string>
+    <string name="change_app_font_size">Change App Font Size</string>
+    <string name="change_app_language">Change App Language</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="rich_red_marker_and_you_will_burn_110_calories_do_this_task_every_day_and_in_a_month_you_will_loose_1kg">Rich red marker and you will burn 110 calories! Do this task every day and in a month you will loose 1kg!</string>
+    <string name="build_muscles">Build Muscles</string>
+    <string name="choose_your_aim">Choose your aim</string>
+    <string name="based_on_your_choice_will_be_made_training_program">Based on your choice will be made training program</string>
+    <string name="today_s_task">Today\'s Task</string>
+    <string name="juggling">Juggling</string>
+    <string name="parallel_dips">Parallel Dips</string>
+    <string name="push_ups">Push-Ups</string>
+    <string name="pull_ups">Pull-Ups</string>
 
 
 </resources>
