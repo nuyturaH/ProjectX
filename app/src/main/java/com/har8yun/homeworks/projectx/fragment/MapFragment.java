@@ -632,6 +632,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 for (final Event event : mEventList) {
                     if (marker.getPosition().latitude == event.getPosition().getLatitude()
                             && marker.getPosition().longitude == event.getPosition().getLongitude()) {
+                        mEventViewModel.setEvent(event);
                         Dialog dialog = new Dialog(getContext());
                         dialog.setTitle(event.getTitle());
                         dialog.setContentView(R.layout.dialog_event_information);
@@ -641,13 +642,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         TextView descriptionView = dialog.findViewById(R.id.tv_description_dialog);
                         TextView dateLocationView = dialog.findViewById(R.id.tv_date_location_dialog);
                         TextView creatorView = dialog.findViewById(R.id.tv_creator_username_dialog);
+                        TextView participantsView = dialog.findViewById(R.id.tv_participants_dialog);
                         ImageView editView = dialog.findViewById(R.id.iv_to_change_event_dialog);
                         Button goingButton = dialog.findViewById(R.id.btn_going_dialog);
                         Button cancelButton = dialog.findViewById(R.id.btn_cancel_dialog);
 
                         titleView.setText(event.getTitle());
                         descriptionView.setText(event.getDescription());
-                        dateLocationView.setText("AAAA");
+                        dateLocationView.setText(event.getDate().toGMTString());
                         creatorView.setText(event.getCreator().getUsername());
 
                         //checking if current user is the creator of event ------------------------------------------
@@ -680,6 +682,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
                         });
+
+                        //setting participants clickListener
+                        participantsView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                                NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_map_fragment_to_participants_fragment);
+                            }
+                        });
+
+
 
                         for (String id : event.getParticipants())
                         {

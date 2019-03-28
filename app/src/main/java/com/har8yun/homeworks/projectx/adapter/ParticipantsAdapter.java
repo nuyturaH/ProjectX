@@ -27,48 +27,51 @@ import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.util.DBUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ChartsAdapter extends RecyclerView.Adapter<ChartsAdapter.ChartsViewHolder> {
 
-    private static final String TAG = "ChartsAdapter";
+public class ParticipantsAdapter extends RecyclerView.Adapter<ParticipantsAdapter.ParticipantsViewHolder> {
 
-    private String kkk;
+    private static final String TAG = "ParticipantsAdapter";
 
     Context context;
 
     private List<User> mData = new ArrayList<>();
 
 
-    private static ChartsAdapter.OnRvItemClickListener mOnRvItemClickListener;
+
+    private static ParticipantsAdapter.OnRvItemClickListener mOnRvItemClickListener;
 
 
     @NonNull
     @Override
-    public ChartsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ParticipantsAdapter.ParticipantsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_chart_item, parent, false);
-
         context = parent.getContext();
 
-        return new ChartsViewHolder(view);
+        Log.d(TAG, "onCreateViewHolder: CCCCCCCCCCCCCCC" );
+
+        return new ParticipantsAdapter.ParticipantsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChartsViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ParticipantsAdapter.ParticipantsViewHolder holder, final int position) {
         User user = mData.get(position);
+
+        Log.d(TAG, "onBindViewHolder: "+ user.getUsername());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOnRvItemClickListener.onItemClicked(user.getId());
 
-
             }
         });
 
         holder.username.setText(user.getUsername());
-        holder.skillCount.setText(String.valueOf(user.getSkills().get(kkk)));
         if (user.getUserInfo() != null)
             if (user.getUserInfo().getAvatar() != null) {
                 setAvatar(user.getUserInfo().getAvatar(),holder.avatar);
@@ -80,12 +83,17 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartsAdapter.ChartsView
         return mData.size();
     }
 
-    public void addItems(List<User> items,String key) {
+    public void addItems(List<User> items) {
         mData.clear();
-        kkk = key;
         mData.addAll(items);
         notifyDataSetChanged();
     }
+    public void addItem(User user)
+    {
+        mData.add(user);
+        notifyDataSetChanged();
+    }
+
 
     String res;
 
@@ -125,22 +133,18 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartsAdapter.ChartsView
     }
 
 
-
-
-    public class ChartsViewHolder extends RecyclerView.ViewHolder {
+    public class ParticipantsViewHolder extends RecyclerView.ViewHolder {
         public TextView username;
-        public TextView skillCount;
         public ImageView avatar;
 
-        public ChartsViewHolder(final View itemView) {
+        public ParticipantsViewHolder(final View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.tv_username_chart);
-            skillCount = itemView.findViewById(R.id.tv_skill_count_chart);
             avatar = itemView.findViewById(R.id.iv_avatar_chart);
         }
     }
 
-    public void setOnRvItemClickListener(ChartsAdapter.OnRvItemClickListener mOnRvItemClickListener) {
+    public void setOnRvItemClickListener(ParticipantsAdapter.OnRvItemClickListener mOnRvItemClickListener) {
         this.mOnRvItemClickListener = mOnRvItemClickListener;
     }
 

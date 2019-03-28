@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <!--<ImageView-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/iv_avatar_chart"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintEnd_toStartOf="@id/tv_username_chart"-->
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/iv_avatar_chart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_username_chart"
+        app:layout_constraintBottom_toBottomOf="parent"
 
-        <!--/>-->
+        />
 
     <TextView
         android:id="@+id/tv_username_chart"
@@ -27,7 +28,7 @@
         android:textSize="@dimen/my_profile_text_size"
         android:textStyle="italic"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_avatar_chart"
         app:layout_constraintEnd_toStartOf="@id/tv_dots_chart"/>
 
 
