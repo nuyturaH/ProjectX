@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment.Tasks;
+package com.har8yun.homeworks.projectx.fragment.tasks;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -21,10 +21,10 @@ import com.har8yun.homeworks.projectx.model.BuildMusclesViewModel;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import static com.har8yun.homeworks.projectx.fragment.Tasks.BuildMusclesFragment.PULL_UPS;
-import static com.har8yun.homeworks.projectx.fragment.Tasks.BuildMusclesFragment.PUSH_UPS;
-import static com.har8yun.homeworks.projectx.fragment.Tasks.BuildMusclesFragment.SIT_UPS;
-import static com.har8yun.homeworks.projectx.fragment.Tasks.BuildMusclesFragment.SQUATS;
+import static com.har8yun.homeworks.projectx.fragment.tasks.BuildMusclesFragment.PULL_UPS;
+import static com.har8yun.homeworks.projectx.fragment.tasks.BuildMusclesFragment.PUSH_UPS;
+import static com.har8yun.homeworks.projectx.fragment.tasks.BuildMusclesFragment.SIT_UPS;
+import static com.har8yun.homeworks.projectx.fragment.tasks.BuildMusclesFragment.SQUATS;
 
 
 public class BuildMusclesDialogFragment extends DialogFragment {

@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment.Tasks;
+package com.har8yun.homeworks.projectx.fragment.tasks;
 
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
