@@ -67,7 +67,7 @@
         android:id="@+id/tv_creator_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="280dp"
         android:text="Creator"
         app:layout_constraintEnd_toStartOf="@id/tv_creator_username_dialog"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,11 +77,21 @@
         android:id="@+id/tv_creator_username_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="280dp"
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintStart_toEndOf="@id/tv_creator_dialog"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_participants_dialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Participants"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_creator_dialog"
+        android:layout_marginTop="10dp"/>
 
 
 </android.support.constraint.ConstraintLayout>

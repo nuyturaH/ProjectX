@@ -52,6 +52,11 @@
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right" />
         <action
+            android:id="@+id/action_map_fragment_to_participants_fragment"
+            app:destination="@id/participants_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+        <action
             android:id="@+id/action_map_fragment_to_build_muscles_fragment"
             app:destination="@id/build_muscles_fragment" />
 
@@ -88,6 +93,24 @@
             app:destination="@id/my_profile_fragment"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/participants_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.ParticipantsFragment"
+        tools:layout = "@layout/fragment_participants"
+        >
+        <action
+            android:id="@+id/action_participants_fragment_to_other_profile_fragment"
+            app:destination="@id/other_profile_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right"/>
+        <action
+            android:id="@+id/action_participants_fragment_to_my_profile_fragment"
+            app:destination="@id/my_profile_fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+
     </fragment>
 
     <fragment
