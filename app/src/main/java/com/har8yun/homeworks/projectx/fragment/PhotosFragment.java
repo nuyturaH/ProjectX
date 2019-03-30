@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v4.app.ActivityCompat.invalidateOptionsMenu;
+import static com.har8yun.homeworks.projectx.fragment.OtherPhotosFragment.FRAGMENT_CODE;
 
 
 public class PhotosFragment extends Fragment {
@@ -242,7 +243,7 @@ public class PhotosFragment extends Fragment {
     private void addFragment(Fragment fragment) {
         android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.layout_my_gallery, fragment);
+        fragmentTransaction.add(R.id.layout_my_gallery, fragment,FRAGMENT_CODE);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

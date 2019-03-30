@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ti_points"
-                android:text="@string/points" />
+                android:text="@string/Points" />
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 

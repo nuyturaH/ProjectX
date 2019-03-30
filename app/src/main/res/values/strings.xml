@@ -146,6 +146,7 @@
     <string name="_0_calories_burned">• 0 calories burned</string>
     <string name="_2_km_to_destination">• 2 km to destination</string>
     <string name="points">points:</string>
+    <string name="Points">points</string>
     <string name="beginner">beginner</string>
     <string name="click_edit_button_to_add_information_about_you">Click EDIT button to add information about you</string>
     <string name="weight_space">Weight:</string>

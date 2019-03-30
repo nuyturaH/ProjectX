@@ -392,10 +392,10 @@ public class MyProfileEditFragment extends Fragment {
                 mLastNameView.setText(mCurrentUser.getUserInfo().getLastName());
             }
             if (mCurrentUser.getUserInfo().getWeight() != null) {
-                mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getHeight()));
+                mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()));
             }
             if (mCurrentUser.getUserInfo().getHeight() != null) {
-                mHeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()));
+                mHeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getHeight()));
             }
 
             if (mCurrentUser.getUserInfo().getBirthDate() != null) {
@@ -419,6 +419,11 @@ public class MyProfileEditFragment extends Fragment {
                 mAvatarView.setImageResource(R.drawable.ic_add_a_photo);
                 mProgressBar.setVisibility(View.GONE);
             }
+        }
+        else {
+
+            mAvatarView.setImageResource(R.drawable.ic_person_outline_grey);
+            mProgressBar.setVisibility(View.GONE);
         }
 
         if (mCurrentUser.getSkills() != null) {
@@ -617,12 +622,13 @@ public class MyProfileEditFragment extends Fragment {
             mUserInfo.setGender(0);
         } else if (mGender.getCheckedRadioButtonId() == mFemale.getId())
             mUserInfo.setGender(1);
-        if (mBirthDateView.getText() != null) {
+        if (mBirthDateView.getText() != null && dateOpened) {
             mUserInfo.setBirthDate(mDate);
         }
         if(imageName!=null)
         {
             mUserInfo.setAvatar(imageName);
+            mProgressBar.setVisibility(View.GONE);
         }
 
 
@@ -782,6 +788,7 @@ public class MyProfileEditFragment extends Fragment {
         loadSelectedImage(path);
     }
 
+    private Calendar cal = Calendar.getInstance();
     private Date mDate;
     private int year, month, dayOfMonth;
     private boolean dateOpened;
@@ -792,23 +799,42 @@ public class MyProfileEditFragment extends Fragment {
         mDate = new Date();
 
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this.getActivity(),
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-                        calendar.set(Calendar.DAY_OF_MONTH, d);
-                        calendar.set(Calendar.MONTH, m);
-                        calendar.set(Calendar.YEAR, y);
-                        mDate.setTime(calendar.getTimeInMillis());
-                        mBirthDateView.setText(String.valueOf(mDate.getDay()
-                                + "/" + mDate.getMonth()
-                                + "/" + mDate.getYear()));
-                    }
-                }, year, month, dayOfMonth);
+//        DatePickerDialog datePickerDialog = new DatePickerDialog(this.getActivity(),
+//                new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePicker datePicker, int y, int m, int d) {
+//                        calendar.set(Calendar.DAY_OF_MONTH, d);
+//                        calendar.set(Calendar.MONTH, m);
+//                        calendar.set(Calendar.YEAR, y);
+//                        mDate.setTime(calendar.getTimeInMillis());
+//                        mBirthDateView.setText(String.valueOf(mDate.getDay()
+//                                + "/" + mDate.getMonth()
+//                                + "/" + mDate.getYear()));
+//                    }
+//                }, year, month, dayOfMonth);
 
-        //TODO set datePicker, so the chosen date appears on dialog
-        datePickerDialog.getDatePicker();
+//        datePickerDialog.getDatePicker();
+
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, monthOfYear);
+                cal.set(Calendar.DATE, dayOfMonth);
+                mDate = cal.getTime();
+                mBirthDateView.setText(String.valueOf(mDate.getDay()
+                        + "/" + mDate.getMonth()
+                        + "/" + mDate.getYear()));
+            }
+        }, mYear, mMonth, mDay);
+
         datePickerDialog.show();
+
         dateOpened = true;
     }
 
@@ -856,6 +882,7 @@ public class MyProfileEditFragment extends Fragment {
                 });
 
                 mSkillItemEditRecyclerAdapter.removeItem(pos);
+                mSkillList = mSkillItemEditRecyclerAdapter.getSkills();
             }
         });
 

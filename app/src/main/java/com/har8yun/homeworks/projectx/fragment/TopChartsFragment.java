@@ -3,8 +3,10 @@ package com.har8yun.homeworks.projectx.fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -117,9 +119,8 @@ public class TopChartsFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.rv_charts);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
-
+//        mTabLayout.getTabAt(0).select();
 //        initRecyclerView(mPullUpsList,PULL_UPS);
-
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -147,6 +148,8 @@ public class TopChartsFragment extends Fragment {
 
             }
         });
+
+
 
     }
 

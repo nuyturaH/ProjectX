@@ -32,6 +32,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -112,7 +113,6 @@ public class MyProfileFragment extends Fragment {
     private ImageView mAddImageView;
     private ImageView mPhoto1View;
     private TextView mAllPhotosView;
-    private ImageView appBarImageView;
 
     //navigation
     private BottomNavigationView mBottomNavigationView;
@@ -124,7 +124,6 @@ public class MyProfileFragment extends Fragment {
 
     //firebase
     private DatabaseReference mDatebaseReference = FirebaseDatabase.getInstance().getReference("users");
-
 
 
     //constructor
@@ -207,7 +206,6 @@ public class MyProfileFragment extends Fragment {
     private void initViews(View view) {
         mToolbar = view.findViewById(R.id.toolbar_my_profile);
         mCollapsingToolbarLayout = view.findViewById(R.id.ctl_my_profile);
-        appBarImageView = view.findViewById(R.id.app_bar_image);
         mEditButton = view.findViewById(R.id.fab_edit_my_profile);
         mPointsView = view.findViewById(R.id.tv_points_my_profile);
         mStatusView = view.findViewById(R.id.tv_status_my_profile);
@@ -226,14 +224,12 @@ public class MyProfileFragment extends Fragment {
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
 
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
-//        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
-//            @Override
-//            public void onChanged(@Nullable final User user) {
-//                Log.e("hhhh", "ViewModel in My profile " + user.toString());
-//                mCurrentUser = user;
-//            }
-//        });
-
+        mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable final User user) {
+                mCurrentUser = user;
+            }
+        });
         mCurrentUser = mUserViewModel.getUser().getValue();
 
         mAddImageView.setOnClickListener(new View.OnClickListener() {
@@ -251,7 +247,7 @@ public class MyProfileFragment extends Fragment {
                 dialog.setContentView(R.layout.fragment_image_gallery);
                 imageDrawable = mPhoto1View.getDrawable();
                 ImageView image = dialog.findViewById(R.id.iv_image_gallery);
-                ImageView closeImage = dialog.findViewById(R.id.iv_close_photo_gallery);
+                Button closeImage = dialog.findViewById(R.id.iv_close_photo_gallery);
                 image.setImageDrawable(imageDrawable);
                 closeImage.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -425,25 +421,32 @@ public class MyProfileFragment extends Fragment {
                 int m = Calendar.getInstance().get(Calendar.MONTH);
                 int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
                 int ss = (y - b) % 100;
-                if (date.getMonth() < m && date.getDay() < d) {
+                if (date.getMonth() < m) {
                     mAgeView.setText(String.valueOf(ss));
+
+                } else if (date.getMonth() == m) {
+                    if (date.getDay() <= d) {
+                        mAgeView.setText(String.valueOf(ss));
+                    }
                 } else {
                     mAgeView.setText(String.valueOf(ss - 1));
                 }
 
             }
-            if (mCurrentUser.getUserInfo().getWeight() != null) {
-                mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()) + " kg");
-            }
-            if (mCurrentUser.getUserInfo().getHeight() != null) {
-                mHeightView.setText(String.valueOf((mCurrentUser.getUserInfo().getHeight())) + " m");
-            }
-            if (mCurrentUser.getUserInfo().getAvatar() != null) {
-                mProgressBar.setVisibility(View.VISIBLE);
-                setAvatar(mCurrentUser.getUserInfo().getAvatar());
-            } else {
-                appBarImageView.setImageResource(R.drawable.ic_add_a_photo);
-                mProgressBar.setVisibility(View.GONE);
+            if (mCurrentUser.getUserInfo() != null) {
+                if (mCurrentUser.getUserInfo().getWeight() != null) {
+                    mWeightView.setText(String.valueOf(mCurrentUser.getUserInfo().getWeight()) + " kg");
+                }
+                if (mCurrentUser.getUserInfo().getHeight() != null) {
+                    mHeightView.setText(String.valueOf((mCurrentUser.getUserInfo().getHeight())) + " m");
+                }
+                if (mCurrentUser.getUserInfo().getAvatar() != null) {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    setAvatar(mCurrentUser.getUserInfo().getAvatar());
+                } else {
+                    mAvatarView.setImageResource(R.drawable.ic_person_outline_grey);
+                    mProgressBar.setVisibility(View.GONE);
+                }
             }
 
             if (mCurrentUser.getUsername() != null) {

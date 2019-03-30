@@ -47,7 +47,7 @@ public class SkillItemEditRecyclerAdapter extends RecyclerView.Adapter<SkillItem
             Log.d(TAG, "onBindViewHolder: " + skill.getSkillCount());
         }
         if (skill.getSkillName().equals("Human Flag") || skill.getSkillName().equals("Planche")
-                ||skill.getSkillName().equals("ATM")|| skill.getSkillName().equals("Akka")) {
+                || skill.getSkillName().equals("ATM") || skill.getSkillName().equals("Akka")) {
             holder.skillCountView.setVisibility(View.INVISIBLE);
         }
 
@@ -76,8 +76,20 @@ public class SkillItemEditRecyclerAdapter extends RecyclerView.Adapter<SkillItem
 
             @Override
             public void afterTextChanged(Editable s) {
-                mData.get(position).setSkillCount(Integer.valueOf(s.toString()));
-//                ss=s.toString();
+
+//                if(!"".contentEquals(s)){
+//                    try {
+//                        int i = Integer.valueOf(s.toString());
+//                        mData.get(position).setSkillCount(i);
+//                    }catch (Exception e){
+//                        mData.get(position).setSkillCount(0);
+//                    }
+//                }
+                if (s.toString().isEmpty()) {
+                    mData.get(position).setSkillCount(0);
+                } else {
+                    mData.get(position).setSkillCount(Integer.valueOf(s.toString()));
+                }
             }
         });
 
