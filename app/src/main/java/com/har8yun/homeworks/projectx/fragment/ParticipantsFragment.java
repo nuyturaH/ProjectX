@@ -74,7 +74,6 @@ public class ParticipantsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_participants, container, false);
 
-        Log.d(TAG, "onCreateView: AAAAAAAAAAAAAAAa");
 
         mMessageView = view.findViewById(R.id.tv_no_participants_yet);
 
@@ -96,7 +95,7 @@ public class ParticipantsFragment extends Fragment {
             }
         });
         mCurrentEvent = mEventViewModel.getEvent().getValue();
-        if(mCurrentEvent.getParticipants() != null) {
+        if(mCurrentEvent.getParticipants() != null && mCurrentEvent.getParticipants().size() > 0) {
             mUidList = mCurrentEvent.getParticipants();
         }
         else{
@@ -110,9 +109,11 @@ public class ParticipantsFragment extends Fragment {
         return view;
     }
 
+
+    //************************************** METHODS ********************************************
     private void initViews(View view)
     {
-//        mRecyclerView = view.findViewById(R.id.rv_participants);
+        mRecyclerView = view.findViewById(R.id.rv_participants);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         Log.d(TAG, "initViews: " + mParticipantsList.size());
         initRecyclerView(view);
@@ -120,14 +121,13 @@ public class ParticipantsFragment extends Fragment {
 
     private void initRecyclerView(View view)
     {
-        mRecyclerView = view.findViewById(R.id.rv_participants);
 
         Log.d(TAG, "initRecyclerView: BBBBBBBBBBBBBBBBBB");
         mParticipantsAdapter = new ParticipantsAdapter();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mRecyclerView.setAdapter(mParticipantsAdapter);
-        mParticipantsAdapter.addItems(mParticipantsList);
+//        mParticipantsAdapter.addItems(mParticipantsList);
 
         Log.d(TAG, "initRecyclerView: " + mParticipantsList.size());
 
@@ -152,7 +152,7 @@ public class ParticipantsFragment extends Fragment {
 
     private void getUsersFromFirebase()
     {
-        Log.d(TAG, "getUsersFromFirebase: " + mUidList.get(0));
+//        Log.d(TAG, "getUsersFromFirebase: " + mUidList.get(0));
         mFirebaseReference = FirebaseDatabase.getInstance().getReference("users");
         mFirebaseReference.addValueEventListener(new ValueEventListener() {
             @Override

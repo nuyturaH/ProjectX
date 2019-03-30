@@ -233,7 +233,7 @@ public class CreateEventFragment extends Fragment {
     private void initEditViews() {
         mTitleView.setText(mEvent.getTitle());
         mDescriptionView.setText(mEvent.getDescription());
-        //mDateView.setText(mEvent.getDate().toString());
+        mDateView.setText(mEvent.getDate().toString());
         mSaveButton.setText("Save Changes");
 
     }

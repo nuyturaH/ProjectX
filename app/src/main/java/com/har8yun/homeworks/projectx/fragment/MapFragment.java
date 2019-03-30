@@ -463,7 +463,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        Toast.makeText(getContext(), valueOf(mEventList.size()), Toast.LENGTH_LONG).show();
 
     }
 

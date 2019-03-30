@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -345,7 +346,7 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
         dialog.setContentView(R.layout.fragment_image_gallery);
 
         ImageView image = dialog.findViewById(R.id.iv_image_gallery);
-        ImageView closeImage = dialog.findViewById(R.id.iv_close_photo_gallery);
+        Button closeImage = dialog.findViewById(R.id.iv_close_photo_gallery);
         image.setImageDrawable(resource);
         closeImage.setOnClickListener(new View.OnClickListener() {
             @Override

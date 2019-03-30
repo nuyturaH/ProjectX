@@ -147,7 +147,7 @@ public class LaunchFragment extends Fragment implements OnMapReadyCallback {
 
                         titleView.setText(event.getTitle());
                         descriptionView.setText(event.getDescription());
-                        dateLocationView.setText("AAAA");
+                        dateLocationView.setText(event.getDate().toGMTString());
                         creatorView.setText(event.getCreator().getUsername());
 
                         dialog.show();
@@ -187,7 +187,7 @@ public class LaunchFragment extends Fragment implements OnMapReadyCallback {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        Toast.makeText(getContext(), valueOf(mEventList.size()), Toast.LENGTH_LONG).show();
+
 
     }
 

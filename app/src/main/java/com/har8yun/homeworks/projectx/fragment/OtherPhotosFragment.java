@@ -26,6 +26,7 @@ import java.util.List;
 public class OtherPhotosFragment extends Fragment {
 
     private static final String TAG = "OtherPhotosFragment";
+    public static final String FRAGMENT_CODE = "Gallery";
 
 
     //view
@@ -113,7 +114,7 @@ public class OtherPhotosFragment extends Fragment {
     private void addFragment(Fragment fragment) {
         android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.layout_gallery, fragment);
+        fragmentTransaction.add(R.id.layout_gallery, fragment,FRAGMENT_CODE);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

@@ -62,17 +62,19 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartsAdapter.ChartsView
             @Override
             public void onClick(View v) {
                 mOnRvItemClickListener.onItemClicked(user.getId());
-
-
             }
         });
 
         holder.username.setText(user.getUsername());
         holder.skillCount.setText(String.valueOf(user.getSkills().get(kkk)));
-        if (user.getUserInfo() != null)
+        if (user.getUserInfo() != null) {
             if (user.getUserInfo().getAvatar() != null) {
-                setAvatar(user.getUserInfo().getAvatar(),holder.avatar);
+                setAvatar(user.getUserInfo().getAvatar(), holder.avatar);
             }
+            else {
+                holder.avatar.setImageResource(R.drawable.ic_person_outline_grey);
+            }
+        }
     }
 
     @Override

@@ -52,8 +52,6 @@ public class ParticipantsAdapter extends RecyclerView.Adapter<ParticipantsAdapte
                 .inflate(R.layout.view_chart_item, parent, false);
         context = parent.getContext();
 
-        Log.d(TAG, "onCreateViewHolder: CCCCCCCCCCCCCCC" );
-
         return new ParticipantsAdapter.ParticipantsViewHolder(view);
     }
 
@@ -61,21 +59,22 @@ public class ParticipantsAdapter extends RecyclerView.Adapter<ParticipantsAdapte
     public void onBindViewHolder(@NonNull ParticipantsAdapter.ParticipantsViewHolder holder, final int position) {
         User user = mData.get(position);
 
-        Log.d(TAG, "onBindViewHolder: "+ user.getUsername());
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOnRvItemClickListener.onItemClicked(user.getId());
-
             }
         });
 
         holder.username.setText(user.getUsername());
-        if (user.getUserInfo() != null)
+        if (user.getUserInfo() != null) {
             if (user.getUserInfo().getAvatar() != null) {
-                setAvatar(user.getUserInfo().getAvatar(),holder.avatar);
+                setAvatar(user.getUserInfo().getAvatar(), holder.avatar);
+            } else {
+                holder.avatar.setImageResource(R.drawable.ic_person_outline_grey);
+                Log.e(TAG, "onBindViewHolder: YESSSSSS" );
             }
+        }
     }
 
     @Override
@@ -136,11 +135,17 @@ public class ParticipantsAdapter extends RecyclerView.Adapter<ParticipantsAdapte
     public class ParticipantsViewHolder extends RecyclerView.ViewHolder {
         public TextView username;
         public ImageView avatar;
+        public TextView textView;
+        public TextView dots;
 
         public ParticipantsViewHolder(final View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.tv_username_chart);
             avatar = itemView.findViewById(R.id.iv_avatar_chart);
+            textView = itemView.findViewById(R.id.tv_skill_count_chart);
+            dots = itemView.findViewById(R.id.tv_dots_chart);
+            textView.setVisibility(View.GONE);
+            dots.setVisibility(View.GONE);
         }
     }
 

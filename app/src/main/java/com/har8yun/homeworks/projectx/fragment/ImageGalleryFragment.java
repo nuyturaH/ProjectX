@@ -16,6 +16,7 @@ import com.har8yun.homeworks.projectx.adapter.ViewPagerAdapter;
 
 import java.util.List;
 
+import static com.har8yun.homeworks.projectx.fragment.OtherPhotosFragment.FRAGMENT_CODE;
 import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
 
 public class ImageGalleryFragment extends Fragment
@@ -47,7 +48,16 @@ public class ImageGalleryFragment extends Fragment
         mViewPager = view.findViewById(R.id.vp_gallery);
         mViewPager.setAdapter(mViewPagerAdapter);
 
-//        onClickNavigate(mCloseButton, R.id.action_image_gallery_fragment_to_other_photos_fragment); //TODO !!!!!
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                ImageGalleryFragment myFragment = (ImageGalleryFragment)getFragmentManager().findFragmentByTag(FRAGMENT_CODE);
+                fragmentTransaction.remove(myFragment);
+                fragmentTransaction.commit();
+            }
+        });
 
     }
 }

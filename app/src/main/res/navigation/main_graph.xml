@@ -99,6 +99,7 @@
         android:id="@+id/participants_fragment"
         android:name="com.har8yun.homeworks.projectx.fragment.ParticipantsFragment"
         tools:layout = "@layout/fragment_participants"
+        android:label="Participants"
         >
         <action
             android:id="@+id/action_participants_fragment_to_other_profile_fragment"
