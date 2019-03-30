@@ -10,6 +10,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,6 @@ public class BuildMusclesFragment extends Fragment {
     //view model
     private BuildMusclesViewModel mBuildMusclesViewModel;
 
-    boolean leave = false;
-
 
     //constructor
     public BuildMusclesFragment() {
@@ -79,22 +78,18 @@ public class BuildMusclesFragment extends Fragment {
             openExerciseDialog(mExerciseButtons[i], EXERCISE_NAMES[i]);
         }
 
+
         mBuildMusclesViewModel = ViewModelProviders.of(getActivity()).get(BuildMusclesViewModel.class);
-        mBuildMusclesViewModel.isNextLevelUnlocked().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        mBuildMusclesViewModel.setUnlockLevel(0);
+        mBuildMusclesViewModel.getUnlockLevel().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
-            public void onChanged(@Nullable Boolean b) {
-                if (mBuildMusclesViewModel.isNextLevelUnlocked().getValue() != null) {
-                    if (mBuildMusclesViewModel.isNextLevelUnlocked().getValue()) {
-                        for (int i = 1; i < mExerciseButtons.length; i++) {
-                            if (!mExerciseButtons[i].isEnabled()) {
-                                mExerciseButtons[i].setEnabled(true);
-                                mGifImageViews[i].setImageResource(mGifImages[i]);
-                                mLockLayouts[i].setVisibility(View.INVISIBLE);
-                                clearBlurTextView(mExerciseViews[i]);
-                                break;
-                            }
-                        }
-                        mBuildMusclesViewModel.setUnlockLevel(false);
+            public void onChanged(@Nullable Integer lvl) {
+                if (mBuildMusclesViewModel.getUnlockLevel().getValue() != null) {
+                    for (int i = 1; i <= lvl; i++) {
+                        mExerciseButtons[i].setEnabled(true);
+                        mGifImageViews[i].setImageResource(mGifImages[i]);
+                        mLockLayouts[i].setVisibility(View.INVISIBLE);
+                        clearBlurFromTextView(mExerciseViews[i]);
                     }
                 }
             }
@@ -147,7 +142,7 @@ public class BuildMusclesFragment extends Fragment {
         textView.getPaint().setMaskFilter(filter);
     }
 
-    private void clearBlurTextView(TextView textView) {
+    private void clearBlurFromTextView(TextView textView) {
         textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         textView.getPaint().setMaskFilter(null);
     }

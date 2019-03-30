@@ -54,7 +54,7 @@
             android:paddingTop="10dp"
             android:paddingEnd="18dp"
             android:paddingBottom="10dp"
-            android:text="@string/lay_prone_on_the_ground_with_arms_supporting_your_body_keep_your_body_straight_while_raising_and_lowering_your_body_with_your_arms"
+            android:text="@string/description"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"

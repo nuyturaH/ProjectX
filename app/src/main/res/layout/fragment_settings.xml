@@ -7,77 +7,178 @@
     android:background="@color/lightGrey"
     tools:context=".fragment.SettingsFragment">
 
-    <TextView
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_change_theme_settings"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_settings"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimaryText"
+        android:elevation="4dp"
+
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/layout_photos_my_profile"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:text="@string/change_app_theme"
-        />
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sw_notifications_settings"
-        app:layout_constraintTop_toBottomOf="@id/tv_change_theme_settings"
-        app:layout_constraintStart_toStartOf="@id/tv_change_theme_settings"
-        android:text="@string/notifications"
-        android:layout_marginTop="10dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_settings">
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sw_zoom_buttons_settings"
-        app:layout_constraintTop_toBottomOf="@id/sw_notifications_settings"
-        app:layout_constraintStart_toStartOf="@id/sw_notifications_settings"
-        android:text="@string/map_zoom_buttons"
-        android:layout_marginTop="10dp"/>
+        <View
+            android:id="@+id/line5"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="136dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/label_height_my_profile"
+            app:layout_constraintTop_toBottomOf="@+id/label_height_my_profile" />
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sw_user_info_settings"
-        app:layout_constraintTop_toBottomOf="@id/sw_zoom_buttons_settings"
-        app:layout_constraintStart_toStartOf="@id/sw_zoom_buttons_settings"
-        android:text="@string/hide_user_info"
-        android:layout_marginTop="10dp"/>
+        <ImageView
+            android:id="@+id/iv_weight_my_profile3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_color_lens_black"
+            app:layout_constraintBottom_toBottomOf="@+id/label_weight_my_profile3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_weight_my_profile3" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_change_app_font_size_settings"
-        app:layout_constraintTop_toBottomOf="@id/sw_user_info_settings"
-        app:layout_constraintStart_toStartOf="@id/sw_user_info_settings"
-        android:text="@string/change_app_font_size"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        />
+        <TextView
+            android:id="@+id/label_weight_my_profile3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:padding="20dp"
+            android:paddingStart="0dp"
+            android:text="@string/change_app_theme"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="@dimen/my_profile_text_size"
+            app:layout_constraintStart_toStartOf="@+id/label_height_my_profile"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_change_app_language_settings"
-        app:layout_constraintTop_toBottomOf="@id/tv_change_app_font_size_settings"
-        app:layout_constraintStart_toStartOf="@id/tv_change_app_font_size_settings"
-        android:text="@string/change_app_language"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        />
+        <View
+            android:id="@+id/line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="64dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/label_height_my_profile"
+            app:layout_constraintTop_toBottomOf="@+id/label_height_my_profile" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_delete_account_settings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/delete_account"
-        android:textColor="@android:color/holo_red_dark"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="80dp"
-        />
+        <ImageView
+            android:id="@+id/iv_weight_my_profile2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_person_outline_black"
+            app:layout_constraintBottom_toBottomOf="@+id/label_weight_my_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+        <TextView
+            android:id="@+id/label_weight_my_profile2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:paddingStart="0dp"
+            android:text="@string/notifications"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="@dimen/my_profile_text_size"
+            app:layout_constraintStart_toStartOf="@+id/label_height_my_profile"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
+
+        <ImageView
+            android:id="@+id/iv_weight_my_profile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_notifications_none_black"
+            app:layout_constraintBottom_toBottomOf="@+id/label_weight_my_profile2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_weight_my_profile2" />
+
+        <Switch
+            android:id="@+id/sw_zoom_buttons_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/line1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.432" />
+
+        <Switch
+            android:id="@+id/sw_user_info_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/label_weight_my_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+        <Switch
+            android:id="@+id/sw_notifications_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/line5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line" />
+
+        <TextView
+            android:id="@+id/label_weight_my_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:paddingStart="0dp"
+            android:text="@string/hide_user_info"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="@dimen/my_profile_text_size"
+            app:layout_constraintStart_toStartOf="@+id/label_height_my_profile"
+            app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+        <ImageView
+            android:id="@+id/iv_height_my_profile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_add_circle_outline_grey"
+            app:layout_constraintBottom_toBottomOf="@+id/label_height_my_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_height_my_profile" />
+
+        <TextView
+            android:id="@+id/label_height_my_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:padding="20dp"
+            android:paddingStart="0dp"
+            android:text="@string/map_zoom_buttons"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="@dimen/my_profile_text_size"
+            app:layout_constraintStart_toEndOf="@+id/iv_height_my_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/label_height_my_profile"
+            app:layout_constraintTop_toBottomOf="@+id/label_height_my_profile" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="48dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/label_weight_my_profile3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line5" />
+
+    </android.support.constraint.ConstraintLayout>
 
 
     <android.support.v7.widget.Toolbar
@@ -89,5 +190,27 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/layout_settings"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+            android:id="@+id/tv_delete_account_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_button"
+            android:elevation="4dp"
+            android:padding="8dp"
+            android:paddingStart="16dp"
+            android:text="@string/delete_account"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_settings" />
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

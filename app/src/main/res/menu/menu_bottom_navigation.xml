@@ -9,7 +9,8 @@
     <item
         android:id="@+id/chats_fragment"
         android:icon="@drawable/ic_chat_white"
-        android:title="@string/chats" />
+        android:title="@string/chats"
+        android:visible="false" />
     <item
         android:id="@+id/map_fragment"
         android:icon="@drawable/ic_location"

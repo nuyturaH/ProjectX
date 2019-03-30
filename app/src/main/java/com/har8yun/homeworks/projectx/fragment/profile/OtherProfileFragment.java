@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -76,6 +77,7 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
     private ImageView mAvatarView;
     private ProgressBar mProgressBar;
     private TextView mAllPhotosView;
+    private ConstraintLayout mAllPhotosLayout;
     private ImageView mPhoto1View;
     private ImageView mPhoto2View;
     private ImageView mPhoto3View;
@@ -139,6 +141,7 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
         mAvatarView = view.findViewById(R.id.other_app_bar_image);
         mProgressBar = view.findViewById(R.id.pb_avatar_other_profile);
         mAllPhotosView = view.findViewById(R.id.tv_all_photos_other_profile);
+        mAllPhotosLayout = view.findViewById(R.id.layout_photos_other_profile);
         mPhoto1View = view.findViewById(R.id.iv_photo1_other_profile);
         mPhoto2View = view.findViewById(R.id.iv_photo2_other_profile);
         mPhoto3View = view.findViewById(R.id.iv_photo3_other_profile);
@@ -157,6 +160,7 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
         mPhoto4View.setOnClickListener(this);
 
         onClickNavigate(mAllPhotosView, R.id.action_other_profile_fragment_to_other_photos_fragment);
+        onClickNavigate(mAllPhotosLayout, R.id.action_other_profile_fragment_to_other_photos_fragment);
 
     }
 
@@ -217,6 +221,8 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
                     setImage(mOtherUser.getImages().get(mOtherUser.getImages().size() - 1 - i), photos.get(i));
                     Log.d(TAG, "for: "+i);
                 }
+            }else{
+                mAllPhotosLayout.setVisibility(View.GONE);
             }
         }
 

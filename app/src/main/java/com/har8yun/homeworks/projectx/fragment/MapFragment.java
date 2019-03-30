@@ -117,7 +117,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import androidx.navigation.fragment.NavHostFragment;
 
 
-import static com.har8yun.homeworks.projectx.fragment.DoneDialogFragment.LOOSE_WEIGHT_DONE;
 import static com.har8yun.homeworks.projectx.fragment.tasks.TaskInfoFragment.LOOSE_WEIGHT;
 import static com.har8yun.homeworks.projectx.fragment.tasks.DoneDialogFragment.LOOSE_WEIGHT_DONE;
 import static com.har8yun.homeworks.projectx.fragment.tasks.TaskInfoFragment.LOOSE_WEIGHT;

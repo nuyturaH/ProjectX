@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -113,6 +114,8 @@ public class MyProfileFragment extends Fragment {
     private ImageView mAddImageView;
     private ImageView mPhoto1View;
     private TextView mAllPhotosView;
+    private ConstraintLayout mAllPhotosLayout;
+    private ImageView appBarImageView;
 
     //navigation
     private BottomNavigationView mBottomNavigationView;
@@ -220,6 +223,7 @@ public class MyProfileFragment extends Fragment {
         mAddImageView = view.findViewById(R.id.iv_add_photo_my_profile);
         mPhoto1View = view.findViewById(R.id.iv_photo1_my_profile);
         mAllPhotosView = view.findViewById(R.id.tv_all_photos_my_profile);
+        mAllPhotosLayout = view.findViewById(R.id.layout_photos_my_profile);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
 
@@ -261,6 +265,7 @@ public class MyProfileFragment extends Fragment {
         });
 
         onClickNavigate(mAllPhotosView, R.id.action_my_profile_fragment_to_photos_fragment);
+        onClickNavigate(mAllPhotosLayout, R.id.action_my_profile_fragment_to_photos_fragment);
 
     }
 

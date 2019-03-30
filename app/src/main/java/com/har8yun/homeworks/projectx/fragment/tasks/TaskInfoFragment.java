@@ -64,7 +64,7 @@ public class TaskInfoFragment extends DialogFragment {
                             break;
                         case BUILD_MUSCLES_INFO:
                             mTitleView.setText("Build Muscles");
-                            mDescriptionView.setText("Description imitation");
+                            mDescriptionView.setText("More strength is more muscle. Do this task every day and you will have great body." );
                             break;
                     }
                 }

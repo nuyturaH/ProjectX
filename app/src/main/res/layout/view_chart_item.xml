@@ -1,73 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardElevation="4dp">
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/iv_avatar_chart"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_username_chart"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        />
-
-    <TextView
-        android:id="@+id/tv_username_chart"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/username"
-        android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="@dimen/my_profile_text_size"
-        android:textStyle="italic"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_avatar_chart"
-        app:layout_constraintEnd_toStartOf="@id/tv_dots_chart"/>
+        android:background="@drawable/bg_white_button"
+        android:padding="8dp"
+        android:paddingStart="16dp">
 
 
-    <TextView
-        android:id="@+id/tv_dots_chart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text=":"
-        android:textAllCaps="false"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="@dimen/my_profile_text_size"
-        app:layout_constraintStart_toEndOf="@+id/tv_username_chart"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/iv_avatar_chart"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
 
-    <TextView
-        android:id="@+id/tv_skill_count_chart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:hint="12"
-        android:textAlignment="center"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="@dimen/my_profile_text_size"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_username_chart"
-        app:layout_constraintStart_toEndOf="@+id/tv_dots_chart"
-        app:layout_constraintTop_toTopOf="@+id/tv_username_chart" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_username_chart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_username_chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/username"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_avatar_chart"
+            app:layout_constraintEnd_toStartOf="@id/tv_dots_chart"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar_chart"
+            app:layout_constraintTop_toTopOf="@+id/iv_avatar_chart" />
 
 
+        <TextView
+            android:id="@+id/tv_dots_chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textAllCaps="false"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="@dimen/my_profile_text_size"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_username_chart"
+            app:layout_constraintStart_toEndOf="@+id/tv_username_chart"
+            app:layout_constraintTop_toTopOf="@+id/tv_username_chart" />
 
-    <View
-        android:id="@+id/line_chart"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_username_chart" />
+        <TextView
+            android:id="@+id/tv_skill_count_chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="12"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_username_chart"
+            app:layout_constraintStart_toEndOf="@+id/tv_dots_chart"
+            app:layout_constraintTop_toTopOf="@+id/tv_username_chart" />
 
-</android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

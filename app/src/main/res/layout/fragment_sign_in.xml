@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/faster_one"
-        android:text="@string/app_logo"
+        android:text="Sport Net"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/test_logo_text_size"

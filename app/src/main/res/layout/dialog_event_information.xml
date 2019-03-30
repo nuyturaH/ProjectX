@@ -1,63 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="400dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/lightGrey">
 
     <TextView
         android:id="@+id/tv_title_dialog"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorPrimaryText"
+        android:elevation="4dp"
         android:maxLines="1"
+        android:padding="8dp"
+        android:paddingStart="16dp"
+        android:text="@string/event_title"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_description_dialog"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorPrimaryText"
+        android:elevation="4dp"
         android:ellipsize="end"
         android:maxLines="3"
-        app:layout_constraintStart_toStartOf="@id/tv_title_dialog"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_dialog" />
+        android:padding="8dp"
+        android:paddingStart="16dp"
+        android:text="@string/description"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_title_dialog"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_dialog" />
 
     <TextView
         android:id="@+id/tv_date_location_dialog"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorPrimaryText"
+        android:elevation="4dp"
         android:ellipsize="end"
-        app:layout_constraintStart_toStartOf="@id/tv_description_dialog"
+        android:padding="8dp"
+        android:paddingStart="16dp"
+        android:text="@string/location"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_description_dialog"
         app:layout_constraintTop_toBottomOf="@id/tv_description_dialog" />
 
     <Button
         android:id="@+id/btn_going_dialog"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:background="@android:color/white"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_gradient_layout_button"
         android:clickable="true"
         android:text="@string/going"
-        android:textColor="#5DBCD2"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_cancel_dialog" />
+        app:layout_constraintEnd_toStartOf="@id/btn_cancel_dialog"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_participants_dialog" />
 
     <Button
         android:id="@+id/btn_cancel_dialog"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="5dp"
-        android:background="@android:color/white"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_gradient_layout_button"
         android:clickable="true"
         android:text="@string/cancel"
-        android:textColor="#5DBCD2"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_going_dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_going_dialog"
+        app:layout_constraintTop_toTopOf="@+id/btn_going_dialog" />
 
     <ImageView
         android:id="@+id/iv_to_change_event_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_edit_event"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,31 +107,45 @@
         android:id="@+id/tv_creator_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="280dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryText"
+        android:elevation="4dp"
+        android:padding="4dp"
+        android:paddingStart="16dp"
         android:text="@string/creator"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
         app:layout_constraintEnd_toStartOf="@id/tv_creator_username_dialog"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/tv_date_location_dialog"
+        app:layout_constraintTop_toBottomOf="@+id/iv_to_change_event_dialog" />
 
     <TextView
         android:id="@+id/tv_creator_username_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="280dp"
-        app:layout_constraintEnd_toEndOf="parent"
 
+        android:background="@color/colorPrimaryText"
+        android:elevation="4dp"
+        android:padding="4dp"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_creator_dialog"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_creator_dialog" />
 
     <TextView
         android:id="@+id/tv_participants_dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_white_button"
+        android:elevation="4dp"
+        android:padding="4dp"
+        android:paddingStart="16dp"
         android:text="@string/participants"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_creator_dialog"
-        android:layout_marginTop="10dp"/>
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        app:layout_constraintEnd_toEndOf="@+id/tv_creator_username_dialog"
+        app:layout_constraintStart_toStartOf="@+id/tv_creator_dialog"
+        app:layout_constraintTop_toBottomOf="@id/tv_creator_dialog" />
 
 
 </android.support.constraint.ConstraintLayout>

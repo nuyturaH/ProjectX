@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
 
-            android:text="@string/rich_red_marker_and_you_will_burn_110_calories_do_this_task_every_day_and_in_a_month_you_will_loose_1kg"
+            android:text="Keep up! Today you are in better shape than yesterday. Do this trainig every day and in a year you will become a beast!"
             android:textColor="@color/colorPrimaryText"
             android:textSize="18sp"
             android:textStyle="bold"

@@ -107,12 +107,9 @@ public class SettingsFragment extends Fragment {
     //************************************** METHODS ********************************************
     private void initViews(View view) {
         mToolbarSettings = view.findViewById(R.id.toolbar_settings);
-        mThemeView = view.findViewById(R.id.tv_change_theme_settings);
         mNotificationsSwitch = view.findViewById(R.id.sw_notifications_settings);
         mMapZoomSwitch = view.findViewById(R.id.sw_zoom_buttons_settings);
         mUserInfoSwitch = view.findViewById(R.id.sw_user_info_settings);
-        mFontSizeView = view.findViewById(R.id.tv_change_app_font_size_settings);
-        mLanguageView = view.findViewById(R.id.tv_change_app_language_settings);
         mDeleteAccountView = view.findViewById(R.id.tv_delete_account_settings);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 

@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,19 +63,31 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                 switch (s) {
                     case PUSH_UPS:
                         mTitleView.setText("Push-Ups");
-                        mDescriptionView.setText("Push-Ups description");
+                        mDescriptionView.setText("Lay prone on the ground with arms supporting your body. \n" +
+                                "\n" +
+                                "Keep your body straight while raising and lowering your body with your arms. \n");
                         break;
                     case PULL_UPS:
                         mTitleView.setText("Pull-Ups");
-                        mDescriptionView.setText("Pull-Ups description");
+                        mDescriptionView.setText("Grab the pullup bar with your palms down (shoulder-width grip)\n" +
+                                "Hang to the pullup-bar with straight arms and your legs off the floor\n" +
+                                "Pull yourself up by pulling your elbows down to the floor\n" +
+                                "Go all the way up until your chin passes the be bar\n" +
+                                "Lower yourself until your arms are straight\n");
                         break;
                     case SQUATS:
                         mTitleView.setText("Squats");
-                        mDescriptionView.setText("Squats description");
+                        mDescriptionView.setText("Stand with your feet shoulder width apart and your arms stretched forward, then lower your body until your thighs are parallel with the floor. \n" +
+                                "\n" +
+                                "Your knees should be extended in the same direction as your toes. Return to the start position and do the next rep. \n" );
                         break;
                     case SIT_UPS:
                         mTitleView.setText("Sit-Ups");
-                        mDescriptionView.setText("Sit-Ups description");
+                        mDescriptionView.setText("Lie on your back with your hands behind your ears. \n" +
+                                "\n" +
+                                "Then lift your upper body off the floor and slowly up to the sitting position. Don't tug your neck when you get up. \n" +
+                                "\n" +
+                                "Slowly go back to the start position and repeat the exercise.\n" );
                         break;
                 }
             }
@@ -89,9 +102,15 @@ public class BuildMusclesDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 mDoneButtons[3].setVisibility(View.INVISIBLE);
                 mImageViews[3].setVisibility(View.VISIBLE);
-                mBuildMusclesViewModel.setUnlockLevel(true);
-                Log.e("hhhh",  "Set Unlocked Level TRUE");
-                //TODO: Show dialog with greeting
+                if (mBuildMusclesViewModel.getUnlockLevel().getValue() < 3) {
+                    mBuildMusclesViewModel.setUnlockLevel(mBuildMusclesViewModel.getUnlockLevel().getValue() + 1);
+                } else {
+                    //TODO set diasable Build Buttons button
+                    getDialog().dismiss();
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    DoneDialogFragment tasksFragment = new DoneDialogFragment();
+                    tasksFragment.show(fm, null);
+                }
             }
         });
 
@@ -153,7 +172,6 @@ public class BuildMusclesDialogFragment extends DialogFragment {
             }
         });
     }
-
 
     private void openNextSet() {
         for (int i = 0; i < mDoneButtons.length; i++) {
