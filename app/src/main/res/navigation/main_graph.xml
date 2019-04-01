@@ -244,4 +244,9 @@
         android:name="com.har8yun.homeworks.projectx.fragment.tasks.BuildMusclesFragment"
         android:label="Build Muscles"
         tools:layout="@layout/fragment_build_muscles" />
+    <fragment
+        android:id="@+id/news_fragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.NewsFragment"
+        android:label="News"
+        tools:layout="@layout/fragment_news" />
 </navigation>

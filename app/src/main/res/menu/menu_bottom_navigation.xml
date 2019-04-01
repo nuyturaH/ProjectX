@@ -7,10 +7,9 @@
         android:icon="@drawable/ic_account_circle_white"
         android:title="@string/me" />
     <item
-        android:id="@+id/chats_fragment"
-        android:icon="@drawable/ic_chat_white"
-        android:title="@string/chats"
-        android:visible="false" />
+        android:id="@+id/news_fragment"
+        android:icon="@drawable/ic_newspaper"
+        android:title="@string/news" />
     <item
         android:id="@+id/map_fragment"
         android:icon="@drawable/ic_location"
