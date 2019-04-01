@@ -14,6 +14,48 @@
 
     </style>
 
+    <style name="AppThemeBlue" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="colorPrimary">@color/colorBluePrimary</item>
+        <item name="colorPrimaryDark">@color/colorBluePrimaryDark</item>
+        <item name="colorAccent">@color/colorBluePrimary</item>
+
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">#616161</item>
+        <item name="colorControlHighlight">@color/colorBluePrimary</item>
+
+    </style>
+
+    <style name="AppThemeGreen" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="colorPrimary">@color/colorGreenPrimary</item>
+        <item name="colorPrimaryDark">@color/colorGreenPrimaryDark</item>
+        <item name="colorAccent">@color/colorGreenPrimary</item>
+
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">#616161</item>
+        <item name="colorControlHighlight">@color/colorGreenPrimary</item>
+
+    </style>
+
+    <style name="AppThemeViolet" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="colorPrimary">@color/colorVioletPrimary</item>
+        <item name="colorPrimaryDark">@color/colorVioletPrimaryDark</item>
+        <item name="colorAccent">@color/colorVioletPrimary</item>
+
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">#616161</item>
+        <item name="colorControlHighlight">@color/colorVioletPrimary</item>
+
+    </style>
+
 
 
     <style name="btn_style" parent="TextAppearance.AppCompat">

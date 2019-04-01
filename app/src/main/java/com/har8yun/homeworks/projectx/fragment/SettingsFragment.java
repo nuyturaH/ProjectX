@@ -4,17 +4,25 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +33,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.model.Skill;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -45,13 +57,19 @@ public class SettingsFragment extends Fragment {
 
     //views
     private Toolbar mToolbarSettings;
-    private TextView mThemeView;
+    private Spinner mThemeSpinner;
     private Switch mNotificationsSwitch;
     private Switch mMapZoomSwitch;
     private Switch mUserInfoSwitch;
     private TextView mFontSizeView;
     private TextView mLanguageView;
     private TextView mDeleteAccountView;
+
+    //colors
+    Color colorRed;
+    Color colorBlue;
+    Color colorGreen;
+    Color colorViolet;
 
     //Firebase
     private FirebaseAuth mFirebaseAuth;
@@ -111,6 +129,7 @@ public class SettingsFragment extends Fragment {
         mMapZoomSwitch = view.findViewById(R.id.sw_zoom_buttons_settings);
         mUserInfoSwitch = view.findViewById(R.id.sw_user_info_settings);
         mDeleteAccountView = view.findViewById(R.id.tv_delete_account_settings);
+        mThemeSpinner = view.findViewById(R.id.spinner_theme);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
         mDeleteAccountView.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +197,51 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        initSpinner();
+
+    }
+
+    private void initSpinner()
+    {
+        List<String> mSpinnerColorList = new ArrayList<>();
+
+
+        mSpinnerColorList.add("Choose Color...");
+        mSpinnerColorList.add("Red");
+        mSpinnerColorList.add("Blue");
+        mSpinnerColorList.add("Green");
+        mSpinnerColorList.add("Violet");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mSpinnerColorList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mThemeSpinner.setAdapter(adapter);
+
+        mThemeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String currentItemName = parent.getItemAtPosition(position).toString();
+
+                if (position == 0) {
+                    ((TextView) view).setTextColor(Color.GRAY);
+                } else {
+                    for (String s : mSpinnerColorList) {
+                        if (s.equals(currentItemName)) {
+                            sharedPreferences.setTheme(getContext(),s);
+
+                            getActivity().finish();
+                            final Intent intent = getActivity().getIntent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getActivity().startActivity(intent);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void setNavigationComponent() {

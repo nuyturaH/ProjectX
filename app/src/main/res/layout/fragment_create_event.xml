@@ -92,28 +92,32 @@
 
         <TextView
             android:id="@+id/tv_location_create_event"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_tv_border"
+            android:ellipsize="end"
             android:padding="8dp"
             android:text="@string/location"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_date_create_event"
             app:layout_constraintTop_toBottomOf="@+id/tv_date_create_event" />
 
         <TextView
             android:id="@+id/tv_date_create_event"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_tv_border"
+            android:ellipsize="end"
             android:padding="8dp"
             android:text="@string/set_date_and_time"
             android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_date_create_event"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />

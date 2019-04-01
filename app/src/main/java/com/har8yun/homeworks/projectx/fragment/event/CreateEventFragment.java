@@ -98,7 +98,6 @@ public class CreateEventFragment extends Fragment {
         if (mEventViewModel.isToEdit()) {
             initEditViews();
         }
-        Toast.makeText(getContext(), "" + mEvent.getPosition(), Toast.LENGTH_LONG).show();
 
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         mCurrentUser = mUserViewModel.getUser().getValue();
@@ -224,8 +223,22 @@ public class CreateEventFragment extends Fragment {
 
     private void initEvent() {
         mEvent.setCreator(mCurrentUser);
-        mEvent.setTitle(mTitleView.getText().toString());
-        mEvent.setDescription(mDescriptionView.getText().toString());
+        if(mTitleView.getText().toString().isEmpty())
+        {
+            mTitleView.setError("Field must be filled");
+
+        }
+        else {
+            mEvent.setTitle(mTitleView.getText().toString());
+        }
+        if(mDescriptionView.getText().toString().isEmpty())
+        {
+            mDescriptionView.setError("Field must be filled");
+        }
+        else {
+            mEvent.setDescription(mDescriptionView.getText().toString());
+        }
+
         mEventViewModel.setEvent(mEvent);
         addEventToFirebase();
     }

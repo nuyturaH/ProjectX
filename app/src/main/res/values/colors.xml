@@ -10,4 +10,22 @@
 
   <color name="colorRouteLine">#FF4081</color>
 
+  <color name="colorRedPrimary">#B71C1C</color>
+  <color name="colorRedPrimaryLight">#F05545</color>
+  <color name="colorRedPrimaryDark">#7F0000</color>
+
+  <color name="colorBluePrimary">#1c1cb7</color>
+  <color name="colorBluePrimaryLight">#4555f0</color>
+  <color name="colorBluePrimaryDark">#00007f</color>
+
+  <color name="colorGreenPrimary">#1cb71c</color>
+  <color name="colorGreenPrimaryLight">#55f045</color>
+  <color name="colorGreenPrimaryDark">#007f00</color>
+
+  <color name="colorVioletPrimary">#b71cb7</color>
+  <color name="colorVioletPrimaryLight">#c745f0</color>
+  <color name="colorVioletPrimaryDark">#7f007f</color>
+
+
+
 </resources>

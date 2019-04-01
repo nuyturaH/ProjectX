@@ -32,6 +32,8 @@ import com.har8yun.homeworks.projectx.util.ImageLoadingUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
@@ -64,6 +66,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String theme = sharedPreferences.getTheme(this);
+
+        if(theme.equals(getResources().getString(R.string.red))) {
+            setTheme(R.style.AppTheme);
+        }else if(theme.equals(getResources().getString(R.string.blue)))
+        {
+            setTheme(R.style.AppThemeBlue);
+        }else if(theme.equals(getResources().getString(R.string.green)))
+        {
+            setTheme(R.style.AppThemeGreen);
+        }else if(theme.equals(getResources().getString(R.string.violet)))
+        {
+            setTheme(R.style.AppThemeViolet);
+        }
+
         setContentView(R.layout.activity_main);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);

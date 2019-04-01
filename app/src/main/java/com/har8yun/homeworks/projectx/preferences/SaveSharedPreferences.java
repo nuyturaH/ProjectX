@@ -14,6 +14,9 @@ public class SaveSharedPreferences {
     public static final String TAG = SaveSharedPreferences.class.getSimpleName();
     public static final String USER_KEY = "user_key";
     public static final String ZOOM_BUTTONS = "zoom_buttons";
+    public static final String THEME = "theme change";
+
+    public static final String RED = "red";
 
     User mUser;
 
@@ -40,6 +43,16 @@ public class SaveSharedPreferences {
 
     public boolean getZoom(Context context) {
         return getPreferences(context).getBoolean(ZOOM_BUTTONS, false);
+    }
+
+    public void setTheme(Context context, String color) {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putString(THEME, color);
+        editor.apply();
+    }
+
+    public String getTheme(Context context) {
+        return getPreferences(context).getString(THEME, RED);
     }
 
     public void setCurrentUser(Context context,User mUser)

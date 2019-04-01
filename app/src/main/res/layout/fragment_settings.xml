@@ -170,7 +170,7 @@
             app:layout_constraintTop_toBottomOf="@+id/label_height_my_profile" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_theme"
             android:layout_width="48dp"
             android:layout_height="22dp"
             android:layout_marginEnd="24dp"

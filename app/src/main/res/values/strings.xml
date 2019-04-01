@@ -179,5 +179,13 @@
     <string name="pull_ups">Pull-Ups</string>
     <string name="news">News</string>
 
+    //colors
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="green">Green</string>
+    <string name="violet">Violet</string>
+
+
+
 
 </resources>
