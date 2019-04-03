@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,6 +68,7 @@ public class CreateEventFragment extends Fragment {
     private EventViewModel mEventViewModel;
     private UserViewModel mUserViewModel;
     private User mCurrentUser;
+    private boolean pass1, pass2, pass3 = false;
 
     //Firebase
     DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
@@ -111,16 +113,20 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View v) {
                 if (mEventViewModel.isToEdit()) {
                     editEvent();
+                    Navigation.findNavController(v).navigate(R.id.action_create_event_fragment_to_map_fragment);
                 } else {
+
                     initEvent();
+
                 }
-                Navigation.findNavController(v).navigate(R.id.action_create_event_fragment_to_map_fragment);
+
             }
         });
 
         mDateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pass3 = true;
                 chooseDate();
 
             }
@@ -223,24 +229,29 @@ public class CreateEventFragment extends Fragment {
 
     private void initEvent() {
         mEvent.setCreator(mCurrentUser);
-        if(mTitleView.getText().toString().isEmpty())
-        {
+        if (mTitleView.getText().toString().isEmpty()) {
             mTitleView.setError("Field must be filled");
 
-        }
-        else {
+            pass1 = false;
+
+        } else {
             mEvent.setTitle(mTitleView.getText().toString());
+            pass1 = true;
         }
-        if(mDescriptionView.getText().toString().isEmpty())
-        {
+        if (mDescriptionView.getText().toString().isEmpty()) {
             mDescriptionView.setError("Field must be filled");
-        }
-        else {
+            pass2 = false;
+        } else {
             mEvent.setDescription(mDescriptionView.getText().toString());
+            pass2 = true;
         }
 
-        mEventViewModel.setEvent(mEvent);
-        addEventToFirebase();
+        if (pass1 && pass2 && pass3) {
+            mEventViewModel.setEvent(mEvent);
+            addEventToFirebase();
+            Navigation.findNavController(getView()).navigate(R.id.action_create_event_fragment_to_map_fragment);
+        }
+
     }
 
     private void initEditViews() {

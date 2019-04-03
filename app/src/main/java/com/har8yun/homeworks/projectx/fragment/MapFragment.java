@@ -636,6 +636,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         Dialog dialog = new Dialog(getContext());
                         dialog.setTitle(event.getTitle());
                         dialog.setContentView(R.layout.dialog_event_information);
+                        Log.e(TAG, "onMarkerClick: "+ event.getDate().toGMTString() );
 
                         //setting Dialog Views ----------------------------------------------
                         TextView titleView = dialog.findViewById(R.id.tv_title_dialog);
