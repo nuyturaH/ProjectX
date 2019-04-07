@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable WorkInfo workInfo) {
                 Log.e("workmng", "onChanged: " + workInfo.getState());
+
             }
         });
 
