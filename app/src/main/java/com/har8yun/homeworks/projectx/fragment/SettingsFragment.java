@@ -89,7 +89,6 @@ public class SettingsFragment extends Fragment {
     SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
 
 
-
     //constructor
     public SettingsFragment() {
     }
@@ -144,31 +143,29 @@ public class SettingsFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         mProgressDialog.setMessage("Deleting Account...");
                         mProgressDialog.show();
-                             mFirebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                 @Override
-                                 public void onComplete(@NonNull Task<Void> task) {
-                                     mProgressDialog.dismiss();
-                                    if(task.isSuccessful())
-                                    {
-                                        FirebaseDatabase.getInstance()
-                                                .getReference(DATABASE_PATH_NAME)
-                                                .child(mFirebaseUser.getUid())
-                                                .removeValue();
-                                        mUserViewModel.setUser(null);
-                                        mUserViewModel.setOtherUser(null);
-                                        sharedPreferences.setLoggedIn(getContext(),false);
+                        mFirebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                mProgressDialog.dismiss();
+                                if (task.isSuccessful()) {
+                                    FirebaseDatabase.getInstance()
+                                            .getReference(DATABASE_PATH_NAME)
+                                            .child(mFirebaseUser.getUid())
+                                            .removeValue();
+                                    mUserViewModel.setUser(null);
+                                    mUserViewModel.setOtherUser(null);
+                                    sharedPreferences.setLoggedIn(getContext(), false);
 
-                                        Toast.makeText(getContext(),"Account was successfully deleted",Toast.LENGTH_LONG);
-                                        //TODO fix error Harut
-                                        NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_settings_fragment_to_launch_fragment);
+                                    Toast.makeText(getContext(), "Account was successfully deleted", Toast.LENGTH_LONG);
+                                    //TODO fix error Harut
+                                    NavHostFragment.findNavController(mNavHostFragment).navigate(R.id.action_settings_fragment_to_launch_fragment);
 
-                                    }
-                                    else {
-                                        Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_LONG);
-                                    }
-                                 }
+                                } else {
+                                    Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_LONG);
+                                }
+                            }
 
-                             });
+                        });
                     }
                 });
                 dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -187,12 +184,10 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // do something, the isChecked will be
                 // true if the switch is in the On position
-                if(isChecked)
-                {
-                    sharedPreferences.setZoom(getContext(),true);
-                }
-                else{
-                    sharedPreferences.setZoom(getContext(),false);
+                if (isChecked) {
+                    sharedPreferences.setZoom(getContext(), true);
+                } else {
+                    sharedPreferences.setZoom(getContext(), false);
                 }
             }
         });
@@ -201,12 +196,11 @@ public class SettingsFragment extends Fragment {
 
     }
 
-    private void initSpinner()
-    {
+    private void initSpinner() {
         List<String> mSpinnerColorList = new ArrayList<>();
 
 
-        mSpinnerColorList.add("Choose Color...");
+        mSpinnerColorList.add("Choose color...");
         mSpinnerColorList.add("Red");
         mSpinnerColorList.add("Blue");
         mSpinnerColorList.add("Green");
@@ -222,11 +216,12 @@ public class SettingsFragment extends Fragment {
                 String currentItemName = parent.getItemAtPosition(position).toString();
 
                 if (position == 0) {
-                    ((TextView) view).setTextColor(Color.GRAY);
+//                    ((TextView) view).setTextColor(Color.GRAY);
+                    view.setVisibility(View.INVISIBLE);
                 } else {
                     for (String s : mSpinnerColorList) {
                         if (s.equals(currentItemName)) {
-                            sharedPreferences.setTheme(getContext(),s);
+                            sharedPreferences.setTheme(getContext(), s);
 
                             getActivity().finish();
                             final Intent intent = getActivity().getIntent();

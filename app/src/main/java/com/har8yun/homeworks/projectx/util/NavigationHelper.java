@@ -10,7 +10,14 @@ public final class NavigationHelper {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+
                 Navigation.findNavController(v).navigate(actionId);
+
+
+
             }
         });
     }

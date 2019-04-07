@@ -1,7 +1,6 @@
 package com.har8yun.homeworks.projectx.fragment.tasks;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.TaskViewModel;
-
-import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 
 public class DoneDialogFragment extends DialogFragment {
@@ -69,7 +66,7 @@ public class DoneDialogFragment extends DialogFragment {
     private void initViews(View view) {
         mDescriptionView = view.findViewById(R.id.tv_description_done);
         mArnoldView = view.findViewById(R.id.iv_arnold_done);
-        mOkView = view.findViewById(R.id.btn_ok_done);
+        mOkView = view.findViewById(R.id.btn_build_muscles_tasks);
     }
 
 }

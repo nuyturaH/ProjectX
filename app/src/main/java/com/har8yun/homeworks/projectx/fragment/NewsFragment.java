@@ -70,7 +70,6 @@ public class NewsFragment extends Fragment {
 
         LoadJson();
 
-
         return view;
     }
 

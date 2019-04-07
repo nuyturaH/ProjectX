@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.har8yun.homeworks.projectx.Application;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.Workmanager.MyWorker;
 import com.har8yun.homeworks.projectx.fragment.profile.MyProfileEditFragment;
 import com.har8yun.homeworks.projectx.fragment.profile.MyProfileFragment;
 
@@ -41,6 +42,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -109,6 +113,17 @@ public class MainActivity extends AppCompatActivity {
             mUserViewModel.setUser(mUser);
 //            Log.d("MainActivity", mUser.toString());
         }
+
+
+        OneTimeWorkRequest myWorkRequest = new OneTimeWorkRequest.Builder(MyWorker.class).build();
+        WorkManager.getInstance().enqueue(myWorkRequest);
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(myWorkRequest.getId()).observe(this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(@Nullable WorkInfo workInfo) {
+                Log.e("workmng", "onChanged: " + workInfo.getState());
+            }
+        });
 
     }
 

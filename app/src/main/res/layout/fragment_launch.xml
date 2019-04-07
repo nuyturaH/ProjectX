@@ -41,7 +41,7 @@
         android:background="@color/colorPrimaryLight"
         android:elevation="@dimen/description_elevation"
         android:padding="@dimen/description_padding"
-        android:text="This app is for people who want to take part in sport events, have healthy body, share skills and much more other things. Log in and have good time!"
+        android:text="This app is for people who wants to take part in sport events, have healthy body, share skills and much more other things. Log in and have good time!"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/description_text_size"

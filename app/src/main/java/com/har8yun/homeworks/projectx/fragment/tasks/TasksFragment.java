@@ -1,17 +1,28 @@
 package com.har8yun.homeworks.projectx.fragment.tasks;
 
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.har8yun.homeworks.projectx.R;
+import com.har8yun.homeworks.projectx.mapAnim.MapAnimator;
 import com.har8yun.homeworks.projectx.model.TaskViewModel;
+import com.har8yun.homeworks.projectx.model.User;
+
+import androidx.navigation.fragment.NavHostFragment;
+
+import static com.har8yun.homeworks.projectx.fragment.tasks.DoneDialogFragment.LOOSE_WEIGHT_DONE;
+import static com.har8yun.homeworks.projectx.fragment.tasks.TaskInfoFragment.LOOSE_WEIGHT;
 
 
 public class TasksFragment extends DialogFragment {
@@ -26,8 +37,6 @@ public class TasksFragment extends DialogFragment {
     //viewModel
     private TaskViewModel mTaskViewModel;
 
-
-
     //constructor
     public TasksFragment() {
     }
@@ -40,6 +49,17 @@ public class TasksFragment extends DialogFragment {
 
         initViews(view);
         mTaskViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
+        mTaskViewModel.getDoneTask().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                if (integer==1){
+                    //setColot dark re
+                }
+            }
+        });
+
+
+
 
         FragmentManager fm = getActivity().getSupportFragmentManager();
         TaskInfoFragment taskInfoFragment = new TaskInfoFragment();
@@ -70,7 +90,7 @@ public class TasksFragment extends DialogFragment {
     //************************************** METHODS ********************************************
     private void initViews(View view) {
         mLooseWeightButton = view.findViewById(R.id.btn_loose_weight_tasks);
-        mBuildMusclesButton = view.findViewById(R.id.btn_ok_done);
+        mBuildMusclesButton = view.findViewById(R.id.btn_build_muscles_tasks);
     }
 
 

@@ -59,12 +59,12 @@ public class TaskInfoFragment extends DialogFragment {
                     switch (s) {
                         case LOOSE_WEIGHT_INFO:
                             mTitleView.setText("Loose Weight");
-                            mDescriptionView.setText("Reach red marker and you will burn 110 calories! " +
+                            mDescriptionView.setText("Reach red marker and you will burn about 50 calories! " +
                                     "Do this task every day and in a month you will loose 1kg!");
                             break;
                         case BUILD_MUSCLES_INFO:
                             mTitleView.setText("Build Muscles");
-                            mDescriptionView.setText("More strength is more muscle. Do this task every day and you will have great body." );
+                            mDescriptionView.setText("More strength is more muscles. Do this task every day and you will have great body." );
                             break;
                     }
                 }
@@ -97,7 +97,7 @@ public class TaskInfoFragment extends DialogFragment {
     private void initViews(View view) {
         mTitleView = view.findViewById(R.id.tv_title_task_info);
         mDescriptionView = view.findViewById(R.id.tv_description_task_info);
-        mOkButton = view.findViewById(R.id.btn_ok_done);
+        mOkButton = view.findViewById(R.id.btn_build_muscles_tasks);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
     }
 

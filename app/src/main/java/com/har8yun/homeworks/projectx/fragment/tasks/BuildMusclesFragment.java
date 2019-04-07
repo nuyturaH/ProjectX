@@ -36,9 +36,6 @@ public class BuildMusclesFragment extends Fragment {
     public static final String SIT_UPS = "Sit-ups";
     public static final String[] EXERCISE_NAMES = {PUSH_UPS, PULL_UPS, SQUATS, SIT_UPS};
 
-    //navigation
-    private Fragment mNavHostFragment;
-
     //views
     private Toolbar mToolbarBuildMuscles;
     private GifImageView[] mGifImageViews = new GifImageView[4];
@@ -80,13 +77,31 @@ public class BuildMusclesFragment extends Fragment {
 
 
         mBuildMusclesViewModel = ViewModelProviders.of(getActivity()).get(BuildMusclesViewModel.class);
-        mBuildMusclesViewModel.setUnlockLevel(0);
+
+
+        if (mBuildMusclesViewModel.getUnlockLevel().getValue() == null) {
+            mBuildMusclesViewModel.setUnlockLevel(0);
+        }
+
+
+        if (mBuildMusclesViewModel.getUnlockLevel().getValue() != null) {
+            for (int i = 1; i <= mBuildMusclesViewModel.getUnlockLevel().getValue(); i++) {
+                mExerciseButtons[i].setEnabled(true);
+                mExerciseButtons[i-1].setEnabled(false);
+                mGifImageViews[i].setImageResource(mGifImages[i]);
+                mLockLayouts[i].setVisibility(View.INVISIBLE);
+                clearBlurFromTextView(mExerciseViews[i]);
+
+            }
+        }
+
         mBuildMusclesViewModel.getUnlockLevel().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer lvl) {
                 if (mBuildMusclesViewModel.getUnlockLevel().getValue() != null) {
                     for (int i = 1; i <= lvl; i++) {
                         mExerciseButtons[i].setEnabled(true);
+                        mExerciseButtons[i-1].setEnabled(false);
                         mGifImageViews[i].setImageResource(mGifImages[i]);
                         mLockLayouts[i].setVisibility(View.INVISIBLE);
                         clearBlurFromTextView(mExerciseViews[i]);
@@ -97,7 +112,6 @@ public class BuildMusclesFragment extends Fragment {
 
         return view;
     }
-
 
 
     //************************************** METHODS ********************************************
@@ -120,7 +134,6 @@ public class BuildMusclesFragment extends Fragment {
         mGifImages[2] = R.drawable.squats_gif;
         mGifImages[3] = R.drawable.sit_ups_gif;
         mBottomNavigationView = getActivity().findViewById(R.id.bottom_navigation_view_main);
-        mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
     }
 
     private void openExerciseDialog(Button b, String s) {

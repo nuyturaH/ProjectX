@@ -136,9 +136,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     public static final String MY_LOCATION = "My Location";
     public static final float DEFAULT_ZOOM = 15f;
     public static final float START_ZOOM = 10f;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
-
-            new LatLng(-40, -168), new LatLng(71, 136));
+    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(-40, -168), new LatLng(71, 136));
     public static final LatLng START_POINT_MAP = new LatLng(40.183414, 44.514807);
 
 
@@ -162,7 +160,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     private TextView mCaloriesView;
 
     ConstraintSet constraintSet = new ConstraintSet();
-
 
     //tasks
     private TaskViewModel mTaskViewModel;
@@ -235,7 +232,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             @Override
             public void onClick(View v) {
                 //TODO add points
-
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 DoneDialogFragment tasksFragment = new DoneDialogFragment();
                 tasksFragment.show(fm, null);
@@ -770,6 +766,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
         destinationPosition = getDestinationPoint(sourcePosition, angle, 1);
         String destination = destinationPosition.latitude + "," + destinationPosition.longitude;
+        Log.e("gppps", "direction point "+destination);
 
         mGoogleMap.addMarker(new MarkerOptions().position(sourcePosition).title("Origin")
 //                .icon(convertToBitmap(getResources().getDrawable(R.drawable.map_marker_radius), 130, 130)));
@@ -839,10 +836,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
         myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(directionPoint.get(0), DEFAULT_ZOOM));
         animateMarker(myMap, marker, directionPoint, false);
+
     }
 
-    private static void animateMarker(GoogleMap myMap, final Marker marker, final List<LatLng> directionPoint,
-                                      final boolean hideMarker) {
+    private static void animateMarker(GoogleMap myMap, final Marker marker, final List<LatLng> directionPoint, final boolean hideMarker) {
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
         Projection proj = myMap.getProjection();
@@ -1063,7 +1060,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mHandler.removeCallbacks(mRunnable);
     }
 
-
     @Override
     public void onCameraMove() {
         if (mTaskViewModel.getTask().getValue() == null) {
@@ -1073,7 +1069,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             constraintSet.applyTo(mMainLayout);
         }
     }
-
 
     @Override
     public void onCameraIdle() {
@@ -1086,7 +1081,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         }
 
     }
-
 
     @Override
     public void onTaskDone(Object... values) {

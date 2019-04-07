@@ -2,11 +2,13 @@ package com.har8yun.homeworks.projectx.fragment.tasks;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.BuildMusclesViewModel;
+import com.har8yun.homeworks.projectx.model.TaskViewModel;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -39,23 +42,24 @@ public class BuildMusclesDialogFragment extends DialogFragment {
     private ConstraintLayout mTimerLayout;
     private Button mStopButton;
 
+
+
     //timer
     private CountDownTimer mCountDownTimer;
 
     //view model
     private BuildMusclesViewModel mBuildMusclesViewModel;
+    private TaskViewModel mTaskViewModel;
 
     //constructor
     public BuildMusclesDialogFragment() {
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_build_muscles_dialog, container, false);
-
         initViews(view);
-
+        mTaskViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
         mBuildMusclesViewModel = ViewModelProviders.of(getActivity()).get(BuildMusclesViewModel.class);
         mBuildMusclesViewModel.getBuildMuscles().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -64,30 +68,27 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                     case PUSH_UPS:
                         mTitleView.setText("Push-Ups");
                         mDescriptionView.setText("Lay prone on the ground with arms supporting your body. \n" +
-                                "\n" +
-                                "Keep your body straight while raising and lowering your body with your arms. \n");
+                                "Keep your body straight while raising and lowering your body with your arms.");
                         break;
                     case PULL_UPS:
                         mTitleView.setText("Pull-Ups");
-                        mDescriptionView.setText("Grab the pullup bar with your palms down (shoulder-width grip)\n" +
-                                "Hang to the pullup-bar with straight arms and your legs off the floor\n" +
-                                "Pull yourself up by pulling your elbows down to the floor\n" +
-                                "Go all the way up until your chin passes the be bar\n" +
-                                "Lower yourself until your arms are straight\n");
+                        mDescriptionView.setText("Grab the pullup bar with your palms down." +
+                                "Hang to the pullup-bar with straight arms and your legs off the floor." +
+                                "Pull yourself up by pulling your elbows down to the floor." +
+                                "Go all the way up until your chin passes the be bar." +
+                                "Lower yourself until your arms are straight.");
                         break;
                     case SQUATS:
                         mTitleView.setText("Squats");
-                        mDescriptionView.setText("Stand with your feet shoulder width apart and your arms stretched forward, then lower your body until your thighs are parallel with the floor. \n" +
-                                "\n" +
-                                "Your knees should be extended in the same direction as your toes. Return to the start position and do the next rep. \n" );
+                        mDescriptionView.setText("Stand with your feet shoulder width apart and your arms stretched forward, " +
+                                "then lower your body until your thighs are parallel with the floor." +
+                                "Your knees should be extended in the same direction as your toes. Return to the start position and do the next rep." );
                         break;
                     case SIT_UPS:
                         mTitleView.setText("Sit-Ups");
-                        mDescriptionView.setText("Lie on your back with your hands behind your ears. \n" +
-                                "\n" +
-                                "Then lift your upper body off the floor and slowly up to the sitting position. Don't tug your neck when you get up. \n" +
-                                "\n" +
-                                "Slowly go back to the start position and repeat the exercise.\n" );
+                        mDescriptionView.setText("Lie on your back with your hands behind your ears." +
+                                "Then lift your upper body off the floor and slowly up to the sitting position. Don't tug your neck when you get up." +
+                                "Slowly go back to the start position and repeat the exercise." );
                         break;
                 }
             }
@@ -105,15 +106,16 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                 if (mBuildMusclesViewModel.getUnlockLevel().getValue() < 3) {
                     mBuildMusclesViewModel.setUnlockLevel(mBuildMusclesViewModel.getUnlockLevel().getValue() + 1);
                 } else {
-                    //TODO set diasable Build Buttons button
                     getDialog().dismiss();
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     DoneDialogFragment tasksFragment = new DoneDialogFragment();
                     tasksFragment.show(fm, null);
+                    Button mSitUpsButton = getActivity().findViewById(R.id.btn_sit_ups_build_muscles);
+                    mSitUpsButton.setEnabled(false);
+                    mTaskViewModel.setDoneTask(1);
                 }
             }
         });
-
         mStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +154,6 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                 b1.setVisibility(View.INVISIBLE);
                 mCountDownTimer = new CountDownTimer(90000, 1000) {
                     int counter = 90;
-
                     public void onTick(long millisUntilFinished) {
                         int currentMinute = counter / 60;
                         int currentSeconds = counter % 60;
@@ -160,12 +161,10 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                         mTimerView.setText(String.format("%s:%s", f.format(currentMinute), f.format(currentSeconds)));
                         counter--;
                     }
-
                     public void onFinish() {
                         this.cancel();
                         mTimerLayout.setVisibility(View.GONE);
                         mTimerView.setText("Finished");
-
                         openNextSet();
                     }
                 }.start();
