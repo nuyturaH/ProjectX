@@ -14,8 +14,15 @@ public class User {
     private String mStatus;
     private Map<String, Integer> mSkills;
     private List<String> mImages = new ArrayList<>();
+    private List<String> mGoingEvents = new ArrayList<>();
 
+    public List<String> getmGoingEvents() {
+        return mGoingEvents;
+    }
 
+    public void setmGoingEvents(List<String> mGoingEvents) {
+        this.mGoingEvents = mGoingEvents;
+    }
 
     public String getId() {
         return id;

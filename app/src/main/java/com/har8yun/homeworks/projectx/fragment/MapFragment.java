@@ -1,3 +1,4 @@
+
 package com.har8yun.homeworks.projectx.fragment;
 
 import android.Manifest;
@@ -710,11 +711,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                                 if (goingToEvent) {
                                     goingButton.setText("Not Going");
                                     event.getParticipants().add(mCurrentUser.getId());
+                                    mCurrentUser.getmGoingEvents().add(event.getUid());
 
                                     cef.updateEventInFirebase(event);
                                 } else {
                                     goingButton.setText("Going");
                                     event.getParticipants().remove(mCurrentUser.getId());
+                                    mCurrentUser.getmGoingEvents().remove(event.getUid());
                                     cef.updateEventInFirebase(event);
                                 }
 

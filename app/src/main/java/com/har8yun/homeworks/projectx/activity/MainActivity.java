@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -19,12 +20,18 @@ import android.view.WindowManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.har8yun.homeworks.projectx.Application;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.Workmanager.MyWorker;
 import com.har8yun.homeworks.projectx.fragment.profile.MyProfileEditFragment;
 import com.har8yun.homeworks.projectx.fragment.profile.MyProfileFragment;
 
+import com.har8yun.homeworks.projectx.model.Event;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 import com.har8yun.homeworks.projectx.preferences.PreferencesHelper;
@@ -34,6 +41,8 @@ import com.har8yun.homeworks.projectx.util.ImageLoadingUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -67,8 +76,13 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mBottomNavigationView;
     private Fragment mNavHostFragment;
 
+    //firebase;
+    DatabaseReference mFirebaseReference;
+
     //objects
     private String fileUrl;
+    private List<Event> mEventList;
+    private Event mNearestEvent;
 
     //************************************** LIFECYCLE METHODS ********************************************
     @Override
@@ -115,6 +129,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mUser = sharedPreferences.getCurrentUser(this);
             mUserViewModel.setUser(mUser);
+            getEvents();
+            Date date = getNearestEventDate(); //this method gets nearest date of events,and gets event in mNearestEvent object
+
 //            Log.d("MainActivity", mUser.toString());
         }
 
@@ -215,5 +232,45 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void getEvents()
+    {
+        mFirebaseReference = FirebaseDatabase.getInstance().getReference("events");
+        mFirebaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mEventList.clear();
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    Event event = eventSnapshot.getValue(Event.class);
+                    for(String id : mUser.getmGoingEvents())
+                    {
+                        if(id.equals(event.getUid())) {
+                            mEventList.add(event);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+    private Date getNearestEventDate()
+    {
+        Date nearestDate = new Date(Long.MIN_VALUE);
+        Date currentDate = Calendar.getInstance().getTime();
+
+        for(Event event : mEventList)
+        {
+            if(event.getDate().after(nearestDate) && event.getDate().before(currentDate))
+            {
+                nearestDate = event.getDate();
+                mNearestEvent = event;
+            }
+        }
+        return nearestDate;
+    }
+
 
 }
