@@ -712,12 +712,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                                     goingButton.setText("Not Going");
                                     event.getParticipants().add(mCurrentUser.getId());
                                     mCurrentUser.getmGoingEvents().add(event.getUid());
+                                    updateUserInFirebase();
 
                                     cef.updateEventInFirebase(event);
                                 } else {
                                     goingButton.setText("Going");
                                     event.getParticipants().remove(mCurrentUser.getId());
                                     mCurrentUser.getmGoingEvents().remove(event.getUid());
+
+                                    updateUserInFirebase();
                                     cef.updateEventInFirebase(event);
                                 }
 
@@ -734,6 +737,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         });
 
     }
+
+    private void updateUserInFirebase()
+    {
+        mFirebaseDatabseUser = FirebaseDatabase.getInstance().getReference("users");
+        mFirebaseDatabseUser.child(mCurrentUser.getId()).setValue(mCurrentUser);
+
+    }
+
 
     private void setSettings()
     {

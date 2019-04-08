@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     //objects
     private String fileUrl;
-    private List<Event> mEventList;
+    private List<Event> mEventList = new ArrayList<>();
     private Event mNearestEvent;
 
     //************************************** LIFECYCLE METHODS ********************************************
