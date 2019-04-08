@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#9999"
+    >
+
+    <TextView
+        android:id="@+id/tvUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorPrimary"
+        android:paddingStart="8dp"
+        android:paddingEnd="16dp"
+        android:text="Updated"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorPrimaryText" />
+
+    <ListView
+        android:id="@+id/lvList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tvUpdate"
+        android:background="@color/colorPrimaryText" />
+</RelativeLayout>
