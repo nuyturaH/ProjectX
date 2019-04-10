@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.Workmanager;
+package com.har8yun.homeworks.projectx.notification;
 
 import android.app.Activity;
 import android.arch.lifecycle.Observer;

@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/photos_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.PhotosFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.profile.PhotosFragment"
         tools:layout="@layout/fragment_photos"
         >
     </fragment>
@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/map_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.MapFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.map.MapFragment"
         android:label="Map"
         tools:layout="@layout/fragment_map">
         <action
@@ -79,7 +79,7 @@
     <!--______________________________________________________________ -->
     <fragment
         android:id="@+id/top_charts_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.TopChartsFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.topCharts.TopChartsFragment"
         android:label="Top charts"
         tools:layout="@layout/fragment_top_charts" >
 
@@ -97,7 +97,7 @@
 
     <fragment
         android:id="@+id/participants_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.ParticipantsFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.event.ParticipantsFragment"
         tools:layout = "@layout/fragment_participants"
         android:label="Participants"
         >
@@ -127,7 +127,7 @@
     </fragment>
     <fragment
         android:id="@+id/other_photos_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.OtherPhotosFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.profile.OtherPhotosFragment"
         tools:layout="@layout/fragment_other_photos"
         >
         <action
@@ -139,7 +139,7 @@
 
     <fragment
         android:id="@+id/image_gallery_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.ImageGalleryFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.profile.ImageGalleryFragment"
         tools:layout="@layout/fragment_image_gallery">
         <action
             android:id="@+id/action_image_gallery_fragment_to_other_photos_fragment"
@@ -150,7 +150,7 @@
     <!--______________________________________________________________ -->
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.SettingsFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.settings.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -246,7 +246,7 @@
         tools:layout="@layout/fragment_build_muscles" />
     <fragment
         android:id="@+id/news_fragment"
-        android:name="com.har8yun.homeworks.projectx.fragment.NewsFragment"
+        android:name="com.har8yun.homeworks.projectx.fragment.news.NewsFragment"
         android:label="News"
         tools:layout="@layout/fragment_news" />
 </navigation>
