@@ -129,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mUser = sharedPreferences.getCurrentUser(this);
             mUserViewModel.setUser(mUser);
-            getEvents();
-            Date date = getNearestEventDate(); //this method gets nearest date of events,and gets event in mNearestEvent object
+//            getEvents();
+//            Date date = getNearestEventDate(); //this method gets nearest date of events,and gets event in mNearestEvent object
 
 //            Log.d("MainActivity", mUser.toString());
         }
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 .setRequiredNetworkType(NetworkType.UNMETERED)
                 .build();
 
-        PeriodicWorkRequest myWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class,15, TimeUnit.MINUTES,5, TimeUnit.SECONDS)
+        PeriodicWorkRequest myWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class,15, TimeUnit.MINUTES,10, TimeUnit.SECONDS)
                 .setConstraints(constraints)
                 .build();
         WorkManager.getInstance().enqueue(myWorkRequest);

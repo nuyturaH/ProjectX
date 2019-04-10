@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_event_title_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Event Title"
+        android:textAllCaps="false"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="@dimen/my_profile_text_size" />
+
+    <TextView
+        android:id="@+id/tv_event_date_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@id/tv_event_title_item"
+        android:hint="13:40, Apr 7"
+        android:textAlignment="center"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="@dimen/my_profile_text_size" />
+
+    <!--<View-->
+        <!--android:id="@+id/line_item"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginTop="38dp"-->
+        <!--android:background="@color/lightGrey"-->
+        <!--/>-->
+
+    <TextView
+        android:id="@+id/tv_event_minus_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="7dp"
+        android:layout_toEndOf="@id/tv_event_title_item"
+        android:text="-"
+        android:textColor="@android:color/black" />
+
+</RelativeLayout>
