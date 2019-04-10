@@ -7,12 +7,12 @@
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_white_button"
         android:padding="8dp"
-        android:paddingStart="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
 
         <ImageView
@@ -20,6 +20,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
 
+            android:contentDescription="@string/avatar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_username_chart"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +44,7 @@
             android:id="@+id/tv_dots_chart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=":"
+            android:text="@string/two_dots_sign"
             android:textAllCaps="false"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="@dimen/my_profile_text_size"
@@ -56,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:hint="12"
+            android:hint="@string/_12"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_username_chart"

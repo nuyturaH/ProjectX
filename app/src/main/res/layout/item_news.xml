@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -22,21 +21,22 @@
                 android:id="@+id/iv_main_news_item"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:contentDescription="@string/news_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/bg_gradient_layout" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/iv_shadow_news_item"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:contentDescription="@string/shadow"
                 app:layout_constraintBottom_toBottomOf="@id/iv_main_news_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/bottom_shadow"
-                tools:layout_editor_absoluteY="92dp" />
+                app:srcCompat="@drawable/bottom_shadow" />
 
             <ProgressBar
                 android:id="@+id/pb_news_item"
@@ -55,9 +55,9 @@
                 android:background="@drawable/bg_white_rounded_corners_layout"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView2">
+                app:layout_constraintBottom_toBottomOf="@+id/iv_shadow_news_item"
+                app:layout_constraintEnd_toEndOf="@+id/iv_shadow_news_item"
+                app:layout_constraintTop_toTopOf="@+id/iv_shadow_news_item">
 
                 <ImageView
                     android:id="@+id/imageView3"
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="31 Dec 2019"
+                    android:text="@string/_31_dec_2019"
                     android:textColor="#FF000000"
                     android:textSize="17sp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView3"
@@ -92,9 +92,9 @@
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18sp"
                 android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_shadow_news_item"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView2" />
+                app:layout_constraintTop_toTopOf="@+id/iv_shadow_news_item" />
 
             <TextView
                 android:id="@+id/tv_title_news_item"
@@ -103,11 +103,11 @@
                 android:layout_marginTop="8dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="Title"
+                android:text="@string/title"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                app:layout_constraintTop_toBottomOf="@+id/iv_shadow_news_item" />
 
             <TextView
                 android:id="@+id/tv_description_news_item"
@@ -116,7 +116,7 @@
                 android:layout_marginTop="4dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="Description"
+                android:text="@string/description"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_title_news_item"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_news_item" />
@@ -125,10 +125,10 @@
                 android:id="@+id/tv_source_news_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:paddingStart="16dp"
-                android:text="Souce"
+                android:text="@string/source"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -139,8 +139,8 @@
                 android:id="@+id/tv_time_news_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="16dp"
-                android:text="time"
+                android:layout_marginEnd="16dp"
+                android:text="@string/time"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/tv_source_news_item"
                 app:layout_constraintTop_toTopOf="@+id/tv_source_news_item" />

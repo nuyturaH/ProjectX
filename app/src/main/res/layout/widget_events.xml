@@ -14,7 +14,7 @@
         android:background="@color/colorPrimary"
         android:paddingStart="8dp"
         android:paddingEnd="16dp"
-        android:text="Updated"
+        android:text="@string/updated"
         android:textAlignment="textEnd"
         android:textColor="@color/colorPrimaryText" />
 

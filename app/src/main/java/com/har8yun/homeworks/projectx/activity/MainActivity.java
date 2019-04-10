@@ -18,14 +18,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.har8yun.homeworks.projectx.Application;
+import com.har8yun.homeworks.projectx.application.Application;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.notification.MyWorker;
 import com.har8yun.homeworks.projectx.fragment.profile.MyProfileEditFragment;
@@ -54,7 +52,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -133,26 +130,27 @@ public class MainActivity extends AppCompatActivity {
 //            Date date = getNearestEventDate(); //this method gets nearest date of events,and gets event in mNearestEvent object
 
 //            Log.d("MainActivity", mUser.toString());
+            Constraints constraints = new Constraints.Builder()
+                    .setRequiresCharging(true)
+                    .setRequiredNetworkType(NetworkType.UNMETERED)
+                    .build();
+
+            PeriodicWorkRequest myWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class,15, TimeUnit.MINUTES,10, TimeUnit.SECONDS)
+                    .setConstraints(constraints)
+                    .build();
+            WorkManager.getInstance().enqueue(myWorkRequest);
+
+            WorkManager.getInstance().getWorkInfoByIdLiveData(myWorkRequest.getId()).observe(this, new Observer<WorkInfo>() {
+                @Override
+                public void onChanged(@Nullable WorkInfo workInfo) {
+                    Log.e("workmng", "onChanged: " + workInfo.getState());
+
+                }
+            });
         }
 
 
-        Constraints constraints = new Constraints.Builder()
-                .setRequiresCharging(true)
-                .setRequiredNetworkType(NetworkType.UNMETERED)
-                .build();
 
-        PeriodicWorkRequest myWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class,15, TimeUnit.MINUTES,10, TimeUnit.SECONDS)
-                .setConstraints(constraints)
-                .build();
-        WorkManager.getInstance().enqueue(myWorkRequest);
-
-        WorkManager.getInstance().getWorkInfoByIdLiveData(myWorkRequest.getId()).observe(this, new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(@Nullable WorkInfo workInfo) {
-                Log.e("workmng", "onChanged: " + workInfo.getState());
-
-            }
-        });
 
     }
 

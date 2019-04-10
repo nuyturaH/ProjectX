@@ -90,16 +90,14 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
     //navigation
     private NavController mNavController;
 
-
-
     //viewmodel
     private UserViewModel mUserViewModel;
 
     //user
     private User mOtherUser;
 
+    //constructor
     public OtherProfileFragment() {
-        // Required empty public constructor
     }
 
 
@@ -118,10 +116,8 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
         });
         mOtherUser = mUserViewModel.getOtherUser().getValue();
 
-
         initViews(view);
         fillViews(view);
-
 
         return view;
     }
@@ -219,16 +215,16 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
                 Log.d(TAG, "fillViews: " + mOtherUser.getImages().size());
                 for (int i = 0; i < mOtherUser.getImages().size() && i < photos.size(); i++) {
                     setImage(mOtherUser.getImages().get(mOtherUser.getImages().size() - 1 - i), photos.get(i));
-                    Log.d(TAG, "for: "+i);
+                    Log.d(TAG, "for: " + i);
                 }
-            }else{
+            } else {
                 mAllPhotosLayout.setVisibility(View.GONE);
             }
         }
 
     }
 
-    String res;
+    private String res;
 
     public void setImage(String url, ImageView imageView) {
 
@@ -264,7 +260,6 @@ public class OtherProfileFragment extends Fragment implements View.OnClickListen
         });
 
     }
-
 
     public void setAvatar(String url) {
 

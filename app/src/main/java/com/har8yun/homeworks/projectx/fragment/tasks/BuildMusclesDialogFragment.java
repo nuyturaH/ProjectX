@@ -42,8 +42,6 @@ public class BuildMusclesDialogFragment extends DialogFragment {
     private ConstraintLayout mTimerLayout;
     private Button mStopButton;
 
-
-
     //timer
     private CountDownTimer mCountDownTimer;
 
@@ -55,6 +53,7 @@ public class BuildMusclesDialogFragment extends DialogFragment {
     public BuildMusclesDialogFragment() {
     }
 
+    //************************************ LIFECYCLE METHODS ****************************************
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_build_muscles_dialog, container, false);
@@ -66,29 +65,20 @@ public class BuildMusclesDialogFragment extends DialogFragment {
             public void onChanged(@Nullable String s) {
                 switch (s) {
                     case PUSH_UPS:
-                        mTitleView.setText("Push-Ups");
-                        mDescriptionView.setText("Lay prone on the ground with arms supporting your body. \n" +
-                                "Keep your body straight while raising and lowering your body with your arms.");
+                        mTitleView.setText(R.string.push_ups);
+                        mDescriptionView.setText(getString(R.string.push_ups_description));
                         break;
                     case PULL_UPS:
-                        mTitleView.setText("Pull-Ups");
-                        mDescriptionView.setText("Grab the pullup bar with your palms down." +
-                                "Hang to the pullup-bar with straight arms and your legs off the floor." +
-                                "Pull yourself up by pulling your elbows down to the floor." +
-                                "Go all the way up until your chin passes the be bar." +
-                                "Lower yourself until your arms are straight.");
+                        mTitleView.setText(R.string.pull_ups);
+                        mDescriptionView.setText(getString(R.string.pull_ups_description));
                         break;
                     case SQUATS:
-                        mTitleView.setText("Squats");
-                        mDescriptionView.setText("Stand with your feet shoulder width apart and your arms stretched forward, " +
-                                "then lower your body until your thighs are parallel with the floor." +
-                                "Your knees should be extended in the same direction as your toes. Return to the start position and do the next rep." );
+                        mTitleView.setText(R.string.squats);
+                        mDescriptionView.setText(getString(R.string.squats_description) );
                         break;
                     case SIT_UPS:
-                        mTitleView.setText("Sit-Ups");
-                        mDescriptionView.setText("Lie on your back with your hands behind your ears." +
-                                "Then lift your upper body off the floor and slowly up to the sitting position. Don't tug your neck when you get up." +
-                                "Slowly go back to the start position and repeat the exercise." );
+                        mTitleView.setText(R.string.sit_ups);
+                        mDescriptionView.setText(getString(R.string.sit_ups_description) );
                         break;
                 }
             }
@@ -126,6 +116,7 @@ public class BuildMusclesDialogFragment extends DialogFragment {
         return view;
     }
 
+    //************************************** METHODS ********************************************
     private void initViews(View view) {
         mTitleView = view.findViewById(R.id.tv_title_muscles_dialog);
         mDescriptionView = view.findViewById(R.id.tv_description_muscles_dialog);

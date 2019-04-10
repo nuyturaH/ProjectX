@@ -142,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="174dp"
         android:fontFamily="@font/faster_one"
-        android:text=" Sport Net"
+        android:text="@string/sport_net"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryText"
         android:textSize="@dimen/test_logo_text_size"

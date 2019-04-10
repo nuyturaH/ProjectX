@@ -1,11 +1,10 @@
-package com.har8yun.homeworks.projectx;
+package com.har8yun.homeworks.projectx.application;
 
-import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 
+import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.preferences.PreferencesHelper;
 
 import java.util.List;

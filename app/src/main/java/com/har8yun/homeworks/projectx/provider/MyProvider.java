@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.har8yun.homeworks.projectx.R;
-import com.har8yun.homeworks.projectx.service.MyService;
+import com.har8yun.homeworks.projectx.service.WidgetService;
 
 public class MyProvider extends AppWidgetProvider {
 
@@ -26,7 +26,7 @@ public class MyProvider extends AppWidgetProvider {
     }
 
     void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget);
+        RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_events);
         setUpdateTV(rv, context, appWidgetId);
         setList(rv, context, appWidgetId);
         appWidgetManager.updateAppWidget(appWidgetId, rv);
@@ -43,7 +43,7 @@ public class MyProvider extends AppWidgetProvider {
     }
 
     void setList(RemoteViews rv, Context context, int appWidgetId) {
-        Intent adapter = new Intent(context, MyService.class);
+        Intent adapter = new Intent(context, WidgetService.class);
         adapter.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         rv.setRemoteAdapter(R.id.lvList, adapter);
     }

@@ -1,5 +1,5 @@
 
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.map;
 
 import android.Manifest;
 import android.app.Dialog;

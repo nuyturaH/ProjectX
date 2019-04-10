@@ -2,7 +2,7 @@ package com.har8yun.homeworks.projectx.util;
 
 import android.os.Environment;
 
-import com.har8yun.homeworks.projectx.Application;
+import com.har8yun.homeworks.projectx.application.Application;
 
 import java.io.File;
 import java.io.IOException;

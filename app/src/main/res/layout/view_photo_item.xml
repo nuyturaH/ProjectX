@@ -9,11 +9,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
+        android:id="@+id/iv_photo_adapter"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/photo"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/iv_photo_adapter"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
         android:layout_width="wrap_content"

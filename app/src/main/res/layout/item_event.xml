@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Event Title"
+        android:text="@string/title"
         android:textAllCaps="false"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="@dimen/my_profile_text_size" />
@@ -21,7 +21,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:layout_toEndOf="@id/tv_event_title_item"
-        android:hint="13:40, Apr 7"
+        android:hint="@string/_13_40_apr_7"
         android:textAlignment="center"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="@dimen/my_profile_text_size" />
@@ -41,7 +41,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="7dp"
         android:layout_toEndOf="@id/tv_event_title_item"
-        android:text="-"
+        android:text="@string/minus_sign"
         android:textColor="@android:color/black" />
 
 </RelativeLayout>

@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class PermissionChecker {
 
-    static String[] mPermissions = {Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
+    static String[] mPermissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
 
@@ -64,15 +64,12 @@ public class PermissionChecker {
 
     }
 
-    public static boolean hasLocationPermission1(Context context)
-    {
+    public static boolean hasLocationPermission1(Context context) {
         boolean result = false;
-        if(ContextCompat.checkSelfPermission(context,FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)
-        {
-            if(ContextCompat.checkSelfPermission(context,COARSE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED)
-            {
+        if (ContextCompat.checkSelfPermission(context, FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(context, COARSE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
                 result = true;
             }
         }
@@ -89,9 +86,8 @@ public class PermissionChecker {
         LocationSettingsRequest
                 .Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
-        Log.d("Permission","locationdfg");
+        Log.d("Permission", "locationdfg");
     }
-
 
 
     public static boolean hasStoragePermission(Context context) {

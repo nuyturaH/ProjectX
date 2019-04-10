@@ -135,7 +135,7 @@
     <string name="rest">Rest</string>
     <string name="stop">Stop</string>
     <string name="_2_30">2:30</string>
-    <string name="event_title">Event Title</string>
+    <string name="_12">12</string>
     <string name="location">========== Location ==========</string>
     <string name="set_date_and_time">Set Date and Time</string>
     <string name="create_event">Create Event</string>
@@ -178,14 +178,31 @@
     <string name="push_ups">Push-Ups</string>
     <string name="pull_ups">Pull-Ups</string>
     <string name="news">News</string>
-
-    //colors
     <string name="red">Red</string>
     <string name="blue">Blue</string>
     <string name="green">Green</string>
     <string name="violet">Violet</string>
-
-
+    <string name="push_ups_description">Lay prone on the ground with arms supporting your body.  Keep your body straight while raising and lowering your body with your arms.</string>
+    <string name="pull_ups_description">Grab the pullup bar with your palms down. Hang to the pullup-bar with straight arms and your legs off the floor. Pull yourself up by pulling your elbows down to the floor. Go all the way up until your chin passes the be bar.Lower yourself until your arms are straight.</string>
+    <string name="squats_description">Stand with your feet shoulder width apart and your arms stretched forward, then lower your body until your thighs are parallel with the floor. Your knees should be extended in the same direction as your toes. Return to the start position and do the next rep.</string>
+    <string name="sit_ups_description">Lie on your back with your hands behind your ears. Then lift your upper body off the floor and slowly up to the sitting position. Don\'t tug your neck when you get up. Slowly go back to the start position and repeat the exercise.</string>
+    <string name="_13_40_apr_7">13:40, Apr 7</string>
+    <string name="minus_sign">-</string>
+    <string name="photo">photo</string>
+    <string name="news_image">news image</string>
+    <string name="shadow">shadow</string>
+    <string name="_31_dec_2019">31 Dec 2019</string>
+    <string name="title">Title</string>
+    <string name="source">Source</string>
+    <string name="time">time</string>
+    <string name="two_dots_sign">:</string>
+    <string name="message_image">message image</string>
+    <string name="updated">Updated</string>
+    <string name="edit">edit</string>
+    <string name="sport_net">Sport Net</string>
+    <string name="remove">remove</string>
+    <string name="image_gallery">image gallery</string>
+    <string name="app_description">This app is for people who wants to take part in sport events, have healthy body, share skills and much more other things. Log in and have good time!</string>
 
 
 </resources>

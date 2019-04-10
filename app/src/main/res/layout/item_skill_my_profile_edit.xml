@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text=":"
+        android:text="@string/two_dots_sign"
         android:textAllCaps="false"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="@dimen/my_profile_text_size"
@@ -34,15 +34,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:hint="12"
+        android:hint="@string/_12"
+        android:inputType="number"
         android:textAlignment="center"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="@dimen/my_profile_text_size"
         android:textStyle="italic"
-        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@+id/tv_skill_name_edit_item"
         app:layout_constraintStart_toEndOf="@+id/tv_dots_edit_item"
-        app:layout_constraintTop_toTopOf="@+id/tv_skill_name_edit_item" />
+        app:layout_constraintTop_toTopOf="@+id/tv_skill_name_edit_item"
+        android:autofillHints=""
+        tools:targetApi="o" />
 
     <View
         android:id="@+id/line_edit_item"
@@ -59,6 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
+        android:contentDescription="@string/remove"
         app:layout_constraintBottom_toBottomOf="@+id/tv_skill_count_edit_item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_skill_count_edit_item"

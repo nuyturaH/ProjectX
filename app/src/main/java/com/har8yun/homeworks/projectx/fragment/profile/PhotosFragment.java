@@ -1,7 +1,6 @@
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.profile;
 
 
-import android.app.Dialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
@@ -14,14 +13,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.adapter.PhotosAdapter;
+import com.har8yun.homeworks.projectx.fragment.profile.ImageGalleryFragment;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 
@@ -36,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v4.app.ActivityCompat.invalidateOptionsMenu;
-import static com.har8yun.homeworks.projectx.fragment.OtherPhotosFragment.FRAGMENT_CODE;
+import static com.har8yun.homeworks.projectx.fragment.profile.OtherPhotosFragment.FRAGMENT_CODE;
 
 
 public class PhotosFragment extends Fragment {
@@ -52,7 +50,6 @@ public class PhotosFragment extends Fragment {
     //adapter
     private PhotosAdapter mPhotosAdapter;
 
-    //
     private List<String> mPhotosList;
     private List<String> stateChecked;
     private User mCurrentUser;
@@ -63,9 +60,8 @@ public class PhotosFragment extends Fragment {
     //firebase
     private DatabaseReference mDatebaseReference;
 
-
+    //constructor
     public PhotosFragment() {
-        // Required empty public constructor
     }
 
 
@@ -93,9 +89,7 @@ public class PhotosFragment extends Fragment {
     }
 
 
-
-    private void initViews(View view)
-    {
+    private void initViews(View view) {
         mRecyclerView = view.findViewById(R.id.rv_photos);
         textView = view.findViewById(R.id.tv_text_adapter);
         layout = view.findViewById(R.id.layout_my_gallery);
@@ -104,8 +98,7 @@ public class PhotosFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        if(!mPhotosList.isEmpty())
-        {
+        if (!mPhotosList.isEmpty()) {
             textView.setVisibility(View.GONE);
         }
         mPhotosAdapter = new PhotosAdapter();
@@ -182,7 +175,6 @@ public class PhotosFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.action_remove:
                     showInfoForRemove();
-                    // mode.finish(); // Action picked, so close the CAB
                     return true;
                 default:
                     return false;
@@ -226,11 +218,10 @@ public class PhotosFragment extends Fragment {
         }
     };
 
-    private void removePhotosFromFirebase()
-    {
+    private void removePhotosFromFirebase() {
         toRemove = true;
 
-        for(String s : stateChecked) {
+        for (String s : stateChecked) {
             mCurrentUser.getImages().remove(s);
             mDatebaseReference = FirebaseDatabase.getInstance().getReference("users")
                     .child(mCurrentUser.getId());
@@ -242,19 +233,19 @@ public class PhotosFragment extends Fragment {
         mPhotosAdapter.showAllCheckBoxes(false);
 
     }
+
     private void addFragment(Fragment fragment) {
 
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.layout_my_gallery, fragment,FRAGMENT_CODE);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        if (getActivity() != null) {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.layout_my_gallery, fragment, FRAGMENT_CODE);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
 
 
     }
-
-
-
 
 
 }

@@ -87,7 +87,7 @@ public class BuildMusclesFragment extends Fragment {
         if (mBuildMusclesViewModel.getUnlockLevel().getValue() != null) {
             for (int i = 1; i <= mBuildMusclesViewModel.getUnlockLevel().getValue(); i++) {
                 mExerciseButtons[i].setEnabled(true);
-                mExerciseButtons[i-1].setEnabled(false);
+                mExerciseButtons[i - 1].setEnabled(false);
                 mGifImageViews[i].setImageResource(mGifImages[i]);
                 mLockLayouts[i].setVisibility(View.INVISIBLE);
                 clearBlurFromTextView(mExerciseViews[i]);
@@ -101,7 +101,7 @@ public class BuildMusclesFragment extends Fragment {
                 if (mBuildMusclesViewModel.getUnlockLevel().getValue() != null) {
                     for (int i = 1; i <= lvl; i++) {
                         mExerciseButtons[i].setEnabled(true);
-                        mExerciseButtons[i-1].setEnabled(false);
+                        mExerciseButtons[i - 1].setEnabled(false);
                         mGifImageViews[i].setImageResource(mGifImages[i]);
                         mLockLayouts[i].setVisibility(View.INVISIBLE);
                         clearBlurFromTextView(mExerciseViews[i]);

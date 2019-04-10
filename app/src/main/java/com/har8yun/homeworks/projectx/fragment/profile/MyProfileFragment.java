@@ -410,7 +410,7 @@ public class MyProfileFragment extends Fragment {
                 mFirstNameView.setText(mCurrentUser.getUserInfo().getFirstName());
             }
             if (mCurrentUser.getUserInfo().getLastName() != null) {
-                mLastNameView.setText(mCurrentUser.getUserInfo().getLastName());
+                mFirstNameView.append(" "+mCurrentUser.getUserInfo().getLastName());
             }
             if (mCurrentUser.getUserInfo().getGender() != null) {
                 if (mCurrentUser.getUserInfo().getGender() == 0) {

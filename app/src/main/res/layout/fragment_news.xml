@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGrey"
-    tools:context=".fragment.NewsFragment">
+    tools:context=".fragment.news.NewsFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_news"

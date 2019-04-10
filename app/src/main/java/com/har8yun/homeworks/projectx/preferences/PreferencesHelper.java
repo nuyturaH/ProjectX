@@ -4,7 +4,7 @@ package com.har8yun.homeworks.projectx.preferences;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.har8yun.homeworks.projectx.Application;
+import com.har8yun.homeworks.projectx.application.Application;
 
 public class PreferencesHelper {
     public static String getCameraPackage(String key) {

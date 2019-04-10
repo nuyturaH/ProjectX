@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.settings;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

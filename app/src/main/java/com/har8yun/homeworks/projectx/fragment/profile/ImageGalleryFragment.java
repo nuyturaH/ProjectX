@@ -1,11 +1,10 @@
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.profile;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,7 @@ import com.har8yun.homeworks.projectx.adapter.ViewPagerAdapter;
 
 import java.util.List;
 
-import static com.har8yun.homeworks.projectx.fragment.OtherPhotosFragment.FRAGMENT_CODE;
-import static com.har8yun.homeworks.projectx.util.NavigationHelper.onClickNavigate;
+import static com.har8yun.homeworks.projectx.fragment.profile.OtherPhotosFragment.FRAGMENT_CODE;
 
 public class ImageGalleryFragment extends Fragment
 {

@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.topCharts;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -50,7 +50,7 @@ public class TopChartsFragment extends Fragment {
     private static final String TAG = "TopChartsFragment";
     public static final String PULL_UPS = "Pull-ups";
     public static final String PUSH_UPS = "Push-ups";
-    public static final String PARALLEL_DIPS = "Parellel Dips"; //TODO check this one!!!!
+    public static final String PARALLEL_DIPS = "Parellel Dips";
     public static final String JUGGLING = "Juggling";
     public static final String POINTS = "Points";
 
@@ -105,12 +105,12 @@ public class TopChartsFragment extends Fragment {
         mFirebaseDatabse = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_NAME);
         getUsersFromFirebase();
         initViews(view);
+        initRecyclerView(mPullUpsList, PULL_UPS);
         setTopChartsToolbar();
         setNavigationComponent();
 
         return view;
     }
-
 
     //************************************** METHODS ********************************************
     private void initViews(View view) {
@@ -119,33 +119,34 @@ public class TopChartsFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.rv_charts);
         mNavHostFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
-//        mTabLayout.getTabAt(0).select();
-//        initRecyclerView(mPullUpsList,PULL_UPS);
-
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0)
-                    initRecyclerView(mPullUpsList, PULL_UPS);
-                else if (tab.getPosition() == 1) {
-                    initRecyclerView(mPushUpsList, PUSH_UPS);
-                } else if (tab.getPosition() == 2) {
-                    initRecyclerView(mParallelDipsList, PARALLEL_DIPS);
-                } else if (tab.getPosition() == 3) {
-                    initRecyclerView(mJugglingList, JUGGLING);
-                } else if (tab.getPosition() == 4) {
-                    initRecyclerView(mPointsList, POINTS);
+                switch (tab.getPosition()) {
+                    case 0:
+                        initRecyclerView(mPullUpsList, PULL_UPS);
+                        break;
+                    case 1:
+                        initRecyclerView(mPushUpsList, PUSH_UPS);
+                        break;
+                    case 2:
+                        initRecyclerView(mParallelDipsList, PARALLEL_DIPS);
+                        break;
+                    case 3:
+                        initRecyclerView(mJugglingList, JUGGLING);
+                        break;
+                    case 4:
+                        initRecyclerView(mPointsList, POINTS);
+                        break;
                 }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
@@ -168,7 +169,6 @@ public class TopChartsFragment extends Fragment {
 
         mChartsAdapter.addItems(tenList, key);
 
-
         mChartsAdapter.setOnRvItemClickListener(new ChartsAdapter.OnRvItemClickListener() {
             @Override
             public void onItemClicked(String uid) {
@@ -187,9 +187,7 @@ public class TopChartsFragment extends Fragment {
         });
     }
 
-
     private void getUsersFromFirebase() {
-
         mFirebaseDatabse.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -209,6 +207,7 @@ public class TopChartsFragment extends Fragment {
                         }
                         if (user.getSkills().containsKey(PUSH_UPS)) {
                             mPushUpsList.add(user);
+
                         }
                         if (user.getSkills().containsKey(PARALLEL_DIPS)) {
                             mParallelDipsList.add(user);
@@ -222,6 +221,7 @@ public class TopChartsFragment extends Fragment {
                         }
                     }
                 }
+                initRecyclerView(mPushUpsList, PULL_UPS);
             }
 
             @Override

@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.profile;
 
 
 import android.arch.lifecycle.Observer;
@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.adapter.PhotosAdapter;
-import com.har8yun.homeworks.projectx.fragment.ImageGalleryFragment;
+import com.har8yun.homeworks.projectx.fragment.profile.ImageGalleryFragment;
 import com.har8yun.homeworks.projectx.model.User;
 import com.har8yun.homeworks.projectx.model.UserViewModel;
 
@@ -46,9 +46,8 @@ public class OtherPhotosFragment extends Fragment {
     private UserViewModel mUserViewModel;
 
 
-
+    //constructor
     public OtherPhotosFragment() {
-        // Required empty public constructor
     }
 
 

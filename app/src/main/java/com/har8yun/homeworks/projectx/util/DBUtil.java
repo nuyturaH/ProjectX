@@ -65,8 +65,6 @@ public class DBUtil {
     }
 
 
-
-
 //    public static DatabaseReference getRefMessages(String friendId) {
 //        return getAndroidReference().child(REF_MESSAGES).child(getChatId(friendId));
 //    }

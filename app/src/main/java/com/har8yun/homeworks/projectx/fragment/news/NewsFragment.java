@@ -1,4 +1,4 @@
-package com.har8yun.homeworks.projectx.fragment;
+package com.har8yun.homeworks.projectx.fragment.news;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
