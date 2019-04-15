@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
@@ -129,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
 //            getEvents();
 //            Date date = getNearestEventDate(); //this method gets nearest date of events,and gets event in mNearestEvent object
 
-//            Log.d("MainActivity", mUser.toString());
             Constraints constraints = new Constraints.Builder()
                     .setRequiresCharging(true)
                     .setRequiredNetworkType(NetworkType.UNMETERED)
@@ -143,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
             WorkManager.getInstance().getWorkInfoByIdLiveData(myWorkRequest.getId()).observe(this, new Observer<WorkInfo>() {
                 @Override
                 public void onChanged(@Nullable WorkInfo workInfo) {
-                    Log.e("workmng", "onChanged: " + workInfo.getState());
-
                 }
             });
         }
@@ -165,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         if(sharedPreferences.getLoggedStatus(getApplicationContext())) {
             sharedPreferences.setCurrentUser(this, mUserViewModel.getUser().getValue());
-            Log.d("MainActivity setUser", mUserViewModel.getUser().getValue().toString());
         }
         super.onPause();
     }
@@ -194,6 +189,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 
     //************************************** METHODS ********************************************

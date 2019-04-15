@@ -6,18 +6,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -97,7 +94,6 @@ public class TopChartsFragment extends Fragment {
             @Override
             public void onChanged(@Nullable User user) {
                 currentUser = user;
-                Log.e("hhhh", "ViewModel " + user.toString());
             }
         });
         currentUser = mUserViewModel.getUser().getValue();
@@ -203,7 +199,6 @@ public class TopChartsFragment extends Fragment {
                     if (user.getSkills() != null) {
                         if (user.getSkills().containsKey(PULL_UPS)) {
                             mPullUpsList.add(user);
-                            Log.d(TAG, "onDataChange: " + user.getUsername());
                         }
                         if (user.getSkills().containsKey(PUSH_UPS)) {
                             mPushUpsList.add(user);
@@ -214,7 +209,6 @@ public class TopChartsFragment extends Fragment {
                         }
                         if (user.getSkills().containsKey(JUGGLING)) {
                             mJugglingList.add(user);
-                            Log.d(TAG, "onDataChange: " + user.getUsername());
                         }
                         if (user.getPoints() != null) {
                             mPointsList.add(user);

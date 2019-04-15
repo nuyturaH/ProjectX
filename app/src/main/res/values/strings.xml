@@ -203,6 +203,8 @@
     <string name="remove">remove</string>
     <string name="image_gallery">image gallery</string>
     <string name="app_description">This app is for people who wants to take part in sport events, have healthy body, share skills and much more other things. Log in and have good time!</string>
+    <string name="finished">Finished</string>
+    <string name="enter_address_city">Enter Address, City</string>
 
 
 </resources>

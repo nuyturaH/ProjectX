@@ -74,11 +74,11 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                         break;
                     case SQUATS:
                         mTitleView.setText(R.string.squats);
-                        mDescriptionView.setText(getString(R.string.squats_description) );
+                        mDescriptionView.setText(getString(R.string.squats_description));
                         break;
                     case SIT_UPS:
                         mTitleView.setText(R.string.sit_ups);
-                        mDescriptionView.setText(getString(R.string.sit_ups_description) );
+                        mDescriptionView.setText(getString(R.string.sit_ups_description));
                         break;
                 }
             }
@@ -102,7 +102,11 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                     tasksFragment.show(fm, null);
                     Button mSitUpsButton = getActivity().findViewById(R.id.btn_sit_ups_build_muscles);
                     mSitUpsButton.setEnabled(false);
-                    mTaskViewModel.setDoneTask(1);
+                    if (mTaskViewModel.getDoneTask().getValue() == null) {
+                        mTaskViewModel.setDoneTask(2);
+                    } else {
+                        mTaskViewModel.setDoneTask(3);
+                    }
                 }
             }
         });
@@ -145,6 +149,7 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                 b1.setVisibility(View.INVISIBLE);
                 mCountDownTimer = new CountDownTimer(90000, 1000) {
                     int counter = 90;
+
                     public void onTick(long millisUntilFinished) {
                         int currentMinute = counter / 60;
                         int currentSeconds = counter % 60;
@@ -152,10 +157,11 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                         mTimerView.setText(String.format("%s:%s", f.format(currentMinute), f.format(currentSeconds)));
                         counter--;
                     }
+
                     public void onFinish() {
                         this.cancel();
                         mTimerLayout.setVisibility(View.GONE);
-                        mTimerView.setText("Finished");
+                        mTimerView.setText(getString(R.string.finished));
                         openNextSet();
                     }
                 }.start();

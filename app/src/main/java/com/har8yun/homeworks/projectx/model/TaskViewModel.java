@@ -7,7 +7,9 @@ import android.arch.lifecycle.ViewModel;
 public class TaskViewModel extends ViewModel {
 
     private MutableLiveData<String> mTaskMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData<Integer> mDoneTaskMutableLiveData = new MutableLiveData<>();//0-all are enabeled, 1
+
+    //0-all are enabled, 1-only "loose weight" is disabled, 2-only "build muscles is disabled", 3-all are disabled
+    private MutableLiveData<Integer> mDoneTaskMutableLiveData = new MutableLiveData<>();
 
     public void setTask(String task){
         mTaskMutableLiveData.setValue(task);

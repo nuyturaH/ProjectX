@@ -55,21 +55,21 @@ public class SaveSharedPreferences {
         return getPreferences(context).getString(THEME, RED);
     }
 
-    public void setCurrentUser(Context context,User mUser)
-    {
+    public void setCurrentUser(Context context, User mUser) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
         Gson gson = new Gson();
         String json = gson.toJson(mUser);
-        editor.putString(USER_KEY,json);
-        editor.commit();
+        editor.putString(USER_KEY, json);
+        editor.apply();
     }
 
-    public User getCurrentUser(Context context)
-    {
+    public User getCurrentUser(Context context) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
         Gson gson = new Gson();
         String json = getPreferences(context).getString(USER_KEY, "");
         User mUser = gson.fromJson(json, User.class);
         return mUser;
     }
+
+
 }

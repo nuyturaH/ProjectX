@@ -3,6 +3,7 @@ package com.har8yun.homeworks.projectx.fragment.tasks;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -52,8 +53,21 @@ public class TasksFragment extends DialogFragment {
         mTaskViewModel.getDoneTask().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer integer) {
-                if (integer==1){
-                    //setColot dark re
+                switch (integer){
+                    case 1:
+                        mLooseWeightButton.setBackgroundColor(Color.parseColor("#B71C1C"));
+                        mLooseWeightButton.setEnabled(false);
+                        break;
+                    case 2:
+                        mBuildMusclesButton.setBackgroundColor(Color.parseColor("#B71C1C"));
+                        mBuildMusclesButton.setEnabled(false);
+                        break;
+                    case 3:
+                        mLooseWeightButton.setBackgroundColor(Color.parseColor("#B71C1C"));
+                        mBuildMusclesButton.setBackgroundColor(Color.parseColor("#B71C1C"));
+                        mLooseWeightButton.setEnabled(false);
+                        mBuildMusclesButton.setEnabled(false);
+                        break;
                 }
             }
         });

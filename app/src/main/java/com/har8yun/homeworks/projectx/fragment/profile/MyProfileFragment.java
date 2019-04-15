@@ -154,7 +154,6 @@ public class MyProfileFragment extends Fragment {
         mUserViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(@Nullable final User user) {
-                Log.e("hhhh", "ViewModel in My profile " + user.toString());
                 setNavigationComponent(user);
                 mCurrentUser.setUserInfo(user.getUserInfo());
                 mCurrentUser = user;
@@ -404,7 +403,6 @@ public class MyProfileFragment extends Fragment {
     }
 
     private void fillViews() {
-        Log.e("hhhh", "fillviews");
         if (mCurrentUser.getUserInfo() != null) {
             if (mCurrentUser.getUserInfo().getFirstName() != null) {
                 mFirstNameView.setText(mCurrentUser.getUserInfo().getFirstName());

@@ -14,7 +14,7 @@ public class PreferencesHelper {
     public static void addCameraPackage(String key, String value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(Application.get()).edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
 }

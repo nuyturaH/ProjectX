@@ -27,10 +27,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="18dp"
+            android:contentDescription="@string/search"
             android:src="@drawable/ic_search"
             app:layout_constraintBottom_toBottomOf="@+id/et_search_map_fragment"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_search_map_fragment" />
+            app:layout_constraintTop_toTopOf="@id/et_search_map_fragment" />
 
         <AutoCompleteTextView
             android:id="@+id/et_search_map_fragment"
@@ -41,16 +42,16 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_toRightOf="@id/iv_magnify_map_fragment"
+            android:layout_toEndOf="@id/iv_magnify_map_fragment"
             android:background="@android:drawable/screen_background_light_transparent"
-            android:hint="Enter Address, City"
+            android:hint="@string/enter_address_city"
             android:imeOptions="actionSearch"
             android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_magnify_map_fragment"
+            app:layout_constraintStart_toEndOf="@id/iv_magnify_map_fragment"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
@@ -125,7 +126,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintVertical_bias="0.26"
+        android:focusable="true" />
 
     <Button
         android:id="@+id/btn_done_map"
