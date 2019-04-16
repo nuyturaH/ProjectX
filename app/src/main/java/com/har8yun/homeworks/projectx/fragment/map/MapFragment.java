@@ -218,7 +218,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-
 //        if(mTaskViewModel!=null)
 //         mUser = sharedPreferences.getCurrentUser(getContext());
         initViews(view);
@@ -231,11 +230,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             @Override
             public void onClick(View v) {
                 //TODO add points
-                if (mTaskViewModel.getDoneTask().getValue() == null) {
+                if (mTaskViewModel.getDoneTask().getValue() == null || mTaskViewModel.getDoneTask().getValue() == 0) {
                     mTaskViewModel.setDoneTask(1);
                 } else {
                     mTaskViewModel.setDoneTask(3);
                 }
+                sharedPreferences.setTask(getContext(), mTaskViewModel.getDoneTask().getValue());
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 DoneDialogFragment tasksFragment = new DoneDialogFragment();
                 tasksFragment.show(fm, null);
@@ -277,6 +277,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     public void onResume() {
         super.onResume();
         mTaskViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
+        mTaskViewModel.setDoneTask(sharedPreferences.getTask(getContext()));
         mTaskViewModel.getTask().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -314,7 +315,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     @Override
     public void onPause() {
         super.onPause();
-
         if (mFusedLocationProviderClient != null) {
             mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
         }
@@ -324,7 +324,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
 
     //************************************** METHODS ********************************************
-
     private void showBotNavBar() {
         mBottomNavigationView.setVisibility(View.VISIBLE);
     }
@@ -361,6 +360,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 TasksFragment tasksFragment = new TasksFragment();
                 tasksFragment.show(fm, null);
+                if (mTaskViewModel.getDoneTask().getValue() != null) {
+                    if (mTaskViewModel.getDoneTask().getValue() == 3) {
+                        Toast.makeText(getContext(), "You have done all today's tasks. Come back tomorrow!", Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
 

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.BuildMusclesViewModel;
 import com.har8yun.homeworks.projectx.model.TaskViewModel;
+import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -48,6 +49,9 @@ public class BuildMusclesDialogFragment extends DialogFragment {
     //view model
     private BuildMusclesViewModel mBuildMusclesViewModel;
     private TaskViewModel mTaskViewModel;
+
+    //preferences
+    SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
 
     //constructor
     public BuildMusclesDialogFragment() {
@@ -107,6 +111,8 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                     } else {
                         mTaskViewModel.setDoneTask(3);
                     }
+                    sharedPreferences.setTask(getContext(),mTaskViewModel.getDoneTask().getValue());
+
                 }
             }
         });

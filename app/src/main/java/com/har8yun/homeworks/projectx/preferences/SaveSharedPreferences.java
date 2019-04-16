@@ -15,6 +15,7 @@ public class SaveSharedPreferences {
     public static final String USER_KEY = "user_key";
     public static final String ZOOM_BUTTONS = "zoom_buttons";
     public static final String THEME = "theme change";
+    public static final String ENABLED_TASKS = "enabled tasks";
 
     public static final String RED = "red";
 
@@ -55,6 +56,16 @@ public class SaveSharedPreferences {
         return getPreferences(context).getString(THEME, RED);
     }
 
+    public void setTask(Context context, Integer i) {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putInt(ENABLED_TASKS, i);
+        editor.apply();
+    }
+
+    public Integer getTask(Context context) {
+        return getPreferences(context).getInt(ENABLED_TASKS, 0);
+    }
+
     public void setCurrentUser(Context context, User mUser) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
         Gson gson = new Gson();
@@ -70,6 +81,8 @@ public class SaveSharedPreferences {
         User mUser = gson.fromJson(json, User.class);
         return mUser;
     }
+
+
 
 
 }
