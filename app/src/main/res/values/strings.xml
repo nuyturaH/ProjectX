@@ -205,6 +205,10 @@
     <string name="app_description">This app is for people who wants to take part in sport events, have healthy body, share skills and much more other things. Log in and have good time!</string>
     <string name="finished">Finished</string>
     <string name="enter_address_city">Enter Address, City</string>
+    <string name="delete">Delete</string>
+    <string name="delete_warning">Are you sure you want to delete this event</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
 </resources>

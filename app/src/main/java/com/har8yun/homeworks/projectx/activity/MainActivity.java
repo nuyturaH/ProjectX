@@ -37,6 +37,7 @@ import com.har8yun.homeworks.projectx.util.ImageLoadingUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,16 +87,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         String theme = sharedPreferences.getTheme(this);
 
-        if(theme.equals(getResources().getString(R.string.red))) {
+        if (theme.equals(getResources().getString(R.string.red))) {
             setTheme(R.style.AppTheme);
-        }else if(theme.equals(getResources().getString(R.string.blue)))
-        {
+        } else if (theme.equals(getResources().getString(R.string.blue))) {
             setTheme(R.style.AppThemeBlue);
-        }else if(theme.equals(getResources().getString(R.string.green)))
-        {
+        } else if (theme.equals(getResources().getString(R.string.green))) {
             setTheme(R.style.AppThemeGreen);
-        }else if(theme.equals(getResources().getString(R.string.violet)))
-        {
+        } else if (theme.equals(getResources().getString(R.string.violet))) {
             setTheme(R.style.AppThemeViolet);
         }
 
@@ -106,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
         setNavigationComponent();
-
 
 
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -133,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     .setRequiredNetworkType(NetworkType.UNMETERED)
                     .build();
 
-            PeriodicWorkRequest myWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class,15, TimeUnit.MINUTES,10, TimeUnit.SECONDS)
+            PeriodicWorkRequest myWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES, 10, TimeUnit.SECONDS)
                     .setConstraints(constraints)
                     .build();
             WorkManager.getInstance().enqueue(myWorkRequest);
@@ -143,12 +140,14 @@ public class MainActivity extends AppCompatActivity {
                 public void onChanged(@Nullable WorkInfo workInfo) {
                 }
             });
+
+
+            resetTasks();
         }
 
 
-
-
     }
+
 
     //************************************** OVERRIDE METHODS ********************************************
     @Override
@@ -159,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if(sharedPreferences.getLoggedStatus(getApplicationContext())) {
+        if (sharedPreferences.getLoggedStatus(getApplicationContext())) {
             sharedPreferences.setCurrentUser(this, mUserViewModel.getUser().getValue());
         }
         super.onPause();
@@ -177,9 +176,7 @@ public class MainActivity extends AppCompatActivity {
                         (myProfileEditFragment).onUploadFileCreated(fileUrl);
                     }
                 }
-            }
-            else if(requestCode == MyProfileFragment.CAMERA_REQUEST_CODE)
-            {
+            } else if (requestCode == MyProfileFragment.CAMERA_REQUEST_CODE) {
                 if (null != fileUrl) {
                     MyProfileFragment myProfileFragment =
                             (MyProfileFragment) mNavHostFragment.getChildFragmentManager().getFragments().get(0);
@@ -214,7 +211,8 @@ public class MainActivity extends AppCompatActivity {
             File photoFile = null;
             try {
                 photoFile = ImageLoadingUtil.createImageFile();
-            } catch (IOException e) {}
+            } catch (IOException e) {
+            }
             if (null != photoFile) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     Uri fileUri = FileProvider.getUriForFile(Application.get(),
@@ -233,8 +231,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getEvents()
-    {
+    private void getEvents() {
         mFirebaseReference = FirebaseDatabase.getInstance().getReference("events");
         mFirebaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -242,9 +239,8 @@ public class MainActivity extends AppCompatActivity {
                 mEventList.clear();
                 for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                     Event event = eventSnapshot.getValue(Event.class);
-                    for(String id : mUser.getmGoingEvents())
-                    {
-                        if(id.equals(event.getUid())) {
+                    for (String id : mUser.getmGoingEvents()) {
+                        if (id.equals(event.getUid())) {
                             mEventList.add(event);
                         }
                     }
@@ -256,20 +252,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private Date getNearestEventDate()
-    {
+
+    private Date getNearestEventDate() {
         Date nearestDate = new Date(Long.MIN_VALUE);
         Date currentDate = Calendar.getInstance().getTime();
 
-        for(Event event : mEventList)
-        {
-            if(event.getDate().after(nearestDate) && event.getDate().before(currentDate))
-            {
+        for (Event event : mEventList) {
+            if (event.getDate().after(nearestDate) && event.getDate().before(currentDate)) {
                 nearestDate = event.getDate();
                 mNearestEvent = event;
             }
         }
         return nearestDate;
+    }
+
+    private void resetTasks() {
+        //Enable tasks when the day is changed
+        Date currentDate = new Date();
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd.MM.yyyy");
+
+        Date savedDate = new Date(sharedPreferences.getTime(this));
+
+        if (!simpleDateFormat2.format(currentDate).equals(simpleDateFormat2.format(savedDate))) {
+            sharedPreferences.setTask(this, 0);
+            sharedPreferences.setTime(this, currentDate.getTime());
+        }
     }
 
 

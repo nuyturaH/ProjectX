@@ -115,9 +115,7 @@ public class CreateEventFragment extends Fragment {
                     editEvent();
                     Navigation.findNavController(v).navigate(R.id.action_create_event_fragment_to_map_fragment);
                 } else {
-
                     initEvent();
-
                 }
 
             }
@@ -128,7 +126,6 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View v) {
                 pass3 = true;
                 chooseDate();
-
             }
         });
         return view;
@@ -153,10 +150,10 @@ public class CreateEventFragment extends Fragment {
     private void removeEventDialog() {
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 //set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Are you sure you want to delete this event")
+                .setTitle(R.string.delete)
+                .setMessage(R.string.delete_warning)
 
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         removeEventFromFirebase();
@@ -165,7 +162,7 @@ public class CreateEventFragment extends Fragment {
 
                 })
 
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }

@@ -16,6 +16,7 @@ public class SaveSharedPreferences {
     public static final String ZOOM_BUTTONS = "zoom_buttons";
     public static final String THEME = "theme change";
     public static final String ENABLED_TASKS = "enabled tasks";
+    public static final String TIME = "time";
 
     public static final String RED = "red";
 
@@ -64,6 +65,16 @@ public class SaveSharedPreferences {
 
     public Integer getTask(Context context) {
         return getPreferences(context).getInt(ENABLED_TASKS, 0);
+    }
+
+    public void setTime(Context context, long i) {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putLong(TIME, i);
+        editor.apply();
+    }
+
+    public long getTime(Context context) {
+        return getPreferences(context).getLong(TIME, 0);
     }
 
     public void setCurrentUser(Context context, User mUser) {
