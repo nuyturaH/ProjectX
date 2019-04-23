@@ -275,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!simpleDateFormat2.format(currentDate).equals(simpleDateFormat2.format(savedDate))) {
             sharedPreferences.setTask(this, 0);
+            sharedPreferences.setBuildMusclesUnlockLevel(this,0);
             sharedPreferences.setTime(this, currentDate.getTime());
         }
     }

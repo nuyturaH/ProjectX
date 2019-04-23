@@ -99,6 +99,8 @@ public class BuildMusclesDialogFragment extends DialogFragment {
                 mImageViews[3].setVisibility(View.VISIBLE);
                 if (mBuildMusclesViewModel.getUnlockLevel().getValue() < 3) {
                     mBuildMusclesViewModel.setUnlockLevel(mBuildMusclesViewModel.getUnlockLevel().getValue() + 1);
+                    sharedPreferences.setBuildMusclesUnlockLevel(getContext(),mBuildMusclesViewModel.getUnlockLevel().getValue() + 1);
+
                 } else {
                     getDialog().dismiss();
                     FragmentManager fm = getActivity().getSupportFragmentManager();

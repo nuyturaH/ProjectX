@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.BlurMaskFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.har8yun.homeworks.projectx.R;
 import com.har8yun.homeworks.projectx.model.BuildMusclesViewModel;
+import com.har8yun.homeworks.projectx.preferences.SaveSharedPreferences;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -44,6 +46,9 @@ public class BuildMusclesFragment extends Fragment {
     private ConstraintLayout[] mLockLayouts = new ConstraintLayout[4];
     private BottomNavigationView mBottomNavigationView;
 
+    //preferences
+    SaveSharedPreferences sharedPreferences = new SaveSharedPreferences();
+
     //drawable
     private int mGifImages[] = new int[4];
 
@@ -60,7 +65,7 @@ public class BuildMusclesFragment extends Fragment {
 
     //************************************ LIFECYCLE METHODS ****************************************
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_build_muscles, container, false);
 
         initViews(view);
@@ -79,8 +84,11 @@ public class BuildMusclesFragment extends Fragment {
         mBuildMusclesViewModel = ViewModelProviders.of(getActivity()).get(BuildMusclesViewModel.class);
 
 
-        if (mBuildMusclesViewModel.getUnlockLevel().getValue() == null) {
-            mBuildMusclesViewModel.setUnlockLevel(0);
+        if (mBuildMusclesViewModel.getUnlockLevel().getValue() == null || mBuildMusclesViewModel.getUnlockLevel().getValue() == 0) {
+//            mBuildMusclesViewModel.setUnlockLevel(0);
+            Log.e("hhhh", "pref  " + sharedPreferences.getBuildMusclesUnlockLevel(getContext()));
+
+            mBuildMusclesViewModel.setUnlockLevel(sharedPreferences.getBuildMusclesUnlockLevel(getContext())-1);
         }
 
 
@@ -95,9 +103,9 @@ public class BuildMusclesFragment extends Fragment {
             }
         }
 
-        mBuildMusclesViewModel.getUnlockLevel().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+        mBuildMusclesViewModel.getUnlockLevel().observe(getViewLifecycleOwner(), new Observer<Long>() {
             @Override
-            public void onChanged(@Nullable Integer lvl) {
+            public void onChanged(@Nullable Long lvl) {
                 if (mBuildMusclesViewModel.getUnlockLevel().getValue() != null) {
                     for (int i = 1; i <= lvl; i++) {
                         mExerciseButtons[i].setEnabled(true);

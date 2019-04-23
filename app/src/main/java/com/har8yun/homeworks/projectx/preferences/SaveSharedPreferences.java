@@ -3,6 +3,7 @@ package com.har8yun.homeworks.projectx.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,6 +18,7 @@ public class SaveSharedPreferences {
     public static final String THEME = "theme change";
     public static final String ENABLED_TASKS = "enabled tasks";
     public static final String TIME = "time";
+    public static final String BUILD_MUSCLES_LEVEL = "level";
 
     public static final String RED = "red";
 
@@ -77,6 +79,17 @@ public class SaveSharedPreferences {
         return getPreferences(context).getLong(TIME, 0);
     }
 
+    public void setBuildMusclesUnlockLevel(Context context, long i) {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putLong(BUILD_MUSCLES_LEVEL, i);
+        editor.apply();
+    }
+
+    public long getBuildMusclesUnlockLevel(Context context) {
+        Log.e("hhhh", "pref  " + getPreferences(context).getLong(BUILD_MUSCLES_LEVEL, 0));
+        return getPreferences(context).getLong(BUILD_MUSCLES_LEVEL, 0);
+    }
+
     public void setCurrentUser(Context context, User mUser) {
         SharedPreferences.Editor editor = getPreferences(context).edit();
         Gson gson = new Gson();
@@ -92,8 +105,6 @@ public class SaveSharedPreferences {
         User mUser = gson.fromJson(json, User.class);
         return mUser;
     }
-
-
 
 
 }
